@@ -45,11 +45,10 @@ public class LoginController implements Initializable {
     @FXML
     protected void LoginCheck(ActionEvent event) throws SQLException, IOException, InterruptedException {
         if(loginModel.LoginNow(usrName.getText(), pwdField.getText())){
-            Thread.sleep(2000);
             infoLabel.setText("Nom d'utilisateur et mot de passe valides.");
             ((Node)(event.getSource())).getScene().getWindow().hide();
             Stage myStage = new Stage();
-            FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("Main.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Main.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 820, 840);
             myStage.setTitle("Gestion des locations");
             myStage.setScene(scene);

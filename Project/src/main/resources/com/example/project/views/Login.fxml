@@ -20,7 +20,7 @@
             <TextField fx:id="usrName" layoutX="116.0" layoutY="194.0" promptText="Nom d'utilisateur" />
             <Label layoutX="14.0" layoutY="232.0" prefHeight="17.0" prefWidth="95.0" text="Mot de passe" />
             <PasswordField fx:id="pwdField" layoutX="116.0" layoutY="228.0" promptText="Mot de passe" />
-            <Button fx:id="connectBtn" layoutX="153.0" layoutY="268.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Connexion" />
+            <Button fx:id="connectBtn" layoutX="153.0" layoutY="268.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Connexion" onAction="#LoginCheck"/>
             <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="56.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="infoLabel" layoutX="116.0" layoutY="321.0" />
          </children>
