@@ -7,16 +7,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("views/Login.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 620, 440);
+        stage.setTitle("Connection");
         stage.setScene(scene);
         stage.show();
     }
-// Partie principale
+
     public static void main(String[] args) {
         launch();
     }
