@@ -56,4 +56,8 @@ public class LoginController implements Initializable {
             myStage.show();
         } else infoLabel.setText("Nom d'utilisateur et mot de passe invalides!");
     }
+
+    public void onEnter(ActionEvent event) throws SQLException, IOException, InterruptedException {
+        LoginCheck(event);
+    }
 }
