@@ -11,7 +11,7 @@ public class LoginModel {
     // Responsable de se connecter à la base de donnees, pour l'affichage de la BD:
     Connection connection;
     public LoginModel(){
-        connection = com.example.project.models.MySqlConnection.getInstance();
+        connection = MySqlConnection.getInstance();
     }
 
     // verifier si la connection est bien etablie:
@@ -37,7 +37,7 @@ public class LoginModel {
             return resultat.next();
 
         }catch (SQLException e) {
-            Logger.getLogger(com.example.project.models.MySqlConnection.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(MySqlConnection.class.getName()).log(Level.SEVERE, null, e);
         }
         finally {
             assert std !=null;

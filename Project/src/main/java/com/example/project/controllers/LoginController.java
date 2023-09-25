@@ -1,5 +1,6 @@
 package com.example.project.controllers;
 
+import com.example.project.models.LoginModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,7 +41,7 @@ public class LoginController implements Initializable {
         } else myLoginLabel.setText("Connection BD non etablie!");
     }
 
-    public com.example.project.models.LoginModel loginModel = new com.example.project.models.LoginModel();
+    public LoginModel loginModel = new LoginModel();
 
     @FXML
     protected void LoginCheck(ActionEvent event) throws SQLException, IOException, InterruptedException {
@@ -54,5 +55,9 @@ public class LoginController implements Initializable {
             myStage.setScene(scene);
             myStage.show();
         } else infoLabel.setText("Nom d'utilisateur et mot de passe invalides!");
+    }
+
+    public void onEnter(ActionEvent event) throws SQLException, IOException, InterruptedException {
+        LoginCheck(event);
     }
 }
