@@ -10,11 +10,16 @@ import com.example.project.models.MySqlConnection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,6 +55,9 @@ public class LocationController implements EventHandler<ActionEvent>, Initializa
     public TableColumn<Location, Integer> supColumn = new TableColumn<>("Superficie");
     @FXML
     public TableColumn<Location, Integer> anneeColumn = new TableColumn<>("Année de construction");
+
+    @FXML
+    public MenuItem disconnectBtn;
 
     @Override
     public void handle(ActionEvent actionEvent) {
@@ -109,5 +117,18 @@ public class LocationController implements EventHandler<ActionEvent>, Initializa
             assert resultat != null;
             resultat.close();
         }
+    }
+
+    @FXML
+    //
+    public void retourLogin() throws IOException {
+
+        addBtn.getScene().getWindow().hide(); // recuperation de la scene en cours via n'importe quel element (ici, le bouton Ajouter)
+        Stage myStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Login.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 620, 440);
+        myStage.setTitle("Connection");
+        myStage.setScene(scene);
+        myStage.show();
     }
 }

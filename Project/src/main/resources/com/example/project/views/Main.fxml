@@ -29,7 +29,7 @@
                   <ImageView fitHeight="66.0" fitWidth="69.0" layoutX="53.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
                   <MenuButton layoutX="147.0" layoutY="25.0" mnemonicParsing="false" text="Prenom">
                     <items>
-                      <MenuItem fx:id="disconnectBtn" mnemonicParsing="false" text="Deconnexion" />
+                      <MenuItem fx:id="disconnectBtn" mnemonicParsing="false" text="Deconnexion" onAction="#retourLogin" />
                     </items>
                   </MenuButton>
                </children>
