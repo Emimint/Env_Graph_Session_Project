@@ -38,14 +38,7 @@
       </HBox>
    </top>
    <center>
-      <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn prefWidth="35.3333740234375" text="ID" />
-          <TableColumn prefWidth="76.66668701171875" text="N de local" />
-            <TableColumn prefWidth="64.0" text="Adresse" />
-            <TableColumn prefWidth="61.33331298828125" text="Superficie" />
-            <TableColumn prefWidth="165.33331298828125" text="Année de construction" />
-        </columns>
+      <TableView fx:id="myTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
       </TableView>
    </center>
    <left>
