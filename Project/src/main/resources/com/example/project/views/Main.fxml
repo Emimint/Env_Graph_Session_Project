@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.LocationController">
    <top>
       <HBox prefHeight="79.0" prefWidth="600.0" style="-fx-background-color: lightgreen;" BorderPane.alignment="TOP_RIGHT">
          <children>
@@ -78,10 +78,10 @@
    <bottom>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Ajouter" />
-            <Button mnemonicParsing="false" text="Sauvegarder" />
-            <Button mnemonicParsing="false" text="Modifier" />
-            <Button mnemonicParsing="false" text="Supprimer" />
+            <Button fx:id="addBtn" mnemonicParsing="false" text="Ajouter" />
+            <Button fx:id="saveBtn" mnemonicParsing="false" text="Sauvegarder" />
+            <Button fx:id="modifBtn" mnemonicParsing="false" text="Modifier" />
+            <Button fx:id="delBtn" mnemonicParsing="false" text="Supprimer" />
          </children>
       </HBox>
    </bottom>
