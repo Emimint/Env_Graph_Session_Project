@@ -6,16 +6,41 @@ package com.example.project.controllers;/*
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 
-public class LocationController implements EventHandler<ActionEvent> {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class LocationController implements EventHandler<ActionEvent>, Initializable {
+
+    @FXML
+    public Button addBtn;
+
+    @FXML
+    public Button saveBtn;
+
+    @FXML
+    public Button modifBtn;
+
+    @FXML
+    public Button delBtn;
 
     private Location model;
-    private
 
-    public LocationController
+//    public LocationController;
 
     @Override
     public void handle(ActionEvent actionEvent) {
+        System.out.println();
+    }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Seul le bouton Ajouter sera visible au demarrage de la page:
+        saveBtn.setVisible(false);
+        modifBtn.setVisible(false);
+        delBtn.setVisible(false);
     }
 }
