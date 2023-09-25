@@ -42,7 +42,7 @@ public class LocationController implements EventHandler<ActionEvent>, Initializa
     @FXML
     public Button delBtn;
 
-    // On cree les colonnes du tableau dynamiquement:
+    // On cree les colonnes du tableau dynamiquement :
     @FXML
     public TableView<Location> myTable;
     @FXML
@@ -57,7 +57,7 @@ public class LocationController implements EventHandler<ActionEvent>, Initializa
     public TableColumn<Location, Integer> anneeColumn = new TableColumn<>("Année de construction");
 
     @FXML
-    public MenuItem disconnectBtn;
+    public MenuItem disconnectBtn; // bouton de deconnexion (inclus dans un bouton-menu)
 
     @Override
     public void handle(ActionEvent actionEvent) {
@@ -66,24 +66,24 @@ public class LocationController implements EventHandler<ActionEvent>, Initializa
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Seul le bouton Ajouter sera visible au demarrage de la page:
+        // Seul le bouton Ajouter sera visible au demarrage de la page :
         saveBtn.setVisible(false);
         modifBtn.setVisible(false);
         delBtn.setVisible(false);
 
-        // Envoyer une requete SQL pour recuperer tous les champs de la table "locations":
+        // Envoyer une requete SQL pour recuperer tous les champs de la table "locations" :
         try {
-            // Ajout du systeme de mapping aux futures colonnes du tableau:
+            // Ajout du systeme de mapping aux futures colonnes du tableau :
             idColumn.setCellValueFactory(cellData -> cellData.getValue().getID().asObject());
             localColumn.setCellValueFactory(cellData -> cellData.getValue().no_localProperty());
             adresseColumn.setCellValueFactory(cellData -> cellData.getValue().adresseProperty());
             supColumn.setCellValueFactory(cellData -> cellData.getValue().getSuperficie().asObject());
             anneeColumn.setCellValueFactory(cellData -> cellData.getValue().getAnneeConstruction().asObject());
 
-            // Ajout des colonnes du tableau:
+            // Ajout des colonnes du tableau :
             myTable.getColumns().addAll(idColumn, localColumn, adresseColumn, supColumn, anneeColumn);
 
-            //Appel de la methode qui va populer les colonnes du tableau:
+            //Appel de la methode qui va populer les colonnes du tableau :
             populerTable();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -94,15 +94,15 @@ public class LocationController implements EventHandler<ActionEvent>, Initializa
         PreparedStatement std = null;
         ResultSet resultat = null; // reste a null si rien n'a ete trouve
         try {
-            // preparation du statement:
+            // preparation du statement :
             std = MySqlConnection.getInstance().prepareStatement("select * from locations");
 
-            // execution du statement:
+            // execution du statement :
             resultat = std.executeQuery();
             while (resultat.next()) {
                 // Lecture rang par rang des donnees de la table Location.
 
-                //1) recuperation des infos d'un rang pour creation d'un objet Location:
+                //1) recuperation des infos d'un rang pour creation d'un objet Location :
                 Location row = new Location(Integer.parseInt(resultat.getString("id_location")), resultat.getString("num_local"), resultat.getString("adresse"), Integer.parseInt(resultat.getString("superficie")), Integer.parseInt(resultat.getString("annee_construction")));
 
                 //2) ajout de l'objet cree a la table:
@@ -119,8 +119,8 @@ public class LocationController implements EventHandler<ActionEvent>, Initializa
         }
     }
 
+    //Appel de la methode pour le retour à l'écran de connexion :
     @FXML
-    //
     public void retourLogin() throws IOException {
 
         addBtn.getScene().getWindow().hide(); // recuperation de la scene en cours via n'importe quel element (ici, le bouton Ajouter)
