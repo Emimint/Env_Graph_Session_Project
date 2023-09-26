@@ -16,7 +16,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="661.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.LocationController" stylesheets="@style.css" >
+<?import javafx.scene.image.Image?>
+<BorderPane fx:id="myPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="661.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.LocationController">
    <top>
       <HBox prefHeight="79.0" prefWidth="600.0" style="-fx-background-color: lightgreen;" BorderPane.alignment="TOP_RIGHT">
          <children>
@@ -85,11 +86,19 @@
    <bottom>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Button styleClass="btn" fx:id="addBtn" mnemonicParsing="false" text="Ajouter" onAction="#ajouterLocation"/>
-            <Button styleClass="btn" fx:id="saveBtn" mnemonicParsing="false" text="Sauvegarder" />
-            <Button styleClass="btn" fx:id="modifBtn" mnemonicParsing="false" text="Modifier" onAction="#modifierLocation"/>
-            <Button styleClass="btn" fx:id="delBtn" mnemonicParsing="false" text="Supprimer" onAction="#supprimerLocation"/>
-             <Button styleClass="btn" fx:id="clearBtn" mnemonicParsing="false" text="Effacer selection" onAction="#viderChamps"/>
+            <Button fx:id="addBtn" mnemonicParsing="false" onAction="#ajouterLocation" styleClass="btn" text="Ajouter" />
+             <Button fx:id="modifBtn" mnemonicParsing="false" styleClass="btn" onAction="#switcherAffichage">
+                 <graphic>
+                     <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                         <image>
+                             <Image url="https://img.icons8.com/ios/452/rotate-left-filled.png" />
+                         </image>
+                     </ImageView>
+                 </graphic>
+             </Button>
+             <Button fx:id="saveBtn" mnemonicParsing="false" styleClass="btn" text="Sauvegarder" onAction="#modifierLocation"  />
+            <Button fx:id="delBtn" mnemonicParsing="false" onAction="#supprimerLocation" styleClass="btn" text="Supprimer" />
+             <Button fx:id="clearBtn" mnemonicParsing="false" onAction="#viderChamps" styleClass="btn" text="Effacer selection" />
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

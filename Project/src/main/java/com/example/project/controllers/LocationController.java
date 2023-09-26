@@ -16,6 +16,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -28,6 +32,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class LocationController implements Initializable {
+
+    @FXML
+    public BorderPane myPane;
 
     @FXML
     public Button addBtn;
@@ -78,9 +85,16 @@ public class LocationController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Seul le bouton Ajouter et le bouton Effacer selection seront visibles au demarrage de la page :
+
+        // Ajout d'une methode pour surveiller les clicks de souris en dehors du tableau :
+        myPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            if (!myTable.getBoundsInParent().contains(event.getSceneX(), event.getSceneY())) {
+                myTable.getSelectionModel().clearSelection();
+            }
+        });
+
+        // Seuls les boutons "Ajouter", celui pour modifier l'affichage  et le bouton "Effacer selection" seront visibles au demarrage de la page :
         saveBtn.setVisible(false);
-        modifBtn.setVisible(false);
         delBtn.setVisible(false);
 
         // Le champ pour l'ID est desactive car la base de donnees gere les identifiants (auto-incrementation) :
@@ -107,11 +121,6 @@ public class LocationController implements Initializable {
         myTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             selectionChamp();
         });
-    }
-
-    public void viderTable() {
-        // vidange de la totalite des donnees du table (si il y en a) :
-        myTable.getItems().clear();
     }
 
     //Appel de la methode pour le retour à l'écran de connexion :
@@ -158,7 +167,6 @@ public class LocationController implements Initializable {
 
                 // On vide les champs du Gridpane :
                 viderChamps();
-
             }
             else {
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
@@ -175,6 +183,19 @@ public class LocationController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void switcherAffichage(){
+        if(addBtn.isVisible()){
+            addBtn.setVisible(false);
+            saveBtn.setVisible(true);
+            delBtn.setVisible(true);
+        } else{
+            addBtn.setVisible(true);
+            saveBtn.setVisible(false);
+            delBtn.setVisible(false);
+        }
+        viderChamps();
     }
 
     public void modifierLocation(){
@@ -208,7 +229,6 @@ public class LocationController implements Initializable {
 
                 // On vide les champs du Gridpane :
                 viderChamps();
-
             }
             else {
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
@@ -299,17 +319,12 @@ public class LocationController implements Initializable {
             int superficie = locationSelectionnee.getSuperficie();
             int anneeConstruction = locationSelectionnee.getAnnee_construction();
 
-            // You can display the selected data in your UI or perform any other actions here
-            // For example, set the values to the text fields:
+            // On affiche les informations recuperees :
             idField.setText(Integer.toString(id));
             localField.setText(noLocal);
             adresseField.setText(adresse);
             supField.setText(Integer.toString(superficie));
             anneeField.setText(Integer.toString(anneeConstruction));
-
-            addBtn.setVisible(false);
-            modifBtn.setVisible(true);
-            delBtn.setVisible(true);
         }
     }
 
