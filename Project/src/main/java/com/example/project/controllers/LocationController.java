@@ -85,6 +85,7 @@ public class LocationController implements Initializable {
 
         // Le champ pour l'ID est desactive car la base de donnees gere les identifiants (auto-incrementation) :
         idField.getStyleClass().add("hidden");
+        idField.setEditable(false);
 
         // Ajout du systeme de mapping aux futures colonnes du tableau (les proprietes doivent correspondre aux noms exacts des attributs de Location) :
         idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
@@ -101,6 +102,11 @@ public class LocationController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        //Ajout d'une methode pour surveiller la selection des champs du tableau :
+        myTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            selectionChamp();
+        });
     }
 
     public void viderTable() {
@@ -185,4 +191,29 @@ public class LocationController implements Initializable {
             textField.setText(""); // Set text to an empty string
         }
     }
+
+    @FXML
+    public void selectionChamp() {
+        Location locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
+        if (locationSelectionnee != null) {
+            int id = locationSelectionnee.getID();
+            String noLocal = locationSelectionnee.getNo_local();
+            String adresse = locationSelectionnee.getAdresse();
+            int superficie = locationSelectionnee.getSuperficie();
+            int anneeConstruction = locationSelectionnee.getAnnee_construction();
+
+            // You can display the selected data in your UI or perform any other actions here
+            // For example, set the values to the text fields:
+            idField.setText(Integer.toString(id));
+            localField.setText(noLocal);
+            adresseField.setText(adresse);
+            supField.setText(Integer.toString(superficie));
+            anneeField.setText(Integer.toString(anneeConstruction));
+
+            addBtn.setVisible(false);
+            modifBtn.setVisible(true);
+            delBtn.setVisible(true);
+        }
+    }
+
 }

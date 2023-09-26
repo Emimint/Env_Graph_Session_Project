@@ -1,6 +1,7 @@
 .hidden {
     -fx-background-color: #b5b5b580;
     -fx-pointer-events: none;
+    -fx-cursor: default;
 }
 
 .btn {
