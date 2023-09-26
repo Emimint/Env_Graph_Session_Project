@@ -19,8 +19,12 @@ public class Location {
     }
 
     // Mutateurs (ils vont generer des messages d'erreur qui seront utilises pour avertir l'utilisateur via des boites d'alerte) :
-    public void setID(int ID){
-        this.ID = ID;
+    public void setID(String inputID){
+        try {
+            this.ID = Integer.parseInt(inputID);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Le champ ID est vide.");
+        }
     }
 
     public void setNoLocal(String no_local){
