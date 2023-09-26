@@ -36,6 +36,7 @@ public List<Location>  getListLocations() throws SQLException {
     }
     return locations;
 }
+
     public void addLocation(Location location) {
         PreparedStatement std = null;
 
@@ -81,6 +82,20 @@ public List<Location>  getListLocations() throws SQLException {
             throw new RuntimeException(e);
         }
     }
+
+    public void deleteLocation(int indice) throws SQLException {
+        PreparedStatement std = null;
+
+        try {
+            std = connection.prepareStatement("DELETE FROM locations WHERE id_location=?;");
+            std.setInt(1, indice);
+            std.executeUpdate();
+            std.close();
+        } catch (SQLException e) {
+            throw new SQLException("Echec de la suppression.");
+        }
+    }
+
 
     public int getNextIndice() {
         PreparedStatement std = null;

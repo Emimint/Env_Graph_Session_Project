@@ -227,6 +227,53 @@ public class LocationController implements Initializable {
         }
     }
 
+    public void supprimerLocation(){
+        try {
+            // On recupere l'indice de la colonne ID:
+            String indice = idField.getText();
+
+            Location locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
+
+            // On appelle une boite de dialogue pour demander confirmation la demande de suppression a l'utilisateur :
+            Alert dialogC = new Alert(Alert.AlertType.CONFIRMATION);
+            dialogC.setTitle("Suppression de la location #" + indice);
+            dialogC.setHeaderText(null);
+            dialogC.setContentText("Voulez-vous supprimer cette adresse?");
+            Optional<ButtonType> answer = dialogC.showAndWait();
+            if (answer.get() == ButtonType.OK) {
+                myLocationModel.deleteLocation(Integer.parseInt(indice));
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                dialog.setTitle("Confirmation");
+                dialog.setHeaderText("Adresse supprimee.");
+                dialog.showAndWait();
+
+                // On reload la nouvelle table:
+                myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
+
+                // On vide les champs du Gridpane :
+                viderChamps();
+            }
+            else {
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                dialog.setTitle("Annulation");
+                dialog.setHeaderText("Annulation de l'ajout.");
+                dialog.showAndWait();
+            }
+        } catch (IllegalArgumentException e){
+            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.setTitle("Erreur");
+            dialogW.setHeaderText(null);
+            dialogW.setContentText("Attention : "+ e.getMessage());
+            dialogW.showAndWait();
+        } catch (SQLException e) {
+            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.setTitle("Erreur");
+            dialogW.setHeaderText(null);
+            dialogW.setContentText("Attention : "+ e.getMessage());
+            dialogW.showAndWait();
+        }
+    }
+
       public void viderChamps() {
         // On commence par selectionner tous les champs de type Textfield dans le Gridpane :
         List<TextField> textFields = new ArrayList<>();
