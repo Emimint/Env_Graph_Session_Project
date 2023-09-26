@@ -58,6 +58,30 @@ public List<Location>  getListLocations() throws SQLException {
         }
     }
 
+    public void updateLocation(Location location){
+        PreparedStatement std = null;
+
+        try {
+            std = connection.prepareStatement("UPDATE locations \n" +
+                    "SET  num_local =? , adresse=?, superficie=?, annee_construction=? " +
+                    "WHERE id_location = ?;");
+            std.setString(1, location.getNo_local());
+            std.setString(2, location.getAdresse());
+            std.setInt(3, location.getSuperficie());
+            std.setInt(4, location.getAnnee_construction());
+            std.setInt(5, location.getID());
+
+            int nbrRangsModifies = std.executeUpdate();
+            if (nbrRangsModifies == 0) {
+                throw new SQLException("Echec de la modification.");
+            }
+
+            std.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public int getNextIndice() {
         PreparedStatement std = null;
         ResultSet resultat = null;

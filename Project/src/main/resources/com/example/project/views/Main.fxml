@@ -87,7 +87,7 @@
          <children>
             <Button styleClass="btn" fx:id="addBtn" mnemonicParsing="false" text="Ajouter" onAction="#ajouterLocation"/>
             <Button styleClass="btn" fx:id="saveBtn" mnemonicParsing="false" text="Sauvegarder" />
-            <Button styleClass="btn" fx:id="modifBtn" mnemonicParsing="false" text="Modifier" />
+            <Button styleClass="btn" fx:id="modifBtn" mnemonicParsing="false" text="Modifier" onAction="#modifierLocation"/>
             <Button styleClass="btn" fx:id="delBtn" mnemonicParsing="false" text="Supprimer" />
              <Button styleClass="btn" fx:id="clearBtn" mnemonicParsing="false" text="Effacer selection" onAction="#viderChamps"/>
          </children>

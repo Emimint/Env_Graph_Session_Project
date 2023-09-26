@@ -131,7 +131,7 @@ public class LocationController implements Initializable {
     public void ajouterLocation() {
         try {
             // On requere le prochain indice de la colonne ID via une requete SQL :
-            int nextIndice = myLocationModel.getNextIndice();
+            String nextIndice = String.valueOf(myLocationModel.getNextIndice());
 
             // On cree l'objet en utilisant l'indice et les valeurs entrees dans les differents champs :
             Location nouvelleLocation = new Location();
@@ -151,6 +151,56 @@ public class LocationController implements Initializable {
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
                 dialog.setTitle("Confirmation");
                 dialog.setHeaderText("Nouvelle location ajoutee.");
+                dialog.showAndWait();
+
+                // On reload la nouvelle table:
+                myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
+
+                // On vide les champs du Gridpane :
+                viderChamps();
+
+            }
+            else {
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                dialog.setTitle("Annulation");
+                dialog.setHeaderText("Annulation de l'ajout.");
+                dialog.showAndWait();
+            }
+        } catch (IllegalArgumentException e){
+            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.setTitle("Erreur");
+            dialogW.setHeaderText(null);
+            dialogW.setContentText("Attention : "+ e.getMessage());
+            dialogW.showAndWait();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void modifierLocation(){
+        try {
+            // On recupere l'indice de la colonne ID:
+            String indice = idField.getText();
+
+            // On cree l'objet en utilisant l'indice et les valeurs entrees dans les differents champs :
+            Location locationSelectionnee = new Location();
+            locationSelectionnee.setID(indice);
+            locationSelectionnee.setNoLocal(localField.getText());
+            locationSelectionnee.setAdresse(adresseField.getText());
+            locationSelectionnee.setSuperficie(supField.getText());
+            locationSelectionnee.setAnneeConstruction(anneeField.getText());
+
+            // On appelle une boite de dialogue pour demander confirmation la demande de modification a l'utilisateur :
+            Alert dialogC = new Alert(Alert.AlertType.CONFIRMATION);
+            dialogC.setTitle("Modification de la location #" + indice);
+            dialogC.setHeaderText(null);
+            dialogC.setContentText("Voulez-vous modifier cette adresse?");
+            Optional<ButtonType> answer = dialogC.showAndWait();
+            if (answer.get() == ButtonType.OK) {
+                myLocationModel.updateLocation(locationSelectionnee);
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                dialog.setTitle("Confirmation");
+                dialog.setHeaderText("Modification effectuee.");
                 dialog.showAndWait();
 
                 // On reload la nouvelle table:
