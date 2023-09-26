@@ -44,13 +44,14 @@ public class LoginController implements Initializable {
     public LoginModel loginModel = new LoginModel();
 
     @FXML
-    protected void LoginCheck(ActionEvent event) throws SQLException, IOException, InterruptedException {
+    protected void LoginCheck(ActionEvent event) throws SQLException, IOException {
         if(loginModel.LoginNow(usrName.getText(), pwdField.getText())){
             infoLabel.setText("Nom d'utilisateur et mot de passe valides.");
             ((Node)(event.getSource())).getScene().getWindow().hide();
             Stage myStage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Main.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 820, 840);
+            scene.getStylesheets().add("style.css");
             myStage.setTitle("Gestion des locations");
             myStage.setScene(scene);
             myStage.show();

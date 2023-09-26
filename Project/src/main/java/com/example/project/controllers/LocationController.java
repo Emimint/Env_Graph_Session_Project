@@ -78,6 +78,9 @@ public class LocationController implements Initializable {
         modifBtn.setVisible(false);
         delBtn.setVisible(false);
 
+        // Le champ pour l'ID est desactive car la base de donnees gere les identifiants (auto-incrementation) :
+        idField.getStyleClass().add("hidden");
+
         // Ajout du systeme de mapping aux futures colonnes du tableau (les proprietes doivent correspondre aux noms exacts des attributs de Location) :
         idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
         localColumn.setCellValueFactory(new PropertyValueFactory<>("no_local"));
