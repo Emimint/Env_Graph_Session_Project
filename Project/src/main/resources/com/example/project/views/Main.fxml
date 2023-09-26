@@ -89,6 +89,7 @@
             <Button styleClass="btn" fx:id="saveBtn" mnemonicParsing="false" text="Sauvegarder" />
             <Button styleClass="btn" fx:id="modifBtn" mnemonicParsing="false" text="Modifier" />
             <Button styleClass="btn" fx:id="delBtn" mnemonicParsing="false" text="Supprimer" />
+             <Button styleClass="btn" fx:id="clearBtn" mnemonicParsing="false" text="Effacer selection" onAction="#viderChamps"/>
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

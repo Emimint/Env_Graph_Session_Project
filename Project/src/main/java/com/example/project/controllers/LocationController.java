@@ -39,6 +39,9 @@ public class LocationController implements Initializable {
     public Button delBtn;
 
     @FXML
+    public Button clearBtn;
+
+    @FXML
     public GridPane gridPane;
 
     // On cree les colonnes du tableau dynamiquement :
@@ -72,9 +75,10 @@ public class LocationController implements Initializable {
 
     public LocationModel myLocationModel = new LocationModel();
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Seul le bouton Ajouter sera visible au demarrage de la page :
+        // Seul le bouton Ajouter et le bouton Effacer selection seront visibles au demarrage de la page :
         saveBtn.setVisible(false);
         modifBtn.setVisible(false);
         delBtn.setVisible(false);
