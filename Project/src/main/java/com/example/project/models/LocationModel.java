@@ -36,24 +36,48 @@ public List<Location>  getListLocations() throws SQLException {
     }
     return locations;
 }
-    public void addLocation(Location location){
+    public void addLocation(Location location) {
         PreparedStatement std = null;
-        ResultSet resultat = null;
 
-        try{
-            std = connection.prepareStatement("INSERT INTO locations(id_location, num_local, adresse,superficie, annee_construction) VALUES (default, ?, ?, ?, ?);");
-            std.setString(2,location.getNo_local());
-            std.setString(3,location.getAdresse());
-            std.setInt(4,location.getSuperficie());
-            std.setInt(5,location.getAnnee_construction());
+        try {
+            std = connection.prepareStatement("INSERT INTO locations(id_location, num_local, adresse, superficie, annee_construction) VALUES (?, ?, ?, ?, ?);");
+            std.setInt(1, location.getID());
+            std.setString(2, location.getNo_local());
+            std.setString(3, location.getAdresse());
+            std.setInt(4, location.getSuperficie());
+            std.setInt(5, location.getAnnee_construction());
 
-            resultat = std.executeQuery();
+            int nbrRangsModifies = std.executeUpdate();
+            if (nbrRangsModifies == 0) {
+                throw new SQLException("Echec ajout.");
+            }
+
             std.close();
-            resultat.close();
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public int getNextIndice() {
+        PreparedStatement std = null;
+        ResultSet resultat = null;
+        int indice=-1;
+
+        try {
+            std = connection.prepareStatement("SELECT LAST_INSERT_ID();");
+
+            resultat = std.executeQuery();
+            if (resultat.next()) {
+                indice = resultat.getInt(1);
+            }
+
+            std.close();
+            resultat.close();
+        } catch (SQLException e) {
+            System.out.println("Erreur: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return indice;
     }
 
 }

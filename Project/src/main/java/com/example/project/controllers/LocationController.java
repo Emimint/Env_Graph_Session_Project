@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -23,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -112,12 +114,35 @@ public class LocationController implements Initializable {
 
     //Appel de la methode pour ajouter une nouvelle adresse de location :
     @FXML
-    public void ajouterLocation() throws IOException {
+    public void ajouterLocation() {
         try {
-            Location nouvelleLocation = new Location(Integer.parseInt(idField.getText()), localField.getText(), adresseField.getText(),Integer.parseInt(supField.getText()), Integer.parseInt(anneeField.getText()));
-            myLocationModel.addLocation(nouvelleLocation);
+            // On requere le prochain indice de la colonne ID via une requete SQL :
+            int nextIndice = myLocationModel.getNextIndice();
+
+            // On cree l'objet en utilisant l'indice et les valeurs entrees dans les differents champs :
+            Location nouvelleLocation = new Location(nextIndice, localField.getText(), adresseField.getText(),Integer.parseInt(supField.getText()), Integer.parseInt(anneeField.getText()));
+
+            // On appelle une boite de dialogue pour demander confirmation de l'ajout a l'utilisateur :
+            Alert dialogC = new Alert(Alert.AlertType.CONFIRMATION);
+            dialogC.setTitle("Ajout nouvelle location");
+            dialogC.setHeaderText(null);
+            dialogC.setContentText("Voulez-vous ajouter cette adresse?");
+            Optional<ButtonType> answer = dialogC.showAndWait();
+            if (answer.get() == ButtonType.OK) {
+                myLocationModel.addLocation(nouvelleLocation);
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                dialog.setTitle("Confirmation");
+                dialog.setHeaderText("Nouvelle location ajoutee.");
+                dialog.showAndWait();
+            }
+            else {
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                dialog.setTitle("Annulation");
+                dialog.setHeaderText("Annulation de l'ajout.");
+                dialog.showAndWait();
+            }
         } catch (Exception e){
-            return; // popup avec alert ici!
+            System.out.println("Erreur: " + e.getMessage());
         }
     }
 }
