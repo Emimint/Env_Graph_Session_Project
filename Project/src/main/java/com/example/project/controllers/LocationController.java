@@ -7,27 +7,25 @@
 package com.example.project.controllers;
 
 import com.example.project.models.LocationModel;
-import com.example.project.models.MySqlConnection;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class LocationController implements Initializable {
 
@@ -39,6 +37,9 @@ public class LocationController implements Initializable {
     public Button modifBtn;
     @FXML
     public Button delBtn;
+
+    @FXML
+    public GridPane gridPane;
 
     // On cree les colonnes du tableau dynamiquement :
     @FXML
@@ -145,6 +146,9 @@ public class LocationController implements Initializable {
                 // On reload la nouvelle table:
                 myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
 
+                // On vide les champs du Gridpane :
+                viderChamps();
+
             }
             else {
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
@@ -160,6 +164,21 @@ public class LocationController implements Initializable {
             dialogW.showAndWait();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+      public void viderChamps() {
+        // On commence par selectionner tous les champs de type Textfield dans le Gridpane :
+        List<TextField> textFields = new ArrayList<>();
+        for (Node node : gridPane.lookupAll(".text-field")) {
+            if (node instanceof TextField) {
+                textFields.add((TextField) node);
+            }
+        }
+
+        // On boucle sur le resultat et on assigne une variable String vide :
+        for (TextField textField : textFields) {
+            textField.setText(""); // Set text to an empty string
         }
     }
 }

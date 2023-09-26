@@ -50,8 +50,8 @@
       </TableView>
    </center>
    <left>
-      <GridPane prefHeight="221.0" prefWidth="242.0" BorderPane.alignment="CENTER">
-        <columnConstraints>
+       <GridPane fx:id="gridPane" prefHeight="221.0" prefWidth="242.0" BorderPane.alignment="CENTER">
+       <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.0" minWidth="10.0" prefWidth="122.66668701171875" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.66665649414062" minWidth="10.0" prefWidth="77.33331298828125" />
         </columnConstraints>
@@ -68,11 +68,11 @@
             <Label text="Adresse" GridPane.rowIndex="2" />
             <Label text="Superficie" GridPane.rowIndex="3" />
             <Label text="Année de construction" GridPane.rowIndex="4" />
-            <TextField fx:id="idField" GridPane.columnIndex="1" />
-            <TextField fx:id="localField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="adresseField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="supField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="anneeField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+             <TextField fx:id="idField" styleClass="text-field" GridPane.columnIndex="1" />
+             <TextField fx:id="localField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+             <TextField fx:id="adresseField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+             <TextField fx:id="supField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+             <TextField fx:id="anneeField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
