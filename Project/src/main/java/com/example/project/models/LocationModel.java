@@ -45,7 +45,7 @@ public List<Location>  getListLocations() throws SQLException {
             std.setString(2,location.getNo_local());
             std.setString(3,location.getAdresse());
             std.setInt(4,location.getSuperficie());
-            std.setInt(5,location.getAnneeConstruction());
+            std.setInt(5,location.getAnnee_construction());
 
             resultat = std.executeQuery();
             std.close();

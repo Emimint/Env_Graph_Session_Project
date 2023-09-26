@@ -12,7 +12,7 @@ public class MySqlConnection {
             URL = "jdbc:mysql://localhost:3306/gestion_location?serverTimezone=UTC",
     // il faut modifier le champ user et password en fonction des acces propres a chaque utilisateur:
             USER = "root",
-            PASSWORD = "root1234";
+            PASSWORD = "Root1234";
 
     private static Connection cnx = null;
 

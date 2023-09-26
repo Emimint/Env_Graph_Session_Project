@@ -18,26 +18,28 @@ public class Location {
         this.annee_construction = annee_construction;
     }
 
+    // Mutateurs (ils vont generer des messages d'erreur qui seront utilises pour avertir l'utilisateur via des boites d'alerte) :
     public void setNoLocal(String no_local){
         if(no_local == "") throw new IllegalArgumentException("Vous devez specifie un numero de local.");
         this.no_local = no_local;
     }
 
     public void setAdresse(String adresse){
-        if(adresse == "") throw new IllegalArgumentException("Vous devez specifie une adresse.");
+        if(adresse == "") throw new IllegalArgumentException("Vous devez specifier une adresse.");
         this.adresse = adresse;
     }
 
     public void setSuperficie(int superficie){
-        if(superficie < 10) throw new IllegalArgumentException("La superficie doit etre d'au moins 10 metres carre");
+        if(superficie < 10) throw new IllegalArgumentException("La superficie doit etre d'au moins 10 metres carre.");
         this.superficie = superficie;
     }
 
     public void setAnneeConstruction(int annee_construction){
-        if(annee_construction < 1990 || annee_construction > 2023) throw new IllegalArgumentException("L'annee de construction doit varier de 1990 a 2023");
+        if(annee_construction < 1990 || annee_construction > 2023) throw new IllegalArgumentException("L'annee de construction doit varier de 1990 a 2023.");
         this.annee_construction = annee_construction;
     }
 
+    // Accesseurs (ils doivent avec exactement la bonne syntaxe - get+nom de la variable - pour etre reconnus par la methode setCellValueFactory) :
     public int getID() {
         return ID;
     }
@@ -54,10 +56,11 @@ public class Location {
         return superficie;
     }
 
-    public int getAnneeConstruction() {
+    public int getAnnee_construction() {
         return annee_construction;
     }
 
+    // Methode pour verification des resultats des requetes a la base de donnees et des creations de nouveaux objets Location.
     @Override
     public String toString(){
         return "ID: " + ID +", no_local: " + no_local +", adresse: " + adresse +", superficie: " + superficie +", annee_construction: " + annee_construction;

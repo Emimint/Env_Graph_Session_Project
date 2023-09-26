@@ -76,12 +76,12 @@ public class LocationController implements Initializable {
         modifBtn.setVisible(false);
         delBtn.setVisible(false);
 
-        // Ajout du systeme de mapping aux futures colonnes du tableau :
-        idColumn.setCellValueFactory(new PropertyValueFactory<Location, Integer>("ID"));
-        localColumn.setCellValueFactory(new PropertyValueFactory<Location, String>("N de local"));
-        adresseColumn.setCellValueFactory(new PropertyValueFactory<Location, String>("Adresse"));
-        supColumn.setCellValueFactory(new PropertyValueFactory<Location, Integer>("Superficie"));
-        anneeColumn.setCellValueFactory(new PropertyValueFactory<Location, Integer>("Année de construction"));
+        // Ajout du systeme de mapping aux futures colonnes du tableau (les proprietes doivent correspondre aux noms exacts des attributs de Location) :
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        localColumn.setCellValueFactory(new PropertyValueFactory<>("no_local"));
+        adresseColumn.setCellValueFactory(new PropertyValueFactory<>("Adresse"));
+        supColumn.setCellValueFactory(new PropertyValueFactory<>("Superficie"));
+        anneeColumn.setCellValueFactory(new PropertyValueFactory<>("annee_construction"));
 
         // Envoyer une requete SQL pour recuperer tous les champs de la table "locations" :
         try {
@@ -110,7 +110,7 @@ public class LocationController implements Initializable {
         myStage.show();
     }
 
-    //Appel de la methode pour le retour à l'écran de connexion :
+    //Appel de la methode pour ajouter une nouvelle adresse de location :
     @FXML
     public void ajouterLocation() throws IOException {
         try {
