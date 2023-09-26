@@ -6,17 +6,15 @@
 
 package com.example.project.controllers;
 
+import com.example.project.models.LocationModel;
 import com.example.project.models.MySqlConnection;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,21 +22,19 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class LocationController implements EventHandler<ActionEvent>, Initializable {
+public class LocationController implements Initializable {
 
     @FXML
     public Button addBtn;
-
     @FXML
     public Button saveBtn;
-
     @FXML
     public Button modifBtn;
-
     @FXML
     public Button delBtn;
 
@@ -46,23 +42,32 @@ public class LocationController implements EventHandler<ActionEvent>, Initializa
     @FXML
     public TableView<Location> myTable;
     @FXML
-    public TableColumn<Location, Integer> idColumn = new TableColumn<>("ID");
+    public TableColumn<Location, Integer> idColumn;
     @FXML
-    public TableColumn<Location, String> localColumn = new TableColumn<>("N de local");
+    public TableColumn<Location, String> localColumn;
     @FXML
-    public TableColumn<Location, String> adresseColumn = new TableColumn<>("Adresse");
+    public TableColumn<Location, String> adresseColumn;
     @FXML
-    public TableColumn<Location, Integer> supColumn = new TableColumn<>("Superficie");
+    public TableColumn<Location, Integer> supColumn;
     @FXML
-    public TableColumn<Location, Integer> anneeColumn = new TableColumn<>("Année de construction");
+    public TableColumn<Location, Integer> anneeColumn;
 
     @FXML
     public MenuItem disconnectBtn; // bouton de deconnexion (inclus dans un bouton-menu)
 
-    @Override
-    public void handle(ActionEvent actionEvent) {
-        System.out.println();
-    }
+    // On ajoute les champs pour la creation ou la sauvegarde d'un nouvel objet Location :
+    @FXML
+    public TextField idField;
+    @FXML
+    public TextField localField;
+    @FXML
+    public TextField adresseField;
+    @FXML
+    public TextField supField;
+    @FXML
+    public TextField anneeField;
+
+    public LocationModel myLocationModel = new LocationModel();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -71,58 +76,31 @@ public class LocationController implements EventHandler<ActionEvent>, Initializa
         modifBtn.setVisible(false);
         delBtn.setVisible(false);
 
+        // Ajout du systeme de mapping aux futures colonnes du tableau :
+        idColumn.setCellValueFactory(new PropertyValueFactory<Location, Integer>("ID"));
+        localColumn.setCellValueFactory(new PropertyValueFactory<Location, String>("N de local"));
+        adresseColumn.setCellValueFactory(new PropertyValueFactory<Location, String>("Adresse"));
+        supColumn.setCellValueFactory(new PropertyValueFactory<Location, Integer>("Superficie"));
+        anneeColumn.setCellValueFactory(new PropertyValueFactory<Location, Integer>("Année de construction"));
+
         // Envoyer une requete SQL pour recuperer tous les champs de la table "locations" :
         try {
-            // Ajout du systeme de mapping aux futures colonnes du tableau :
-            idColumn.setCellValueFactory(cellData -> cellData.getValue().getID().asObject());
-            localColumn.setCellValueFactory(cellData -> cellData.getValue().no_localProperty());
-            adresseColumn.setCellValueFactory(cellData -> cellData.getValue().adresseProperty());
-            supColumn.setCellValueFactory(cellData -> cellData.getValue().getSuperficie().asObject());
-            anneeColumn.setCellValueFactory(cellData -> cellData.getValue().getAnneeConstruction().asObject());
-
             // Ajout des colonnes du tableau :
-            myTable.getColumns().addAll(idColumn, localColumn, adresseColumn, supColumn, anneeColumn);
+            myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
 
-            //Appel de la methode qui va populer les colonnes du tableau :
-            populerTable();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void populerTable() throws SQLException {
-        PreparedStatement std = null;
-        ResultSet resultat = null; // reste a null si rien n'a ete trouve
-        try {
-            // preparation du statement :
-            std = MySqlConnection.getInstance().prepareStatement("select * from locations");
-
-            // execution du statement :
-            resultat = std.executeQuery();
-            while (resultat.next()) {
-                // Lecture rang par rang des donnees de la table Location.
-
-                //1) recuperation des infos d'un rang pour creation d'un objet Location :
-                Location row = new Location(Integer.parseInt(resultat.getString("id_location")), resultat.getString("num_local"), resultat.getString("adresse"), Integer.parseInt(resultat.getString("superficie")), Integer.parseInt(resultat.getString("annee_construction")));
-
-                //2) ajout de l'objet cree a la table:
-                myTable.getItems().add(row);
-            }
-
-        } catch (SQLException e) {
-            Logger.getLogger(MySqlConnection.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            assert std != null;
-            std.close();
-            assert resultat != null;
-            resultat.close();
-        }
+    public void viderTable() {
+        // vidange de la totalite des donnees du table (si il y en a) :
+        myTable.getItems().clear();
     }
 
     //Appel de la methode pour le retour à l'écran de connexion :
     @FXML
     public void retourLogin() throws IOException {
-
         addBtn.getScene().getWindow().hide(); // recuperation de la scene en cours via n'importe quel element (ici, le bouton Ajouter)
         Stage myStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Login.fxml"));
@@ -130,5 +108,16 @@ public class LocationController implements EventHandler<ActionEvent>, Initializa
         myStage.setTitle("Connection");
         myStage.setScene(scene);
         myStage.show();
+    }
+
+    //Appel de la methode pour le retour à l'écran de connexion :
+    @FXML
+    public void ajouterLocation() throws IOException {
+        try {
+            Location nouvelleLocation = new Location(Integer.parseInt(idField.getText()), localField.getText(), adresseField.getText(),Integer.parseInt(supField.getText()), Integer.parseInt(anneeField.getText()));
+            myLocationModel.addLocation(nouvelleLocation);
+        } catch (Exception e){
+            return; // popup avec alert ici!
+        }
     }
 }

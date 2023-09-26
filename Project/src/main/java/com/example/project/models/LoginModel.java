@@ -8,13 +8,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LoginModel {
-    // Responsable de se connecter à la base de donnees, pour l'affichage de la BD:
+    // Responsable de se connecter à la base de donnees, pour l'affichage de la BD :
     Connection connection;
     public LoginModel(){
         connection = MySqlConnection.getInstance();
     }
 
-    // verifier si la connection est bien etablie:
+    // verifier si la connection est bien etablie :
     public boolean isDBConnected(){
         try{
             return !connection.isClosed();
@@ -27,12 +27,12 @@ public class LoginModel {
         PreparedStatement std =null;
         ResultSet resultat = null; // reste a null si rien n'a ete trouve
         try{
-            // preparation du statement:
+            // preparation du statement :
             std = connection.prepareStatement("select * from utilisateurs where nom =? and mot_de_passe =?");
             std.setString(1,user);
             std.setString(2,password);
 
-            // execution du statement:
+            // execution du statement :
             resultat = std.executeQuery();
             return resultat.next();
 

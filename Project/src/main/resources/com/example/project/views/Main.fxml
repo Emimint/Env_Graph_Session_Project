@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
@@ -15,6 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
+<?import javafx.scene.control.TableColumn?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.LocationController">
    <top>
       <HBox prefHeight="79.0" prefWidth="600.0" style="-fx-background-color: lightgreen;" BorderPane.alignment="TOP_RIGHT">
@@ -29,7 +29,7 @@
                   <ImageView fitHeight="66.0" fitWidth="69.0" layoutX="53.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
                   <MenuButton layoutX="147.0" layoutY="25.0" mnemonicParsing="false" text="Prenom">
                     <items>
-                      <MenuItem fx:id="disconnectBtn" mnemonicParsing="false" text="Deconnexion" onAction="#retourLogin" />
+                      <MenuItem fx:id="disconnectBtn" mnemonicParsing="false" onAction="#retourLogin" text="Deconnexion" />
                     </items>
                   </MenuButton>
                </children>
@@ -39,6 +39,13 @@
    </top>
    <center>
       <TableView fx:id="myTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+          <columns>
+              <TableColumn fx:id="idColumn" prefWidth="39.3333740234375" text="ID" />
+              <TableColumn fx:id="localColumn" prefWidth="48.0" text="N de local" />
+              <TableColumn fx:id="adresseColumn" prefWidth="56.0" text="Adresse" />
+              <TableColumn fx:id="supColumn" prefWidth="37.33331298828125" text="Superficie" />
+              <TableColumn fx:id="anneeColumn" prefWidth="128.66668701171875" text="Année de construction" />
+          </columns>
       </TableView>
    </center>
    <left>
@@ -60,11 +67,11 @@
             <Label text="Adresse" GridPane.rowIndex="2" />
             <Label text="Superficie" GridPane.rowIndex="3" />
             <Label text="Année de construction" GridPane.rowIndex="4" />
-            <TextField GridPane.columnIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="idField" GridPane.columnIndex="1" />
+            <TextField fx:id="localField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="adresseField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="supField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="anneeField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </left>
