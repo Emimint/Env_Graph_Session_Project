@@ -123,8 +123,12 @@ public class LocationController implements Initializable {
             int nextIndice = myLocationModel.getNextIndice();
 
             // On cree l'objet en utilisant l'indice et les valeurs entrees dans les differents champs :
-            Location nouvelleLocation = new Location(nextIndice, localField.getText(), adresseField.getText(),Integer.parseInt(supField.getText()), Integer.parseInt(anneeField.getText()));
-
+            Location nouvelleLocation = new Location();
+            nouvelleLocation.setID(nextIndice);
+            nouvelleLocation.setNoLocal(localField.getText());
+            nouvelleLocation.setAdresse(adresseField.getText());
+            nouvelleLocation.setSuperficie(supField.getText());
+            nouvelleLocation.setAnneeConstruction(anneeField.getText());
             // On appelle une boite de dialogue pour demander confirmation de l'ajout a l'utilisateur :
             Alert dialogC = new Alert(Alert.AlertType.CONFIRMATION);
             dialogC.setTitle("Ajout nouvelle location");
@@ -137,6 +141,10 @@ public class LocationController implements Initializable {
                 dialog.setTitle("Confirmation");
                 dialog.setHeaderText("Nouvelle location ajoutee.");
                 dialog.showAndWait();
+
+                // On reload la nouvelle table:
+                myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
+
             }
             else {
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
@@ -144,8 +152,14 @@ public class LocationController implements Initializable {
                 dialog.setHeaderText("Annulation de l'ajout.");
                 dialog.showAndWait();
             }
-        } catch (Exception e){
-            System.out.println("Erreur: " + e.getMessage());
+        } catch (IllegalArgumentException e){
+            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.setTitle("Erreur");
+            dialogW.setHeaderText(null);
+            dialogW.setContentText("Attention : "+ e.getMessage());
+            dialogW.showAndWait();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
