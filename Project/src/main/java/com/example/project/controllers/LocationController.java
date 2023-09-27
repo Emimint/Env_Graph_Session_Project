@@ -6,123 +6,126 @@
 
 package com.example.project.controllers;
 
-import com.example.project.models.MySqlConnection;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import com.example.project.models.LocationModel;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class LocationController implements EventHandler<ActionEvent>, Initializable {
+public class LocationController implements Initializable {
+
+    @FXML
+    public BorderPane myPane;
 
     @FXML
     public Button addBtn;
-
     @FXML
     public Button saveBtn;
-
     @FXML
     public Button modifBtn;
-
     @FXML
     public Button delBtn;
 
-    // On cree les colonnes du tableau dynamiquement:
+    @FXML
+    public Button clearBtn;
+
+    @FXML
+    public GridPane gridPane;
+
+    // On cree les colonnes du tableau dynamiquement :
     @FXML
     public TableView<Location> myTable;
     @FXML
-    public TableColumn<Location, Integer> idColumn = new TableColumn<>("ID");
+    public TableColumn<Location, Integer> idColumn;
     @FXML
-    public TableColumn<Location, String> localColumn = new TableColumn<>("N de local");
+    public TableColumn<Location, String> localColumn;
     @FXML
-    public TableColumn<Location, String> adresseColumn = new TableColumn<>("Adresse");
+    public TableColumn<Location, String> adresseColumn;
     @FXML
-    public TableColumn<Location, Integer> supColumn = new TableColumn<>("Superficie");
+    public TableColumn<Location, Integer> supColumn;
     @FXML
-    public TableColumn<Location, Integer> anneeColumn = new TableColumn<>("Année de construction");
+    public TableColumn<Location, Integer> anneeColumn;
 
     @FXML
-    public MenuItem disconnectBtn;
+    public MenuItem disconnectBtn; // bouton de deconnexion (inclus dans un bouton-menu)
 
-    @Override
-    public void handle(ActionEvent actionEvent) {
-        System.out.println();
-    }
+    // On ajoute les champs pour la creation ou la sauvegarde d'un nouvel objet Location :
+    @FXML
+    public TextField idField;
+    @FXML
+    public TextField localField;
+    @FXML
+    public TextField adresseField;
+    @FXML
+    public TextField supField;
+    @FXML
+    public TextField anneeField;
+
+    public LocationModel myLocationModel = new LocationModel();
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Seul le bouton Ajouter sera visible au demarrage de la page:
+
+        // Ajout d'une methode pour surveiller les clicks de souris en dehors du tableau :
+        myPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            if (!myTable.getBoundsInParent().contains(event.getSceneX(), event.getSceneY())) {
+                myTable.getSelectionModel().clearSelection();
+            }
+        });
+
+        // Seuls les boutons "Ajouter", celui pour modifier l'affichage  et le bouton "Effacer selection" seront visibles au demarrage de la page :
         saveBtn.setVisible(false);
-        modifBtn.setVisible(false);
         delBtn.setVisible(false);
 
-        // Envoyer une requete SQL pour recuperer tous les champs de la table "locations":
+        // Le champ pour l'ID est desactive car la base de donnees gere les identifiants (auto-incrementation) :
+        idField.getStyleClass().add("hidden");
+        idField.setEditable(false);
+
+        // Ajout du systeme de mapping aux futures colonnes du tableau (les proprietes doivent correspondre aux noms exacts des attributs de Location) :
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        localColumn.setCellValueFactory(new PropertyValueFactory<>("no_local"));
+        adresseColumn.setCellValueFactory(new PropertyValueFactory<>("Adresse"));
+        supColumn.setCellValueFactory(new PropertyValueFactory<>("Superficie"));
+        anneeColumn.setCellValueFactory(new PropertyValueFactory<>("annee_construction"));
+
+        // Envoyer une requete SQL pour recuperer tous les champs de la table "locations" :
         try {
-            // Ajout du systeme de mapping aux futures colonnes du tableau:
-            idColumn.setCellValueFactory(cellData -> cellData.getValue().getID().asObject());
-            localColumn.setCellValueFactory(cellData -> cellData.getValue().no_localProperty());
-            adresseColumn.setCellValueFactory(cellData -> cellData.getValue().adresseProperty());
-            supColumn.setCellValueFactory(cellData -> cellData.getValue().getSuperficie().asObject());
-            anneeColumn.setCellValueFactory(cellData -> cellData.getValue().getAnneeConstruction().asObject());
+            // Ajout des colonnes du tableau :
+            myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
 
-            // Ajout des colonnes du tableau:
-            myTable.getColumns().addAll(idColumn, localColumn, adresseColumn, supColumn, anneeColumn);
-
-            //Appel de la methode qui va populer les colonnes du tableau:
-            populerTable();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        //Ajout d'une methode pour surveiller la selection des champs du tableau :
+        myTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            selectionChamp();
+        });
     }
 
-    public void populerTable() throws SQLException {
-        PreparedStatement std = null;
-        ResultSet resultat = null; // reste a null si rien n'a ete trouve
-        try {
-            // preparation du statement:
-            std = MySqlConnection.getInstance().prepareStatement("select * from locations");
-
-            // execution du statement:
-            resultat = std.executeQuery();
-            while (resultat.next()) {
-                // Lecture rang par rang des donnees de la table Location.
-
-                //1) recuperation des infos d'un rang pour creation d'un objet Location:
-                Location row = new Location(Integer.parseInt(resultat.getString("id_location")), resultat.getString("num_local"), resultat.getString("adresse"), Integer.parseInt(resultat.getString("superficie")), Integer.parseInt(resultat.getString("annee_construction")));
-
-                //2) ajout de l'objet cree a la table:
-                myTable.getItems().add(row);
-            }
-
-        } catch (SQLException e) {
-            Logger.getLogger(MySqlConnection.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            assert std != null;
-            std.close();
-            assert resultat != null;
-            resultat.close();
-        }
-    }
-
+    //Appel de la methode pour le retour à l'écran de connexion :
     @FXML
-    //
     public void retourLogin() throws IOException {
-
         addBtn.getScene().getWindow().hide(); // recuperation de la scene en cours via n'importe quel element (ici, le bouton Ajouter)
         Stage myStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Login.fxml"));
@@ -131,4 +134,198 @@ public class LocationController implements EventHandler<ActionEvent>, Initializa
         myStage.setScene(scene);
         myStage.show();
     }
+
+    //Appel de la methode pour ajouter une nouvelle adresse de location :
+    @FXML
+    public void ajouterLocation() {
+        try {
+            // On requere le prochain indice de la colonne ID via une requete SQL :
+            String nextIndice = String.valueOf(myLocationModel.getNextIndice());
+
+            // On cree l'objet en utilisant l'indice et les valeurs entrees dans les differents champs :
+            Location nouvelleLocation = new Location();
+            nouvelleLocation.setID(nextIndice);
+            nouvelleLocation.setNoLocal(localField.getText());
+            nouvelleLocation.setAdresse(adresseField.getText());
+            nouvelleLocation.setSuperficie(supField.getText());
+            nouvelleLocation.setAnneeConstruction(anneeField.getText());
+            // On appelle une boite de dialogue pour demander confirmation de l'ajout a l'utilisateur :
+            Alert dialogC = new Alert(Alert.AlertType.CONFIRMATION);
+            dialogC.setTitle("Ajout nouvelle location");
+            dialogC.setHeaderText(null);
+            dialogC.setContentText("Voulez-vous ajouter cette adresse?");
+            Optional<ButtonType> answer = dialogC.showAndWait();
+            if (answer.get() == ButtonType.OK) {
+                myLocationModel.addLocation(nouvelleLocation);
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                dialog.setTitle("Confirmation");
+                dialog.setHeaderText("Nouvelle location ajoutee.");
+                dialog.showAndWait();
+
+                // On reload la nouvelle table:
+                myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
+
+                // On vide les champs du Gridpane :
+                viderChamps();
+            }
+            else {
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                dialog.setTitle("Annulation");
+                dialog.setHeaderText("Annulation de l'ajout.");
+                dialog.showAndWait();
+            }
+        } catch (IllegalArgumentException e){
+            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.setTitle("Erreur");
+            dialogW.setHeaderText(null);
+            dialogW.setContentText("Attention : "+ e.getMessage());
+            dialogW.showAndWait();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void switcherAffichage(){
+        if(addBtn.isVisible()){
+            addBtn.setVisible(false);
+            saveBtn.setVisible(true);
+            delBtn.setVisible(true);
+        } else{
+            addBtn.setVisible(true);
+            saveBtn.setVisible(false);
+            delBtn.setVisible(false);
+        }
+        viderChamps();
+    }
+
+    public void modifierLocation(){
+        try {
+            // On recupere l'indice de la colonne ID:
+            String indice = idField.getText();
+
+            // On cree l'objet en utilisant l'indice et les valeurs entrees dans les differents champs :
+            Location locationSelectionnee = new Location();
+            locationSelectionnee.setID(indice);
+            locationSelectionnee.setNoLocal(localField.getText());
+            locationSelectionnee.setAdresse(adresseField.getText());
+            locationSelectionnee.setSuperficie(supField.getText());
+            locationSelectionnee.setAnneeConstruction(anneeField.getText());
+
+            // On appelle une boite de dialogue pour demander confirmation la demande de modification a l'utilisateur :
+            Alert dialogC = new Alert(Alert.AlertType.CONFIRMATION);
+            dialogC.setTitle("Modification de la location #" + indice);
+            dialogC.setHeaderText(null);
+            dialogC.setContentText("Voulez-vous modifier cette adresse?");
+            Optional<ButtonType> answer = dialogC.showAndWait();
+            if (answer.get() == ButtonType.OK) {
+                myLocationModel.updateLocation(locationSelectionnee);
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                dialog.setTitle("Confirmation");
+                dialog.setHeaderText("Modification effectuee.");
+                dialog.showAndWait();
+
+                // On reload la nouvelle table:
+                myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
+
+                // On vide les champs du Gridpane :
+                viderChamps();
+            }
+            else {
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                dialog.setTitle("Annulation");
+                dialog.setHeaderText("Annulation de l'ajout.");
+                dialog.showAndWait();
+            }
+        } catch (IllegalArgumentException e){
+            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.setTitle("Erreur");
+            dialogW.setHeaderText(null);
+            dialogW.setContentText("Attention : "+ e.getMessage());
+            dialogW.showAndWait();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void supprimerLocation(){
+        try {
+            // On recupere l'indice de la colonne ID:
+            String indice = idField.getText();
+
+            Location locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
+
+            // On appelle une boite de dialogue pour demander confirmation la demande de suppression a l'utilisateur :
+            Alert dialogC = new Alert(Alert.AlertType.CONFIRMATION);
+            dialogC.setTitle("Suppression de la location #" + indice);
+            dialogC.setHeaderText(null);
+            dialogC.setContentText("Voulez-vous supprimer cette adresse?");
+            Optional<ButtonType> answer = dialogC.showAndWait();
+            if (answer.get() == ButtonType.OK) {
+                myLocationModel.deleteLocation(Integer.parseInt(indice));
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                dialog.setTitle("Confirmation");
+                dialog.setHeaderText("Adresse supprimee.");
+                dialog.showAndWait();
+
+                // On reload la nouvelle table:
+                myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
+
+                // On vide les champs du Gridpane :
+                viderChamps();
+            }
+            else {
+                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                dialog.setTitle("Annulation");
+                dialog.setHeaderText("Annulation de l'ajout.");
+                dialog.showAndWait();
+            }
+        } catch (IllegalArgumentException e){
+            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.setTitle("Erreur");
+            dialogW.setHeaderText(null);
+            dialogW.setContentText("Attention : "+ e.getMessage());
+            dialogW.showAndWait();
+        } catch (SQLException e) {
+            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.setTitle("Erreur");
+            dialogW.setHeaderText(null);
+            dialogW.setContentText("Attention : "+ e.getMessage());
+            dialogW.showAndWait();
+        }
+    }
+
+      public void viderChamps() {
+        // On commence par selectionner tous les champs de type Textfield dans le Gridpane :
+        List<TextField> textFields = new ArrayList<>();
+        for (Node node : gridPane.lookupAll(".text-field")) {
+            if (node instanceof TextField) {
+                textFields.add((TextField) node);
+            }
+        }
+
+        // On boucle sur le resultat et on assigne une variable String vide :
+        for (TextField textField : textFields) {
+            textField.setText(""); // Set text to an empty string
+        }
+    }
+
+    @FXML
+    public void selectionChamp() {
+        Location locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
+        if (locationSelectionnee != null) {
+            int id = locationSelectionnee.getID();
+            String noLocal = locationSelectionnee.getNo_local();
+            String adresse = locationSelectionnee.getAdresse();
+            int superficie = locationSelectionnee.getSuperficie();
+            int anneeConstruction = locationSelectionnee.getAnnee_construction();
+
+            // On affiche les informations recuperees :
+            idField.setText(Integer.toString(id));
+            localField.setText(noLocal);
+            adresseField.setText(adresse);
+            supField.setText(Integer.toString(superficie));
+            anneeField.setText(Integer.toString(anneeConstruction));
+        }
+    }
+
 }

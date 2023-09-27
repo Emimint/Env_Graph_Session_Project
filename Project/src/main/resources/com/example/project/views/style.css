@@ -1,0 +1,35 @@
+.hidden {
+    -fx-background-color: #b5b5b580;
+    -fx-pointer-events: none;
+    -fx-cursor: default;
+}
+
+.btn {
+    -fx-box-shadow: inset 0px 1px 0px 0px #bbdaf7;
+    -fx-background-image: linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+    -fx-background-color: #79bbff;
+    -fx-background-radius: 6px;
+    -fx-border-color: #84bbf3;
+    -fx-border-radius: 6px;
+    -fx-border-width: 1px;
+    -fx-display: inline-block;
+    -fx-cursor: hand;
+    -fx-color: #ffffff;
+    -fx-font-family: Arial;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 24px;
+    -fx-text-decoration: none;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.2), 5, 0.0, 0, 1);
+}
+
+.btn:hover {
+    -fx-background-image: linear-gradient(to bottom, #378de5 5%, #79bbff 100%);
+    -fx-background-color: #378de5;
+}
+
+.btn:pressed {
+    -fx-position: relative;
+    -fx-top: 1px;
+}
