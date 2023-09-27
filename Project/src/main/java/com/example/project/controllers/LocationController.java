@@ -7,6 +7,7 @@
 package com.example.project.controllers;
 
 import com.example.project.models.LocationModel;
+import com.example.project.models.LoginModel;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +33,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class LocationController implements Initializable {
+
+    private LoginModel loginModel;
 
     @FXML
     public BorderPane myPane;
@@ -85,6 +88,10 @@ public class LocationController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+//        //On commence par personnaliser l'affichage avec le prenom et l'image de l'utilisateur:
+//        System.out.println(loginModel.getPrenom());
+//        disconnectBtn.setText(loginModel.getPrenom());
 
         // Ajout d'une methode pour surveiller les clicks de souris en dehors du tableau :
         myPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
@@ -326,6 +333,10 @@ public class LocationController implements Initializable {
             supField.setText(Integer.toString(superficie));
             anneeField.setText(Integer.toString(anneeConstruction));
         }
+    }
+
+    public void setLoginModel(LoginModel loginModel) {
+        this.loginModel = loginModel;
     }
 
 }

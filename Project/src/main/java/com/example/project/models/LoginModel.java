@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 public class LoginModel {
     // Responsable de se connecter à la base de donnees, pour l'affichage de la BD :
     Connection connection;
+    String prenom;
+
     public LoginModel(){
         connection = MySqlConnection.getInstance();
     }
@@ -23,6 +25,10 @@ public class LoginModel {
         }
     }
 
+    public String getPrenom() {
+        return prenom;
+    }
+
     public boolean LoginNow(String user, String password) throws SQLException {
         PreparedStatement std =null;
         ResultSet resultat = null; // reste a null si rien n'a ete trouve
@@ -34,7 +40,10 @@ public class LoginModel {
 
             // execution du statement :
             resultat = std.executeQuery();
-            return resultat.next();
+            resultat.next();
+            prenom = resultat.getString("prenom");
+
+            return !prenom.isEmpty();
 
         }catch (SQLException e) {
             Logger.getLogger(MySqlConnection.class.getName()).log(Level.SEVERE, null, e);

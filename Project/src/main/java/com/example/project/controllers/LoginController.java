@@ -46,11 +46,19 @@ public class LoginController implements Initializable {
     @FXML
     protected void LoginCheck(ActionEvent event) throws SQLException, IOException {
         if(loginModel.LoginNow(usrName.getText(), pwdField.getText())){
+
+
             infoLabel.setText("Nom d'utilisateur et mot de passe valides.");
             ((Node)(event.getSource())).getScene().getWindow().hide();
-            Stage myStage = new Stage();
+
             FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Main.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
+            Stage myStage = new Stage();
+
+            //On transmet les informations du LoginModel au nouveau controleur:
+            LocationController locationController = fxmlLoader.getController();
+            locationController.setLoginModel(loginModel);
+
 //            scene.getStylesheets().add("/org/kordamp/bootstrapfx/bootstrapfx.css");
 //            scene.getStylesheets().add("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
             scene.getStylesheets().add("style.css");
