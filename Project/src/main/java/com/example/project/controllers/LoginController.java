@@ -50,7 +50,9 @@ public class LoginController implements Initializable {
             ((Node)(event.getSource())).getScene().getWindow().hide();
             Stage myStage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Main.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 820, 840);
+            Scene scene = new Scene(fxmlLoader.load());
+//            scene.getStylesheets().add("/org/kordamp/bootstrapfx/bootstrapfx.css");
+//            scene.getStylesheets().add("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
             scene.getStylesheets().add("style.css");
             myStage.setTitle("Gestion des locations");
             myStage.setScene(scene);

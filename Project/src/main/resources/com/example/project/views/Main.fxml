@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -16,17 +17,16 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<?import javafx.scene.image.Image?>
-<BorderPane fx:id="myPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="661.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.LocationController">
+<BorderPane fx:id="myPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.LocationController">
    <top>
-      <HBox prefHeight="79.0" prefWidth="600.0" style="-fx-background-color: lightgreen;" BorderPane.alignment="TOP_RIGHT">
+      <HBox style="-fx-background-color: lightgreen;" BorderPane.alignment="TOP_RIGHT">
          <children>
-            <Pane prefHeight="79.0" prefWidth="309.0">
+            <Pane >
                <children>
                   <Label alignment="BOTTOM_CENTER" layoutX="66.0" layoutY="31.0" text="Système de Gestion des locations" />
                </children>
             </Pane>
-            <Pane prefHeight="200.0" prefWidth="200.0">
+            <Pane >
                <children>
                   <ImageView fitHeight="66.0" fitWidth="69.0" layoutX="113.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
                   <MenuButton layoutX="200.0" layoutY="17.0" mnemonicParsing="false" text="Prenom">
@@ -40,21 +40,21 @@
       </HBox>
    </top>
    <center>
-      <TableView fx:id="myTable" prefHeight="221.0" prefWidth="425.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="myTable" BorderPane.alignment="CENTER">
           <columns>
-              <TableColumn fx:id="idColumn" prefWidth="39.3333740234375" text="ID" />
-              <TableColumn fx:id="localColumn" prefWidth="70" text="No de local" />
-              <TableColumn fx:id="adresseColumn" prefWidth="80" text="Adresse" />
-              <TableColumn fx:id="supColumn" prefWidth="70" text="Superficie" />
-              <TableColumn fx:id="anneeColumn" prefWidth="143.33334350585938" text="Année de construction" />
+              <TableColumn fx:id="idColumn" text="ID" />
+              <TableColumn fx:id="localColumn" text="No de local" />
+              <TableColumn fx:id="adresseColumn" text="Adresse" />
+              <TableColumn fx:id="supColumn" text="Superficie" />
+              <TableColumn fx:id="anneeColumn" text="Année de construction" />
           </columns>
       </TableView>
    </center>
    <left>
-       <GridPane fx:id="gridPane" prefHeight="221.0" prefWidth="242.0" BorderPane.alignment="CENTER">
+       <GridPane fx:id="gridPane" BorderPane.alignment="CENTER">
        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.0" minWidth="10.0" prefWidth="122.66668701171875" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.66665649414062" minWidth="10.0" prefWidth="77.33331298828125" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.0" minWidth="10.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0000483194987" minWidth="10.0"  />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -68,7 +68,7 @@
             <Label text="N de local" GridPane.rowIndex="1" />
             <Label text="Adresse" GridPane.rowIndex="2" />
             <Label text="Superficie" GridPane.rowIndex="3" />
-            <Label text="Année de construction" GridPane.rowIndex="4" />
+            <Label text="Année de construction" wrapText="true" GridPane.rowIndex="4" />
              <TextField fx:id="idField" styleClass="text-field" GridPane.columnIndex="1" />
              <TextField fx:id="localField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
              <TextField fx:id="adresseField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -87,7 +87,7 @@
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="addBtn" mnemonicParsing="false" onAction="#ajouterLocation" styleClass="btn" text="Ajouter" />
-             <Button fx:id="modifBtn" mnemonicParsing="false" styleClass="btn" onAction="#switcherAffichage">
+             <Button fx:id="modifBtn" mnemonicParsing="false" onAction="#switcherAffichage" styleClass="btn">
                  <graphic>
                      <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
                          <image>
@@ -96,7 +96,7 @@
                      </ImageView>
                  </graphic>
              </Button>
-             <Button fx:id="saveBtn" mnemonicParsing="false" styleClass="btn" text="Sauvegarder" onAction="#modifierLocation"  />
+             <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#modifierLocation" styleClass="btn" text="Sauvegarder" />
             <Button fx:id="delBtn" mnemonicParsing="false" onAction="#supprimerLocation" styleClass="btn" text="Supprimer" />
              <Button fx:id="clearBtn" mnemonicParsing="false" onAction="#viderChamps" styleClass="btn" text="Effacer selection" />
          </children>

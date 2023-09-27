@@ -12,6 +12,8 @@ public class MainApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("views/Login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 620, 440);
+//        scene.getStylesheets().add("/org/kordamp/bootstrapfx/bootstrapfx.css");
+        scene.getStylesheets().add("style.css");
         stage.setTitle("Connection");
         stage.setScene(scene);
         stage.show();
