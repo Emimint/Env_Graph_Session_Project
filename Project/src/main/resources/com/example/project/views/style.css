@@ -4,6 +4,24 @@
     -fx-font-family: 'Mooli', sans-serif;
 }
 
+#myLoginPanel{
+    -fx-background-image: url('file:Project/img/accueil.jpg');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-text-fill: #f0e6c5;
+}
+
+#myPane{
+    -fx-background-image: url('file:Project/img/page_principale.jpg');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+
+#gradientOverlay {
+    -fx-background-color: linear-gradient(to bottom, rgba(230, 100, 101, 0.3), rgba(145, 152, 229, 0.3));
+}
+
+
 .hidden {
     -fx-background-color: #b5b5b580;
     -fx-pointer-events: none;
