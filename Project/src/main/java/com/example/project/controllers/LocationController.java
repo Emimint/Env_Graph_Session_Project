@@ -17,8 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -27,10 +25,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class LocationController implements Initializable {
 
@@ -165,6 +160,19 @@ public class LocationController implements Initializable {
             dialogC.setContentText("Voulez-vous ajouter cette adresse?");
             Optional<ButtonType> answer = dialogC.showAndWait();
             if (answer.get() == ButtonType.OK) {
+                // Avant de faire l'ajout, on verifie si cette adresse est deja dans la base de donnees:
+                Location locationTrouve = myLocationModel.getLocationbyAdresse(nouvelleLocation);
+
+                // On autorise l'ajout que si certaines conditions sont bien respectees :
+                if( locationTrouve != null && !ajoutValide(nouvelleLocation, locationTrouve)){
+                    Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                    dialog.setTitle("Annulation");
+                    dialog.setHeaderText("Votre requete ne peut etre acceptee. Veuillez verifier:\n" +
+                            "1) tentez vous de rentrer un numero de local identique pour une adresse deja existante?\n" +
+                            "2) l'annee de construction pour cette adresse devrait etre " +nouvelleLocation.getAnnee_construction() +".\n");
+                    dialog.showAndWait();
+                    return;
+                }
                 myLocationModel.addLocation(nouvelleLocation);
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
                 dialog.setTitle("Confirmation");
@@ -248,7 +256,7 @@ public class LocationController implements Initializable {
             else {
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
                 dialog.setTitle("Annulation");
-                dialog.setHeaderText("Annulation de l'ajout.");
+                dialog.setHeaderText("Annulation de la modification.");
                 dialog.showAndWait();
             }
         } catch (IllegalArgumentException e){
@@ -260,6 +268,14 @@ public class LocationController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean ajoutValide(Location a, Location b){
+        // On retourne faux si l'adresse est identique et que...
+        // 1) ... l'annee de construction est differente :
+        return a.getAnnee_construction() == b.getAnnee_construction() &&
+// 2) ... l'annee de construction et le numero de local sont identiques :
+       !Objects.equals(a.getNo_local(), b.getNo_local());
     }
 
     public void supprimerLocation(){
