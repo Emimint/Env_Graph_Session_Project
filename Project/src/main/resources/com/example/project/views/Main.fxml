@@ -18,8 +18,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 
+<?import java.net.URL?>
 <BorderPane fx:id="myPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.LocationController">
-   <top>
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+    <top>
       <HBox BorderPane.alignment="TOP_RIGHT">
          <children>
             <Pane>
