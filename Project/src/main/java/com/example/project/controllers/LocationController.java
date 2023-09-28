@@ -18,12 +18,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
@@ -67,6 +70,9 @@ public class LocationController implements Initializable {
     @FXML
     public MenuButton userBtn; // bouton de personnalisation (inclus dans un bouton-menu avec bouton de deconnexion)
 
+    @FXML
+    public ImageView userImg;
+
     // On ajoute les champs pour la creation ou la sauvegarde d'un nouvel objet Location :
     @FXML
     public TextField idField;
@@ -85,10 +91,31 @@ public class LocationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        //On commence par personnaliser l'affichage avec le prenom et l'image de l'utilisateur:
+        //On commence par personnaliser l'affichage avec le prenom et l'image de l'utilisateur :
         Platform.runLater(() -> {
-            System.out.println(loginModel.getPrenom());
+
+            // 1) On affiche le prenom dans le menu :
             userBtn.setText(loginModel.getPrenom());
+
+            // 2) On recupere l'image de profile de l'utlisateur courant:
+
+            // On recupere d'abord le nom du fichier :
+            String userIDfilename = "/img/user_0" + loginModel.getUserID() + ".jpg";
+            InputStream stream = getClass().getResourceAsStream(userIDfilename);
+
+            if (stream != null) {
+                Image image = new Image(stream);
+                userImg.setImage(image);
+            } else {
+                System.err.println("Image non trouvee : " + userIDfilename);
+            }
+            //On rajoute des parametres pour correctement afficher l'image:
+            Rectangle clip = new Rectangle(
+                    userImg.getFitWidth(), userImg.getFitHeight()
+            );
+            clip.setArcWidth(10);
+            clip.setArcHeight(10);
+            userImg.setClip(clip);
         });
 
 

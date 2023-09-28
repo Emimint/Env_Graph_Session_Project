@@ -11,6 +11,7 @@ public class LoginModel {
     // Responsable de se connecter à la base de donnees, pour l'affichage de la BD :
     Connection connection;
     String prenom;
+    String userID;
 
     public LoginModel(){
         connection = MySqlConnection.getInstance();
@@ -28,6 +29,9 @@ public class LoginModel {
     public String getPrenom() {
         return prenom;
     }
+    public String getUserID() {
+        return userID;
+    }
 
     public boolean LoginNow(String user, String password) throws SQLException {
         PreparedStatement std =null;
@@ -42,6 +46,7 @@ public class LoginModel {
             resultat = std.executeQuery();
             resultat.next();
             prenom = resultat.getString("prenom");
+            userID = resultat.getString("id_utilisateur");
 
             return !prenom.isEmpty();
 

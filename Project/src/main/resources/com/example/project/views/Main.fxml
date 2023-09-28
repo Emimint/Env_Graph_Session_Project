@@ -17,26 +17,30 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<?import java.net.URL?>
-<BorderPane fx:id="myPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../../../../style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.LocationController">
+<BorderPane fx:id="myPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="604.0" prefWidth="876.0" stylesheets="@../../../../style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.LocationController">
     <top>
       <HBox BorderPane.alignment="TOP_RIGHT">
          <children>
-            <Pane>
+            <Pane prefHeight="73.0" prefWidth="339.0">
                <children>
                   <Label alignment="BOTTOM_CENTER" layoutX="66.0" layoutY="31.0" text="Système de Gestion des locations" />
                </children>
             </Pane>
-            <Pane>
+            <Pane prefHeight="73.0" prefWidth="523.0">
                <children>
-                  <ImageView fitHeight="66.0" fitWidth="69.0" layoutX="113.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
-                  <MenuButton fx:id="userBtn" layoutX="200.0" layoutY="17.0" mnemonicParsing="false" text="Prenom">
+                  <ImageView fx:id="userImg" fitHeight="75.0" fitWidth="65.0" layoutX="364.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true" />
+                  <MenuButton fx:id="userBtn" contentDisplay="RIGHT" layoutX="437.0" layoutY="17.0" mnemonicParsing="false" text="Prenom">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#retourLogin" text="Deconnexion" />
                     </items>
                   </MenuButton>
                </children>
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
             </Pane>
          </children>
       </HBox>
