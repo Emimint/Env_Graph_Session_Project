@@ -52,10 +52,10 @@ public class Location {
     public void setAnneeConstruction(String inputAnneeConstruction) {
         try {
             int annee_construction = Integer.parseInt(inputAnneeConstruction);
-            if(annee_construction < 1990 || annee_construction > 2023) throw new IllegalArgumentException("L'annee de construction doit varier de 1990 a 2023.");
+            if(annee_construction < 1900 || annee_construction > 2023) throw new IllegalArgumentException("L'annee de construction doit varier de 1900 a 2023.");
             this.annee_construction = annee_construction;
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("L'annee de construction doit être comprise entre 1990 et 2023.");
+            throw new IllegalArgumentException("L'annee de construction doit être comprise entre 1900 et 2023.");
         }
     }
 
