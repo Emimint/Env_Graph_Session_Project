@@ -97,6 +97,8 @@ public class LocationController implements Initializable {
         myPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             if (!myTable.getBoundsInParent().contains(event.getSceneX(), event.getSceneY())) {
                 myTable.getSelectionModel().clearSelection();
+            } else {
+                switcherAffichage(true);
             }
         });
 
@@ -203,6 +205,12 @@ public class LocationController implements Initializable {
             delBtn.setVisible(false);
         }
         viderChamps();
+    }
+
+    public void switcherAffichage(boolean on){
+        addBtn.setVisible(!on);
+        saveBtn.setVisible(on);
+        delBtn.setVisible(on);
     }
 
     public void modifierLocation(){
