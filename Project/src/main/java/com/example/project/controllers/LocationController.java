@@ -249,9 +249,6 @@ public class LocationController implements Initializable {
 
                 // On reload la nouvelle table:
                 myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
-
-                // On vide les champs du Gridpane :
-                viderChamps();
             }
             else {
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);

@@ -19,10 +19,7 @@
 
 
 <?import java.net.URL?>
-<BorderPane fx:id="myPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.LocationController">
-    <stylesheets>
-        <URL value="@style.css" />
-    </stylesheets>
+<BorderPane fx:id="myPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../../../../style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.LocationController">
     <top>
       <HBox BorderPane.alignment="TOP_RIGHT">
          <children>

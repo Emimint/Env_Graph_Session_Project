@@ -5,14 +5,14 @@
 }
 
 #myLoginPanel{
-    -fx-background-image: url('file:Project/src/main/resources/com/example/project/views/img/accueil.jpg');
+    -fx-background-image: url('img/accueil.jpg');
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-text-fill: #f0e6c5;
 }
 
 #myPane{
-    -fx-background-image: url('file:Project/src/main/resources/com/example/project/views/img/page_principale.jpg');
+    -fx-background-image: url('img/page_principale.jpg');
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
 }
