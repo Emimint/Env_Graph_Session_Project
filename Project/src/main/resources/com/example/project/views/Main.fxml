@@ -31,9 +31,9 @@
             <Pane>
                <children>
                   <ImageView fitHeight="66.0" fitWidth="69.0" layoutX="113.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
-                  <MenuButton layoutX="200.0" layoutY="17.0" mnemonicParsing="false" text="Prenom">
+                  <MenuButton fx:id="userBtn" layoutX="200.0" layoutY="17.0" mnemonicParsing="false" text="Prenom">
                     <items>
-                      <MenuItem fx:id="disconnectBtn" mnemonicParsing="false" onAction="#retourLogin" text="Deconnexion" />
+                      <MenuItem mnemonicParsing="false" onAction="#retourLogin" text="Deconnexion" />
                     </items>
                   </MenuButton>
                </children>

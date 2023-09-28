@@ -8,6 +8,7 @@ package com.example.project.controllers;
 
 import com.example.project.models.LocationModel;
 import com.example.project.models.LoginModel;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,7 +65,7 @@ public class LocationController implements Initializable {
     public TableColumn<Location, Integer> anneeColumn;
 
     @FXML
-    public MenuItem disconnectBtn; // bouton de deconnexion (inclus dans un bouton-menu)
+    public MenuButton userBtn; // bouton de personnalisation (inclus dans un bouton-menu avec bouton de deconnexion)
 
     // On ajoute les champs pour la creation ou la sauvegarde d'un nouvel objet Location :
     @FXML
@@ -84,9 +85,12 @@ public class LocationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-//        //On commence par personnaliser l'affichage avec le prenom et l'image de l'utilisateur:
-//        System.out.println(loginModel.getPrenom());
-//        disconnectBtn.setText(loginModel.getPrenom());
+        //On commence par personnaliser l'affichage avec le prenom et l'image de l'utilisateur:
+        Platform.runLater(() -> {
+            System.out.println(loginModel.getPrenom());
+            userBtn.setText(loginModel.getPrenom());
+        });
+
 
         // Ajout d'une methode pour surveiller les clicks de souris en dehors du tableau :
         myPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
