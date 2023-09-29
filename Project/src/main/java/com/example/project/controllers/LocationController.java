@@ -46,9 +46,10 @@ public class LocationController implements Initializable {
     public Button modifBtn;
     @FXML
     public Button delBtn;
-
     @FXML
     public Button clearBtn;
+    @FXML
+    public ImageView iconBtn;
 
     @FXML
     public GridPane gridPane;
@@ -234,8 +235,22 @@ public class LocationController implements Initializable {
     }
 
     public void switcherAffichage(){
+
+
+        String currentIcon = addBtn.isVisible() ?
+                "/img/ajouter_icon.png" :
+                "/img/modifier_icon.png";
+        InputStream stream = getClass().getResourceAsStream(currentIcon);
+
+        if (stream != null) {
+            Image image = new Image(stream);
+            iconBtn.setImage(image);
+        } else {
+            System.err.println("Image non trouvee : " + currentIcon);
+        }
+
         if(addBtn.isVisible()){
-            addBtn.setVisible(false);
+          addBtn.setVisible(false);
             saveBtn.setVisible(true);
             delBtn.setVisible(true);
         } else{
@@ -243,6 +258,7 @@ public class LocationController implements Initializable {
             saveBtn.setVisible(false);
             delBtn.setVisible(false);
         }
+
         viderChamps();
     }
 
