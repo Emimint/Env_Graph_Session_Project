@@ -2,6 +2,7 @@
 
 #myPane, #myLoginPanel{
     -fx-font-family: 'Mooli', sans-serif;
+    -fx-font-weight: bold;
 }
 
 #myLoginPanel{
@@ -18,12 +19,45 @@
 }
 
 #gradientOverlay {
-    -fx-background-color: linear-gradient(to bottom, rgba(230, 100, 101, 0.3), rgba(145, 152, 229, 0.3));
+    -fx-background-color: linear-gradient(to bottom, rgba(68, 147, 187, 0.3), rgba(255, 255, 255, 0.3));
 }
 
 #userImg{
 -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.9), 15, 0, 0, 0);
 -fx-padding: 10;
+}
+
+#myMainLabel{
+-fx-effect: dropshadow(gaussian, #193e61, 10, 0.5, 0, 0);
+}
+
+#myLoginGreetings{
+-fx-effect: dropshadow(gaussian, #255066, 10, 0.5, 0, 0);
+}
+
+#infoLabel{
+-fx-text-fill: #e1e918;
+-fx-font-weight: bold;
+-fx-font-size: 15px;
+}
+
+.label-centered {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.text-glow_title {
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+}
+
+.text-glow {
+    -fx-effect: dropshadow(gaussian, #000000, 10, 0.5, 0, 0);
+    -fx-text-fill: white;
+}
+
+.text-size{
+    -fx-font-size: 20px;
 }
 
 
@@ -35,8 +69,7 @@
 
 .btn {
     -fx-box-shadow: inset 0px 1px 0px 0px #bbdaf7;
-    -fx-background-image: linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
-    -fx-background-color: #79bbff;
+    -fx-background-color: #4493bb;
     -fx-background-radius: 6px;
     -fx-border-color: #84bbf3;
     -fx-border-radius: 6px;
@@ -44,7 +77,7 @@
     -fx-display: inline-block;
     -fx-cursor: hand;
     -fx-color: #ffffff;
-    -fx-font-size: 15px;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
     -fx-padding: 6px 4px;
     -fx-text-decoration: none;
@@ -53,8 +86,7 @@
 }
 
 .btn:hover {
-    -fx-background-image: linear-gradient(to bottom, #378de5 5%, #79bbff 100%);
-    -fx-background-color: #378de5;
+    -fx-background-color: #3d84a8;
 }
 
 .btn:pressed {
