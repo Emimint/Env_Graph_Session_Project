@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -38,7 +39,10 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle rb){
         if(loginModel.isDBConnected()){
             myLoginLabel.setText("Connection a la BD reussie.");
-        } else myLoginLabel.setText("Connection BD non etablie!");
+        } else {
+            myLoginLabel.setText("Connection BD non etablie!");
+            myLoginLabel.setTextFill(Color.color(1, 0, 0));
+        }
     }
 
     public LoginModel loginModel = new LoginModel();
@@ -46,11 +50,7 @@ public class LoginController implements Initializable {
     @FXML
     protected void LoginCheck(ActionEvent event) throws SQLException, IOException {
         if(loginModel.LoginNow(usrName.getText(), pwdField.getText())){
-
-
-            infoLabel.setText("Nom d'utilisateur et mot de passe valides.");
             ((Node)(event.getSource())).getScene().getWindow().hide();
-
             FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Main.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage myStage = new Stage();
@@ -65,7 +65,7 @@ public class LoginController implements Initializable {
             myStage.setTitle("Gestion des locations");
             myStage.setScene(scene);
             myStage.show();
-        } else infoLabel.setText("Nom d'utilisateur et mot de passe invalides!");
+        } else infoLabel.setText("Nom d'utilisateur ou mot de passe valide(s).");
     }
 
     public void onEnter(ActionEvent event) throws SQLException, IOException, InterruptedException {

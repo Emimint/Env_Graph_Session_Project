@@ -23,7 +23,7 @@
          <children>
             <Pane prefHeight="73.0" prefWidth="339.0">
                <children>
-                  <Label alignment="BOTTOM_CENTER" layoutX="66.0" layoutY="31.0" text="Système de Gestion des locations" />
+                  <Label fx:id="myMainLabel" alignment="BOTTOM_CENTER" layoutX="47.0" layoutY="19.0" styleClass="text-glow_title" text="Système de Gestion des locations" />
                </children>
             </Pane>
             <Pane prefHeight="73.0" prefWidth="523.0">
@@ -73,16 +73,16 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="ID" />
-            <Label text="N de local" GridPane.rowIndex="1" />
-            <Label text="Adresse" GridPane.rowIndex="2" />
-            <Label text="Superficie" GridPane.rowIndex="3" />
-            <Label text="Année de construction" wrapText="true" GridPane.rowIndex="4" />
-             <TextField fx:id="idField" styleClass="text-field" GridPane.columnIndex="1" />
-             <TextField fx:id="localField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-             <TextField fx:id="adresseField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-             <TextField fx:id="supField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-             <TextField fx:id="anneeField" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label styleClass="text-glow, text-size" text="ID" />
+            <Label styleClass="text-glow, text-size" text="N de local" GridPane.rowIndex="1" />
+            <Label styleClass="text-glow, text-size" text="Adresse" GridPane.rowIndex="2" />
+            <Label styleClass="text-glow, text-size" text="Superficie" GridPane.rowIndex="3" />
+            <Label styleClass="text-glow, text-size" text="Année de construction" wrapText="true" GridPane.rowIndex="4" />
+             <TextField fx:id="idField" opacity="0.9" styleClass="text-field" GridPane.columnIndex="1" />
+             <TextField fx:id="localField" opacity="0.9" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+             <TextField fx:id="adresseField" opacity="0.9" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+             <TextField fx:id="supField" opacity="0.9" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+             <TextField fx:id="anneeField" opacity="0.9" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -93,21 +93,21 @@
       </GridPane>
    </left>
    <bottom>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="addBtn" mnemonicParsing="false" onAction="#ajouterLocation" styleClass="btn" text="Ajouter" />
-             <Button fx:id="modifBtn" mnemonicParsing="false" onAction="#switcherAffichage" styleClass="btn">
+            <Button fx:id="addBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ajouterLocation" prefHeight="39.0" prefWidth="100.0" styleClass="btn" text="Ajouter" />
+             <Button fx:id="modifBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#switcherAffichage" styleClass="btn">
                  <graphic>
-                     <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                     <ImageView fx:id="iconBtn" fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
                          <image>
-                             <Image url="https://img.icons8.com/ios/452/rotate-left-filled.png" />
+                             <Image url="@../../../../img/modifier_icon.png" />
                          </image>
                      </ImageView>
                  </graphic>
              </Button>
-             <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#modifierLocation" styleClass="btn" text="Sauvegarder" />
-            <Button fx:id="delBtn" mnemonicParsing="false" onAction="#supprimerLocation" styleClass="btn" text="Supprimer" />
-             <Button fx:id="clearBtn" mnemonicParsing="false" onAction="#viderChamps" styleClass="btn" text="Effacer selection" />
+             <Button fx:id="saveBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#modifierLocation" prefHeight="42.0" prefWidth="136.0" styleClass="btn" text="Sauvegarder" />
+            <Button fx:id="delBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#supprimerLocation" prefHeight="36.0" prefWidth="109.0" styleClass="btn" text="Supprimer" />
+             <Button fx:id="clearBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#viderChamps" prefHeight="36.0" prefWidth="156.0" styleClass="btn" text="Effacer selection" />
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
