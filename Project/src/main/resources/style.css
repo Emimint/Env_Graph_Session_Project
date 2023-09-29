@@ -56,6 +56,14 @@
     -fx-text-fill: white;
 }
 
+.success{
+-fx-text-fill: green;
+}
+
+.error{
+-fx-text-fill: red;
+}
+
 .text-size{
     -fx-font-size: 20px;
 }

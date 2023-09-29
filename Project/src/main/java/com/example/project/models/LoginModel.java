@@ -13,15 +13,19 @@ public class LoginModel {
     String prenom;
     String userID;
 
-    public LoginModel(){
+    public LoginModel()throws SQLException{
+        try {
         connection = MySqlConnection.getInstance();
+        } catch (Exception e) {
+            System.out.println("Erreur: " + e.getMessage());
+        }
     }
 
     // verifier si la connection est bien etablie :
     public boolean isDBConnected(){
         try{
             return !connection.isClosed();
-        }catch (SQLException e){
+        }catch (Exception e){
             return false;
         }
     }
