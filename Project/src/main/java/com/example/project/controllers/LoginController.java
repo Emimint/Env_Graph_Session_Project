@@ -49,9 +49,22 @@ public class LoginController implements Initializable {
                 myLoginLabel.getStyleClass().add("text-glow");
                 myLoginLabel.getStyleClass().add("success");
             } else {
+                //En cas de mauvaise connexion :
+
+                // 1. On affiche un message d'erreur :
                 myLoginLabel.setText("Connection BD non établie!");
                 myLoginLabel.getStyleClass().add("text-glow");
                 myLoginLabel.getStyleClass().add("error");
+
+                // 2. On desactive tous les boutons :
+                connectBtn.setDisable(true);
+                connectBtn.setStyle("-fx-opacity: 0.5;");
+
+                usrName.getStyleClass().add("hidden");
+                usrName.setEditable(false);
+
+                pwdField.getStyleClass().add("hidden");
+                pwdField.setEditable(false);
             }
         } catch (Exception e) {
             System.out.println("Erreur: " +e.getMessage());

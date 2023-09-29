@@ -12,9 +12,10 @@ public class MySqlConnection {
             URL = "jdbc:mysql://localhost:3306/gestion_location?serverTimezone=UTC",
     // il faut modifier le champ user et password en fonction des acces propres a chaque utilisateur:
             USER = "root",
-            PASSWORD = "root";
+            PASSWORD = "Root1234";
 
     private static Connection cnx = null;
+    private MySqlConnection() {}
 
     public static Connection getInstance() {
         try {
@@ -22,10 +23,8 @@ public class MySqlConnection {
                 Class.forName(DRIVER);
                 cnx = DriverManager.getConnection(URL, USER, PASSWORD);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(MySqlConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MySqlConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException | ClassNotFoundException ex) {
+            System.out.println("Erreur d'acces a la base de donnees: " +ex.getMessage());
         }
         return cnx;
     }

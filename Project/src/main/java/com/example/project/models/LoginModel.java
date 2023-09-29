@@ -55,7 +55,7 @@ public class LoginModel {
             return !prenom.isEmpty();
 
         }catch (SQLException e) {
-            Logger.getLogger(MySqlConnection.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("Erreur sur la requete : " +e.getMessage());
         }
         finally {
             assert std !=null;
