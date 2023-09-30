@@ -7,6 +7,8 @@
 package com.example.project.controllers;
 
 import com.example.project.models.LocationModel;
+import com.example.project.models.LoginModel;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,17 +23,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class LocationController implements Initializable {
+
+    private LoginModel loginModel;
 
     @FXML
     public BorderPane myPane;
@@ -44,9 +46,10 @@ public class LocationController implements Initializable {
     public Button modifBtn;
     @FXML
     public Button delBtn;
-
     @FXML
     public Button clearBtn;
+    @FXML
+    public ImageView iconBtn;
 
     @FXML
     public GridPane gridPane;
@@ -66,7 +69,10 @@ public class LocationController implements Initializable {
     public TableColumn<Location, Integer> anneeColumn;
 
     @FXML
-    public MenuItem disconnectBtn; // bouton de deconnexion (inclus dans un bouton-menu)
+    public MenuButton userBtn; // bouton de personnalisation (inclus dans un bouton-menu avec bouton de deconnexion)
+
+    @FXML
+    public ImageView userImg;
 
     // On ajoute les champs pour la creation ou la sauvegarde d'un nouvel objet Location :
     @FXML
@@ -86,10 +92,40 @@ public class LocationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        //On commence par personnaliser l'affichage avec le prenom et l'image de l'utilisateur :
+        Platform.runLater(() -> {
+
+            // 1) On affiche le prenom dans le menu :
+            userBtn.setText(loginModel.getPrenom());
+
+            // 2) On recupere l'image de profile de l'utlisateur courant:
+
+            // On recupere d'abord le nom du fichier :
+            String userIDfilename = "/img/user_0" + loginModel.getUserID() + ".jpg";
+            InputStream stream = getClass().getResourceAsStream(userIDfilename);
+
+            if (stream != null) {
+                Image image = new Image(stream);
+                userImg.setImage(image);
+            } else {
+                System.err.println("Image non trouvee : " + userIDfilename);
+            }
+            //On rajoute des parametres pour correctement afficher l'image:
+            Rectangle clip = new Rectangle(
+                    userImg.getFitWidth(), userImg.getFitHeight()
+            );
+            clip.setArcWidth(10);
+            clip.setArcHeight(10);
+            userImg.setClip(clip);
+        });
+
+
         // Ajout d'une methode pour surveiller les clicks de souris en dehors du tableau :
         myPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             if (!myTable.getBoundsInParent().contains(event.getSceneX(), event.getSceneY())) {
                 myTable.getSelectionModel().clearSelection();
+            } else {
+                switcherAffichage(true);
             }
         });
 
@@ -156,6 +192,19 @@ public class LocationController implements Initializable {
             dialogC.setContentText("Voulez-vous ajouter cette adresse?");
             Optional<ButtonType> answer = dialogC.showAndWait();
             if (answer.get() == ButtonType.OK) {
+                // Avant de faire l'ajout, on verifie si cette adresse est deja dans la base de donnees:
+                Location locationTrouve = myLocationModel.getLocationbyAdresse(nouvelleLocation);
+
+                // On autorise l'ajout que si certaines conditions sont bien respectees :
+                if( locationTrouve != null && !ajoutValide(nouvelleLocation, locationTrouve)){
+                    Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                    dialog.setTitle("Annulation");
+                    dialog.setHeaderText("Votre requete ne peut etre acceptee. Veuillez verifier:\n" +
+                            "1) tentez vous de rentrer un numero de local identique pour une adresse deja existante?\n" +
+                            "2) l'annee de construction pour cette adresse devrait etre " +nouvelleLocation.getAnnee_construction() +".\n");
+                    dialog.showAndWait();
+                    return;
+                }
                 myLocationModel.addLocation(nouvelleLocation);
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
                 dialog.setTitle("Confirmation");
@@ -186,8 +235,22 @@ public class LocationController implements Initializable {
     }
 
     public void switcherAffichage(){
+
+
+        String currentIcon = addBtn.isVisible() ?
+                "/img/ajouter_icon.png" :
+                "/img/modifier_icon.png";
+        InputStream stream = getClass().getResourceAsStream(currentIcon);
+
+        if (stream != null) {
+            Image image = new Image(stream);
+            iconBtn.setImage(image);
+        } else {
+            System.err.println("Image non trouvee : " + currentIcon);
+        }
+
         if(addBtn.isVisible()){
-            addBtn.setVisible(false);
+          addBtn.setVisible(false);
             saveBtn.setVisible(true);
             delBtn.setVisible(true);
         } else{
@@ -195,7 +258,14 @@ public class LocationController implements Initializable {
             saveBtn.setVisible(false);
             delBtn.setVisible(false);
         }
+
         viderChamps();
+    }
+
+    public void switcherAffichage(boolean on){
+        addBtn.setVisible(!on);
+        saveBtn.setVisible(on);
+        delBtn.setVisible(on);
     }
 
     public void modifierLocation(){
@@ -226,14 +296,11 @@ public class LocationController implements Initializable {
 
                 // On reload la nouvelle table:
                 myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
-
-                // On vide les champs du Gridpane :
-                viderChamps();
             }
             else {
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
                 dialog.setTitle("Annulation");
-                dialog.setHeaderText("Annulation de l'ajout.");
+                dialog.setHeaderText("Annulation de la modification.");
                 dialog.showAndWait();
             }
         } catch (IllegalArgumentException e){
@@ -245,6 +312,14 @@ public class LocationController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean ajoutValide(Location a, Location b){
+        // On retourne faux si l'adresse est identique et que...
+        // 1) ... l'annee de construction est differente :
+        return a.getAnnee_construction() == b.getAnnee_construction() &&
+// 2) ... l'annee de construction et le numero de local sont identiques :
+       !Objects.equals(a.getNo_local(), b.getNo_local());
     }
 
     public void supprimerLocation(){
@@ -326,6 +401,10 @@ public class LocationController implements Initializable {
             supField.setText(Integer.toString(superficie));
             anneeField.setText(Integer.toString(anneeConstruction));
         }
+    }
+
+    public void setLoginModel(LoginModel loginModel) {
+        this.loginModel = loginModel;
     }
 
 }

@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class LocationModel {
     Connection connection;
@@ -81,6 +82,47 @@ public List<Location>  getListLocations() throws SQLException {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Location getLocationbyID(int indice){
+        PreparedStatement std = null;
+        ResultSet resultat = null;
+        Location location = null;
+
+        try {
+            std = connection.prepareStatement("SELECT * FROM locations WHERE id_location = ?;");
+            std.setInt(1, indice);
+
+            resultat = std.executeQuery();
+            while (resultat.next()){
+                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"));
+            }
+            std.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return location;
+    }
+
+    public Location getLocationbyAdresse(Location nouvelleLocation){
+        PreparedStatement std = null;
+        ResultSet resultat = null;
+        Location location = null;
+
+        try {
+            // 1. Si l'adresse existe deja et que le numero de batiment est le meme :
+            std = connection.prepareStatement("SELECT * FROM locations WHERE adresse LIKE ?;");
+            std.setString(1, "%" + nouvelleLocation.getAdresse() + "%");
+
+            resultat = std.executeQuery();
+            if (resultat.next()) {
+                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"));
+            }
+            std.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return location;
     }
 
     public void deleteLocation(int indice) throws SQLException {

@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Mooli&family=Roboto&display=swap');
+
+#myPane, #myLoginPanel{
+    -fx-font-family: 'Mooli', sans-serif;
+    -fx-font-weight: bold;
+}
+
+#myLoginPanel{
+    -fx-background-image: url("img/accueil.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-text-fill: #f0e6c5;
+}
+
+#myPane{
+    -fx-background-image: url("img/page_principale.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+
+#gradientOverlay {
+    -fx-background-color: linear-gradient(to bottom, rgba(68, 147, 187, 0.3), rgba(255, 255, 255, 0.3));
+}
+
+#userImg{
+-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.9), 15, 0, 0, 0);
+-fx-padding: 10;
+}
+
+#myMainLabel{
+-fx-effect: dropshadow(gaussian, #193e61, 10, 0.5, 0, 0);
+}
+
+#myLoginGreetings{
+-fx-effect: dropshadow(gaussian, #255066, 10, 0.5, 0, 0);
+}
+
+#infoLabel{
+-fx-text-fill: #e1e918;
+-fx-font-weight: bold;
+-fx-font-size: 15px;
+}
+
+.label-centered {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.text-glow_title {
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+}
+
+.text-glow {
+    -fx-effect: dropshadow(gaussian, #000000, 10, 0.5, 0, 0);
+    -fx-text-fill: white;
+}
+
+.success{
+-fx-text-fill: green;
+}
+
+.error{
+-fx-text-fill: red;
+}
+
+.text-size{
+    -fx-font-size: 20px;
+}
+
+
+.hidden {
+    -fx-background-color: #b5b5b580;
+    -fx-pointer-events: none;
+    -fx-cursor: default;
+}
+
+.btn {
+    -fx-box-shadow: inset 0px 1px 0px 0px #bbdaf7;
+    -fx-background-color: #4493bb;
+    -fx-background-radius: 6px;
+    -fx-border-color: #84bbf3;
+    -fx-border-radius: 6px;
+    -fx-border-width: 1px;
+    -fx-display: inline-block;
+    -fx-cursor: hand;
+    -fx-color: #ffffff;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 4px;
+    -fx-text-decoration: none;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.2), 5, 0.0, 0, 1);
+}
+
+.btn:hover {
+    -fx-background-color: #3d84a8;
+}
+
+.btn:pressed {
+    -fx-position: relative;
+    -fx-top: 1px;
+}

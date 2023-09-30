@@ -10,17 +10,31 @@ import java.util.logging.Logger;
 public class LoginModel {
     // Responsable de se connecter à la base de donnees, pour l'affichage de la BD :
     Connection connection;
-    public LoginModel(){
+    String prenom;
+    String userID;
+
+    public LoginModel()throws SQLException{
+        try {
         connection = MySqlConnection.getInstance();
+        } catch (Exception e) {
+            System.out.println("Erreur: " + e.getMessage());
+        }
     }
 
     // verifier si la connection est bien etablie :
     public boolean isDBConnected(){
         try{
             return !connection.isClosed();
-        }catch (SQLException e){
+        }catch (Exception e){
             return false;
         }
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+    public String getUserID() {
+        return userID;
     }
 
     public boolean LoginNow(String user, String password) throws SQLException {
@@ -34,10 +48,14 @@ public class LoginModel {
 
             // execution du statement :
             resultat = std.executeQuery();
-            return resultat.next();
+            resultat.next();
+            prenom = resultat.getString("prenom");
+            userID = resultat.getString("id_utilisateur");
+
+            return !prenom.isEmpty();
 
         }catch (SQLException e) {
-            Logger.getLogger(MySqlConnection.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("Erreur sur la requete : " +e.getMessage());
         }
         finally {
             assert std !=null;
