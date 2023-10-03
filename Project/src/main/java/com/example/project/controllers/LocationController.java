@@ -39,17 +39,9 @@ public class LocationController implements Initializable {
     public BorderPane myPane;
 
     @FXML
-    public Button addBtn;
-    @FXML
-    public Button saveBtn;
-    @FXML
     public Button modifBtn;
     @FXML
     public Button delBtn;
-    @FXML
-    public Button clearBtn;
-    @FXML
-    public ImageView iconBtn;
 
     @FXML
     public GridPane gridPane;
@@ -124,18 +116,8 @@ public class LocationController implements Initializable {
         myPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             if (!myTable.getBoundsInParent().contains(event.getSceneX(), event.getSceneY())) {
                 myTable.getSelectionModel().clearSelection();
-            } else {
-                switcherAffichage(true);
             }
         });
-
-        // Seuls les boutons "Ajouter", celui pour modifier l'affichage  et le bouton "Effacer selection" seront visibles au demarrage de la page :
-        saveBtn.setVisible(false);
-        delBtn.setVisible(false);
-
-        // Le champ pour l'ID est desactive car la base de donnees gere les identifiants (auto-incrementation) :
-        idField.getStyleClass().add("hidden");
-        idField.setEditable(false);
 
         // Ajout du systeme de mapping aux futures colonnes du tableau (les proprietes doivent correspondre aux noms exacts des attributs de Location) :
         idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
@@ -162,7 +144,7 @@ public class LocationController implements Initializable {
     //Appel de la methode pour le retour à l'écran de connexion :
     @FXML
     public void retourLogin() throws IOException {
-        addBtn.getScene().getWindow().hide(); // recuperation de la scene en cours via n'importe quel element (ici, le bouton Ajouter)
+        modifBtn.getScene().getWindow().hide(); // recuperation de la scene en cours via n'importe quel element (ici, le bouton Ajouter)
         Stage myStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 620, 440);
@@ -232,40 +214,6 @@ public class LocationController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void switcherAffichage(){
-
-
-        String currentIcon = addBtn.isVisible() ?
-                "/img/ajouter_icon.png" :
-                "/img/modifier_icon.png";
-        InputStream stream = getClass().getResourceAsStream(currentIcon);
-
-        if (stream != null) {
-            Image image = new Image(stream);
-            iconBtn.setImage(image);
-        } else {
-            System.err.println("Image non trouvee : " + currentIcon);
-        }
-
-        if(addBtn.isVisible()){
-          addBtn.setVisible(false);
-            saveBtn.setVisible(true);
-            delBtn.setVisible(true);
-        } else{
-            addBtn.setVisible(true);
-            saveBtn.setVisible(false);
-            delBtn.setVisible(false);
-        }
-
-        viderChamps();
-    }
-
-    public void switcherAffichage(boolean on){
-        addBtn.setVisible(!on);
-        saveBtn.setVisible(on);
-        delBtn.setVisible(on);
     }
 
     public void modifierLocation(){

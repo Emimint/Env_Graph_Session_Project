@@ -5,11 +5,15 @@ package com.example.project.controllers;/*
  */
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-public class AddController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class AddController implements Initializable {
 
     @FXML
     public Button saveBtn;
@@ -35,4 +39,12 @@ public class AddController {
 
     @FXML
     public TextField anneeField;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        // Le champ pour l'ID est desactive car la base de donnees gere les identifiants (auto-incrementation) :
+        idField.getStyleClass().add("hidden");
+        idField.setEditable(false);
+    }
 }

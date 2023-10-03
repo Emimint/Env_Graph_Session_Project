@@ -33,10 +33,8 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-             <Button fx:id="modifBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#switcherAffichage" styleClass="btn" />
-             <Button fx:id="saveBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#modifierLocation" prefHeight="42.0" prefWidth="136.0" styleClass="btn" text="Sauvegarder" />
+             <Button fx:id="modifBtn" contentDisplay="CENTER" mnemonicParsing="false" styleClass="btn" text="Modifier" />
             <Button fx:id="delBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#supprimerLocation" prefHeight="36.0" prefWidth="109.0" styleClass="btn" text="Supprimer" />
-             <Button fx:id="clearBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#viderChamps" prefHeight="36.0" prefWidth="156.0" styleClass="btn" text="Effacer selection" />
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
