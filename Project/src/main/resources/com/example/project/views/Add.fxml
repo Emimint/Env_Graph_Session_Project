@@ -50,9 +50,9 @@
       </GridPane>
       <HBox prefHeight="86.0" prefWidth="600.0">
          <children>
-            <Button mnemonicParsing="false" text="Button" />
-            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Button" />
-            <Button layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" text="Sauvegarder" />
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Effacer" />
+            <Button layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Quitter" />
          </children>
       </HBox>
    </children>
