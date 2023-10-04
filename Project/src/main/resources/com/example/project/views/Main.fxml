@@ -55,19 +55,25 @@
    <top>
       <VBox prefHeight="101.0" prefWidth="856.0" BorderPane.alignment="CENTER">
          <children>
-            <MenuBar fx:id="ajoutMenu">
+            <MenuBar>
               <menus>
-                  <Menu mnemonicParsing="false" text="Ajouter" onAction="#ouvrirAjouter"/>
-                  <Menu fx:id="modifMenu" mnemonicParsing="false" text="Modifier" />
-                  <Menu fx:id="deleteMenu" mnemonicParsing="false" text="Supprimer" />
+                  <Menu mnemonicParsing="false" text="Navigation">
+                     <items>
+                        <MenuItem fx:id="ajoutMenu" onAction="#ouvrirAjouter" mnemonicParsing="false" text="Ajouter" />
+                        <MenuItem fx:id="modifMenu" mnemonicParsing="false" text="Modifier" />
+                        <MenuItem fx:id="deleteMenu" mnemonicParsing="false" text="Supprimer" />
+                        <MenuItem fx:id="quitMenu" mnemonicParsing="false" text="Quitter" onAction="#quitter"/>
+                     </items></Menu>
                 <Menu mnemonicParsing="false" text="Generer rapports">
                   <items>
                     <MenuItem fx:id="rapportStd" mnemonicParsing="false" text="Rapport standard" />
                         <MenuItem fx:id="searchMenu" mnemonicParsing="false" text="Recherche..." />
                   </items>
                 </Menu>
-                <Menu fx:id="aboutMenu" mnemonicParsing="false" text="A propos" onAction="#ouvrirReadMe"/>
-                <Menu fx:id="quitMenu" mnemonicParsing="false" text="Quitter" onAction="#quitter"/>
+                <Menu mnemonicParsing="false" onAction="#ouvrirReadMe" text="Aide">
+                     <items>
+                        <MenuItem fx:id="aboutMenu" mnemonicParsing="false" text="A propos..." />
+                     </items></Menu>
               </menus>
             </MenuBar>
             <HBox>

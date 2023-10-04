@@ -35,21 +35,23 @@ public class LocationController implements Initializable {
 
     private LoginModel loginModel;
 
+    private String prenomUser;
+
     // Buttons de la bar de navigation :
     @FXML
-    public MenuBar ajoutMenu;
+    public MenuItem ajoutMenu;
     @FXML
-    public Menu modifMenu;
+    public MenuItem modifMenu;
     @FXML
-    public Menu deleteMenu;
+    public MenuItem deleteMenu;
     @FXML
     public MenuItem rapportStd;
     @FXML
     public MenuItem searchMenu;
     @FXML
-    public Menu aboutMenu;
+    public MenuItem aboutMenu;
     @FXML
-    public Menu quitMenu;
+    public MenuItem quitMenu;
 
 
     @FXML
@@ -161,12 +163,7 @@ public class LocationController implements Initializable {
         // Envoyer une requete SQL pour recuperer tous les champs de la table "locations" :
         try {
             // Ajout des colonnes du tableau :
-            for (Location loc:
-                    myLocationModel.getListLocations()) {
-                System.out.println(loc);
-            }
             myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -250,6 +247,7 @@ public class LocationController implements Initializable {
         }
     }
 
+
     public void supprimerLocation(){
         try {
             // On recupere l'indice de la colonne ID:
@@ -308,6 +306,7 @@ public class LocationController implements Initializable {
     }
 
     public void ouvrirReadMe() throws IOException {
+        try{
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/ReadMe.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage myStage = new Stage();
@@ -315,6 +314,9 @@ public class LocationController implements Initializable {
         myStage.setTitle("A propos de ce projet");
         myStage.setScene(scene);
         myStage.show();
+        } catch (Exception e) {
+            System.out.println("Erreur: " +e);
+        }
     }
 
     public void quitter(){
