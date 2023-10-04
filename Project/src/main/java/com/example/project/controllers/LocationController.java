@@ -200,51 +200,18 @@ public class LocationController implements Initializable {
         myStage.show();
     }
 
+    public void ouvrirModifier() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Modify.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage myStage = new Stage();
 
-    public void modifierLocation(){
-        try {
-            // On recupere l'indice de la colonne ID:
-            String indice = idField.getText();
+        //On transmet les informations du LocationModel au nouveau controleur:
+        ModifyController modifyController = fxmlLoader.getController();
+        modifyController.setLocationModel(myLocationModel);
 
-            // On cree l'objet en utilisant l'indice et les valeurs entrees dans les differents champs :
-            Location locationSelectionnee = new Location();
-            locationSelectionnee.setID(indice);
-            locationSelectionnee.setNoLocal(localField.getText());
-            locationSelectionnee.setAdresse(adresseField.getText());
-            locationSelectionnee.setSuperficie(supField.getText());
-            locationSelectionnee.setAnneeConstruction(anneeField.getText());
-
-            // On appelle une boite de dialogue pour demander confirmation la demande de modification a l'utilisateur :
-            Alert dialogC = new Alert(Alert.AlertType.CONFIRMATION);
-            dialogC.setTitle("Modification de la location #" + indice);
-            dialogC.setHeaderText(null);
-            dialogC.setContentText("Voulez-vous modifier cette adresse?");
-            Optional<ButtonType> answer = dialogC.showAndWait();
-            if (answer.get() == ButtonType.OK) {
-                myLocationModel.updateLocation(locationSelectionnee);
-                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
-                dialog.setTitle("Confirmation");
-                dialog.setHeaderText("Modification effectuee.");
-                dialog.showAndWait();
-
-                // On reload la nouvelle table:
-                myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
-            }
-            else {
-                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
-                dialog.setTitle("Annulation");
-                dialog.setHeaderText("Annulation de la modification.");
-                dialog.showAndWait();
-            }
-        } catch (IllegalArgumentException e){
-            Alert dialogW = new Alert(Alert.AlertType.WARNING);
-            dialogW.setTitle("Erreur");
-            dialogW.setHeaderText(null);
-            dialogW.setContentText("Attention : "+ e.getMessage());
-            dialogW.showAndWait();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        myStage.setTitle("Modifier une nouvelle location existante");
+        myStage.setScene(scene);
+        myStage.show();
     }
 
 

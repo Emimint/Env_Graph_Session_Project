@@ -38,7 +38,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-             <Button fx:id="modifBtn" contentDisplay="CENTER" mnemonicParsing="false" styleClass="btn" text="Modifier" />
+             <Button fx:id="modifBtn" contentDisplay="CENTER" mnemonicParsing="false" styleClass="btn" text="Modifier" onAction="#ouvrirModifier"/>
             <Button fx:id="delBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#supprimerLocation" prefHeight="36.0" prefWidth="109.0" styleClass="btn" text="Supprimer" />
          </children>
          <BorderPane.margin>
@@ -60,7 +60,7 @@
                   <Menu mnemonicParsing="false" text="Navigation">
                      <items>
                         <MenuItem fx:id="ajoutMenu" onAction="#ouvrirAjouter" mnemonicParsing="false" text="Ajouter" />
-                        <MenuItem fx:id="modifMenu" mnemonicParsing="false" text="Modifier" />
+                        <MenuItem fx:id="modifMenu" mnemonicParsing="false" text="Modifier" onAction="#ouvrirModifier" />
                         <MenuItem fx:id="deleteMenu" mnemonicParsing="false" text="Supprimer" />
                         <MenuItem fx:id="quitMenu" mnemonicParsing="false" text="Quitter" onAction="#quitter"/>
                      </items></Menu>
