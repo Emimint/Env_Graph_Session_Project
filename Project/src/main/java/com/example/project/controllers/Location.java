@@ -7,10 +7,15 @@ public class Location {
     private String  adresse;
     private int  superficie;
     private int  annee_construction; // doit varier de 1900 a l'annee courante (2023)
+    private boolean status;
+    private boolean disponible;
+    private int date_debut;
+    private int date_fin;
+    private int prix_pied_carre;
 
     public Location(){}
 
-    public Location(int ID, String no_local, String adresse, int superficie, int annee_construction){
+    public Location(int ID, String no_local, String adresse, int superficie, int annee_construction, boolean status, boolean disponible, int date_debut, int date_fin, int prix_pied_carre){
         this.ID = ID;
         this.no_local = no_local;
         this.adresse = adresse;

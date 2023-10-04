@@ -59,6 +59,16 @@ public class LocationController implements Initializable {
     public TableColumn<Location, Integer> supColumn;
     @FXML
     public TableColumn<Location, Integer> anneeColumn;
+    @FXML
+    public TableColumn<Location, Boolean> statusColumn;
+    @FXML
+    public TableColumn<Location, Boolean> dispoColumn;
+    @FXML
+    public TableColumn<Location, Integer> debColumn;
+    @FXML
+    public TableColumn<Location, Integer> finColumn;
+    @FXML
+    public TableColumn<Location, Integer> prixColumn;
 
     @FXML
     public MenuButton userBtn; // bouton de personnalisation (inclus dans un bouton-menu avec bouton de deconnexion)
@@ -125,6 +135,11 @@ public class LocationController implements Initializable {
         adresseColumn.setCellValueFactory(new PropertyValueFactory<>("Adresse"));
         supColumn.setCellValueFactory(new PropertyValueFactory<>("Superficie"));
         anneeColumn.setCellValueFactory(new PropertyValueFactory<>("annee_construction"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        dispoColumn.setCellValueFactory(new PropertyValueFactory<>("disponible"));
+        debColumn.setCellValueFactory(new PropertyValueFactory<>("date_debut"));
+        finColumn.setCellValueFactory(new PropertyValueFactory<>("date_fin"));
+        prixColumn.setCellValueFactory(new PropertyValueFactory<>("prix_pied_carre"));
 
         // Envoyer une requete SQL pour recuperer tous les champs de la table "locations" :
         try {

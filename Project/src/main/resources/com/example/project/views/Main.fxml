@@ -19,11 +19,16 @@
    <center>
       <TableView fx:id="myTable" opacity="0.8" prefWidth="450.0" BorderPane.alignment="CENTER">
           <columns>
-              <TableColumn fx:id="idColumn" text="ID" />
-              <TableColumn fx:id="localColumn" text="No de local" />
-              <TableColumn fx:id="adresseColumn" text="Adresse" />
-              <TableColumn fx:id="supColumn" text="Superficie" />
-              <TableColumn fx:id="anneeColumn" text="Année de construction" />
+              <TableColumn fx:id="idColumn" prefWidth="41.333312034606934" text="ID" />
+              <TableColumn fx:id="localColumn" prefWidth="70.00006484985352" text="No de local" />
+              <TableColumn fx:id="adresseColumn" prefWidth="129.33330535888672" text="Adresse" />
+              <TableColumn fx:id="supColumn" prefWidth="68.00007629394531" text="Superficie" />
+              <TableColumn fx:id="anneeColumn" prefWidth="142.0" text="Année de construction" />
+            <TableColumn fx:id="statusColumn" prefWidth="46.666748046875" text="Status" />
+            <TableColumn fx:id="dispoColumn" prefWidth="72.66659545898438" text="Disponible" />
+            <TableColumn fx:id="debColumn" prefWidth="92.0" text="Date de début" />
+            <TableColumn fx:id="finColumn" prefWidth="75.0" text="Date de fin" />
+            <TableColumn fx:id="prixColumn" prefWidth="115.33331298828125" text="Prix au pied carré" />
           </columns>
          <opaqueInsets>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
