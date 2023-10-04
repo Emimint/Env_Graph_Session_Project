@@ -18,14 +18,6 @@
     -fx-background-repeat: no-repeat;
 }
 
-.overlay {
-    -fx-background-color: rgba(0, 0, 0, 0.5);
-    -fx-background-radius: 0;
-    -fx-background-insets: 0;
-    -fx-padding: 0;
-    -fx-alignment: center;
-}
-
 #gradientOverlay {
     -fx-background-color: linear-gradient(to bottom, rgba(68, 147, 187, 0.3), rgba(255, 255, 255, 0.3));
 }

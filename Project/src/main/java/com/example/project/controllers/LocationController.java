@@ -39,9 +39,6 @@ public class LocationController implements Initializable {
 
     private String prenomUser;
 
-    @FXML
-    private Pane overlay;
-
     // Buttons de la bar de navigation :
     @FXML
     public MenuItem ajoutMenu;
@@ -118,8 +115,6 @@ public class LocationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        overlay.setVisible(true);
-        overlay.toFront();
         
         //On commence par personnaliser l'affichage avec le prenom et l'image de l'utilisateur :
         Platform.runLater(() -> {
@@ -291,7 +286,6 @@ public class LocationController implements Initializable {
         // On s'assure que la nouvelle fenetre sera la seule active :
         Stage myStage = new Stage();
         myStage.initModality(Modality.APPLICATION_MODAL);
-        overlay.setVisible(true);
 
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/ReadMe.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
