@@ -26,7 +26,6 @@ public List<Location>  getListLocations() throws SQLException {
         resultat = std.executeQuery();
 
         while (resultat.next()){
-
             Location location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
             locations.add(location);
         }

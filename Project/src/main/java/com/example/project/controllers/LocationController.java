@@ -144,6 +144,10 @@ public class LocationController implements Initializable {
         // Envoyer une requete SQL pour recuperer tous les champs de la table "locations" :
         try {
             // Ajout des colonnes du tableau :
+            for (Location loc:
+                    myLocationModel.getListLocations()) {
+                System.out.println(loc);
+            }
             myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
 
         } catch (SQLException e) {
