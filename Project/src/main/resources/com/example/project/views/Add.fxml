@@ -30,6 +30,9 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <Label styleClass="text-glow, text-size" text="ID" />
@@ -42,6 +45,12 @@
             <TextField fx:id="adresseField" opacity="0.9" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="supField" opacity="0.9" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="anneeField" opacity="0.9" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label styleClass="text-glow, text-size" text="Date de debut" wrapText="true" GridPane.rowIndex="5" />
+            <Label styleClass="text-glow, text-size" text="Date de fin" wrapText="true" GridPane.rowIndex="6" />
+            <Label styleClass="text-glow, text-size" text="Prix au pied carre" wrapText="true" GridPane.rowIndex="7" />
+            <TextField fx:id="debField" opacity="0.9" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="finField" opacity="0.9" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="prixField" opacity="0.9" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -49,9 +58,9 @@
       </GridPane>
       <HBox alignment="CENTER" prefHeight="86.0" prefWidth="600.0" spacing="10.0">
          <children>
-            <Button fx:id="saveBtn" mnemonicParsing="false" text="Sauvegarder" />
-            <Button fx:id="clrBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Effacer" />
-            <Button fx:id="quitBtn" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Quitter" />
+            <Button fx:id="saveBtn" mnemonicParsing="false" text="Sauvegarder" onAction="#ajouterLocation"/>
+            <Button fx:id="clrBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Effacer" onAction="#viderChamps"/>
+            <Button fx:id="quitBtn" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Quitter" onAction="#closeButtonAction"/>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

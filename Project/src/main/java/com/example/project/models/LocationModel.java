@@ -103,7 +103,7 @@ public List<Location>  getListLocations() throws SQLException {
         return location;
     }
 
-    public Location getLocationbyAdresse(Location nouvelleLocation){
+    public Location getLocationbyAdresse(String adresse){
         PreparedStatement std = null;
         ResultSet resultat = null;
         Location location = null;
@@ -111,7 +111,7 @@ public List<Location>  getListLocations() throws SQLException {
         try {
             // 1. Si l'adresse existe deja et que le numero de batiment est le meme :
             std = connection.prepareStatement("SELECT * FROM locations WHERE adresse LIKE ?;");
-            std.setString(1, "%" + nouvelleLocation.getAdresse() + "%");
+            std.setString(1, "%" + adresse + "%");
 
             resultat = std.executeQuery();
             if (resultat.next()) {

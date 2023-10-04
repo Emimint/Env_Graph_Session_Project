@@ -55,33 +55,19 @@
    <top>
       <VBox prefHeight="101.0" prefWidth="856.0" BorderPane.alignment="CENTER">
          <children>
-            <MenuBar>
+            <MenuBar fx:id="ajoutMenu">
               <menus>
-                  <Menu mnemonicParsing="false" text="Unspecified Menu">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                    </items>
-                  </Menu>
-                <Menu mnemonicParsing="false" text="File">
+                  <Menu mnemonicParsing="false" text="Ajouter" onAction="#ouvrirAjouter"/>
+                  <Menu fx:id="modifMenu" mnemonicParsing="false" text="Modifier" />
+                  <Menu fx:id="deleteMenu" mnemonicParsing="false" text="Supprimer" />
+                <Menu mnemonicParsing="false" text="Generer rapports">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
+                    <MenuItem fx:id="rapportStd" mnemonicParsing="false" text="Rapport standard" />
+                        <MenuItem fx:id="searchMenu" mnemonicParsing="false" text="Recherche..." />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
-                  <Menu mnemonicParsing="false" text="A propos">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                    </items>
-                  </Menu>
+                <Menu fx:id="aboutMenu" mnemonicParsing="false" text="A propos" onAction="#ouvrirReadMe"/>
+                <Menu fx:id="quitMenu" mnemonicParsing="false" text="Quitter" onAction="#quitter"/>
               </menus>
             </MenuBar>
             <HBox>
