@@ -86,13 +86,14 @@ public class AddController implements Initializable {
                 // Avant de faire l'ajout, on verifie si cette adresse est deja dans la base de donnees:
                 Location locationTrouve = myLocationModel.getLocationbyAdresse(adresseField.getText());
 
+                if(locationTrouve != null ){
                 // On autorise l'ajout que si certaines conditions sont bien respectees :
                 boolean ajoutValide =
                         // 1) ... l'annee de construction est differente :
                         Objects.equals(anneeField.getText(), Integer.toString(locationTrouve.getAnnee_construction())) &&
                         // 2) ... l'annee de construction et le numero de local sont identiques :
                         !Objects.equals(localField.getText(), locationTrouve.getNo_local());
-                if( locationTrouve != null && !ajoutValide){
+                if( !ajoutValide){
                     Alert dialog = new Alert(Alert.AlertType.INFORMATION);
                     dialog.setTitle("Annulation");
                     dialog.setHeaderText("Votre requete ne peut etre acceptee. Veuillez verifier:\n" +
@@ -101,18 +102,20 @@ public class AddController implements Initializable {
                     dialog.showAndWait();
                     return;
                 }
+                }
+                // On cree l'objet en utilisant l'indice et les valeurs entrees dans les differents champs :
+
                 // On requere le prochain indice de la colonne ID via une requete SQL :
                 String nextIndice = String.valueOf(myLocationModel.getNextIndice());
 
-                // On cree l'objet en utilisant l'indice et les valeurs entrees dans les differents champs :
                 Location nouvelleLocation = new Location();
                 nouvelleLocation.setID(nextIndice);
+                nouvelleLocation.setStatus("True");
+                nouvelleLocation.setDisponible("True");
                 nouvelleLocation.setNoLocal(localField.getText());
                 nouvelleLocation.setAdresse(adresseField.getText());
                 nouvelleLocation.setSuperficie(supField.getText());
                 nouvelleLocation.setAnneeConstruction(anneeField.getText());
-                nouvelleLocation.setStatus("True");
-                nouvelleLocation.setDisponible("True");
                 nouvelleLocation.setDate_debut(debField.getText());
                 nouvelleLocation.setDate_fin(finField.getText());
                 nouvelleLocation.setPrix_pied_carre(prixField.getText());

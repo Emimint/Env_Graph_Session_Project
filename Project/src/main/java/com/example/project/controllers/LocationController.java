@@ -23,7 +23,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -36,6 +38,9 @@ public class LocationController implements Initializable {
     private LoginModel loginModel;
 
     private String prenomUser;
+
+    @FXML
+    private Pane overlay;
 
     // Buttons de la bar de navigation :
     @FXML
@@ -113,6 +118,9 @@ public class LocationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        overlay.setVisible(true);
+        overlay.toFront();
+        
         //On commence par personnaliser l'affichage avec le prenom et l'image de l'utilisateur :
         Platform.runLater(() -> {
 
@@ -175,9 +183,12 @@ public class LocationController implements Initializable {
     }
 
     public void ouvrirAjouter() throws IOException {
+        // On s'assure que la nouvelle fenetre sera la seule active :
+        Stage myStage = new Stage();
+        myStage.initModality(Modality.APPLICATION_MODAL);
+
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Add.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        Stage myStage = new Stage();
 
         //On transmet les informations du LocationModel au nouveau controleur:
         AddController ajouterController = fxmlLoader.getController();
@@ -191,7 +202,7 @@ public class LocationController implements Initializable {
     //Appel de la methode pour le retour à l'écran de connexion :
     @FXML
     public void retourLogin() throws IOException {
-        modifBtn.getScene().getWindow().hide(); // recuperation de la scene en cours via n'importe quel element (ici, le bouton Ajouter)
+        modifBtn.getScene().getWindow().hide(); // recuperation de la scene en cours via n'importe quel element (ici, le bouton de sauvegarde)
         Stage myStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 620, 440);
@@ -201,9 +212,12 @@ public class LocationController implements Initializable {
     }
 
     public void ouvrirModifier() throws IOException {
+        // On s'assure que la nouvelle fenetre sera la seule active :
+        Stage myStage = new Stage();
+        myStage.initModality(Modality.APPLICATION_MODAL);
+
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Modify.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        Stage myStage = new Stage();
 
         //On transmet les informations du LocationModel au nouveau controleur:
         ModifyController modifyController = fxmlLoader.getController();
@@ -274,15 +288,20 @@ public class LocationController implements Initializable {
 
     public void ouvrirReadMe() throws IOException {
         try{
+        // On s'assure que la nouvelle fenetre sera la seule active :
+        Stage myStage = new Stage();
+        myStage.initModality(Modality.APPLICATION_MODAL);
+        overlay.setVisible(true);
+
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/ReadMe.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        Stage myStage = new Stage();
 
         myStage.setTitle("A propos de ce projet");
         myStage.setScene(scene);
         myStage.show();
-        } catch (Exception e) {
+        } catch (IOException  e) {
             System.out.println("Erreur: " +e);
+            e.printStackTrace();
         }
     }
 
