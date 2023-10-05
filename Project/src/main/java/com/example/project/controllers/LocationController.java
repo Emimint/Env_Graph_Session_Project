@@ -326,16 +326,25 @@ public class LocationController implements Initializable {
             String timestamp = now.format(formatter);
 
 
-            String output_dir = "data/output";
+            String output_dir = "/src/data/output"; // repertoire de destination
             String filename = output_dir + "/rapport_du_" +timestamp+".pdf";
 
+            String dir = System.getProperty("user.dir"); // repertoire du project
+            System.out.println(dir);
 
+            File file = new File(dir,filename);
+            System.out.println(file.getPath());
 
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(Paths.get(filename).toFile()));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
             document.open();
             document.add(new Paragraph("A Hello World PDF document."));
             document.close();
             writer.close();
+
+            Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+            dialog.setTitle("Confirmation");
+            dialog.setHeaderText("Rapport cree avec succes.");
+            dialog.showAndWait();
         } catch (Exception e)
         {
             e.printStackTrace();
