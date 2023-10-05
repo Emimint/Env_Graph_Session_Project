@@ -13,7 +13,8 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert;
@@ -27,10 +28,26 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class LocationController implements Initializable {
@@ -295,6 +312,32 @@ public class LocationController implements Initializable {
         myStage.show();
         } catch (IOException  e) {
             System.out.println("Erreur: " +e);
+            e.printStackTrace();
+        }
+    }
+
+    public void genererRapport(){
+        Document document = new Document();
+        try
+        {
+            // Creer un timestamp pour le nom du fichier :
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd_HHmmss");
+            String timestamp = now.format(formatter);
+
+
+            String output_dir = "data/output";
+            String filename = output_dir + "/rapport_du_" +timestamp+".pdf";
+
+
+
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(Paths.get(filename).toFile()));
+            document.open();
+            document.add(new Paragraph("A Hello World PDF document."));
+            document.close();
+            writer.close();
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
