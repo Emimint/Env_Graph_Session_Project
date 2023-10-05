@@ -8,6 +8,8 @@ package com.example.project.controllers;
 
 import com.example.project.models.LocationModel;
 import com.example.project.models.LoginModel;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -18,6 +20,7 @@ import java.nio.file.Paths;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,12 +31,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import com.itextpdf.text.pdf.PdfWriter;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
+
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -45,7 +46,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.*;
 import java.net.URL;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -345,6 +346,48 @@ public class LocationController implements Initializable {
             dialog.setTitle("Confirmation");
             dialog.setHeaderText("Rapport cree avec succes.");
             dialog.showAndWait();
+
+            /* Source: https://stackoverflow.com/questions/33385442/how-to-write-data-from-a-tableview-to-the-pdf
+            /// Test :
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/login", "root", "");
+            Statement stmt = con.createStatement();
+            /* Define the SQL query */
+            ResultSet query_set = stmt.executeQuery("SELECT *From tablename");
+            /* Step-2: Initialize PDF documents - logical objects */
+            Document my_pdf_report = new Document();
+            PdfWriter.getInstance(my_pdf_report, new FileOutputStream("pdf_report_from_sql_using_java.pdf"));
+            my_pdf_report.open();
+            //we have four columns in our table
+            PdfPTable my_report_table = new PdfPTable(4);
+            //create a cell object
+            PdfPCell table_cell;
+
+            while (query_set.next()) {
+                String dept_id = query_set.getString("code");
+                table_cell=new PdfPCell(new Phrase(dept_id));
+                my_report_table.addCell(table_cell);
+                String dept_name=query_set.getString("category");
+                table_cell=new PdfPCell(new Phrase(dept_name));
+                my_report_table.addCell(table_cell);
+                String manager_id=query_set.getString("total");
+                table_cell=new PdfPCell(new Phrase(manager_id));
+                my_report_table.addCell(table_cell);
+                String location_id=query_set.getString("Sum");
+                table_cell=new PdfPCell(new Phrase(location_id));
+                my_report_table.addCell(table_cell);
+            }
+            /* Attach report table to PDF */
+            my_pdf_report.add(my_report_table);
+            my_pdf_report.close();
+
+            /* Close all DB related objects */
+            query_set.close();
+            stmt.close();
+            con.close();
+
+            */
+
         } catch (Exception e)
         {
             e.printStackTrace();
