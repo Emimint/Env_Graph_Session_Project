@@ -26,8 +26,7 @@ public List<Location>  getListLocations() throws SQLException {
         resultat = std.executeQuery();
 
         while (resultat.next()){
-
-            Location location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"));
+            Location location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
             locations.add(location);
         }
         std.close();
@@ -95,7 +94,7 @@ public List<Location>  getListLocations() throws SQLException {
 
             resultat = std.executeQuery();
             while (resultat.next()){
-                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"));
+                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
             }
             std.close();
         } catch (SQLException e) {
@@ -104,7 +103,7 @@ public List<Location>  getListLocations() throws SQLException {
         return location;
     }
 
-    public Location getLocationbyAdresse(Location nouvelleLocation){
+    public Location getLocationbyAdresse(String adresse){
         PreparedStatement std = null;
         ResultSet resultat = null;
         Location location = null;
@@ -112,11 +111,11 @@ public List<Location>  getListLocations() throws SQLException {
         try {
             // 1. Si l'adresse existe deja et que le numero de batiment est le meme :
             std = connection.prepareStatement("SELECT * FROM locations WHERE adresse LIKE ?;");
-            std.setString(1, "%" + nouvelleLocation.getAdresse() + "%");
+            std.setString(1, "%" + adresse + "%");
 
             resultat = std.executeQuery();
             if (resultat.next()) {
-                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"));
+                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
             }
             std.close();
         } catch (SQLException e) {

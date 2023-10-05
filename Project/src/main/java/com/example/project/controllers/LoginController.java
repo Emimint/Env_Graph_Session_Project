@@ -76,6 +76,7 @@ public class LoginController implements Initializable {
         try {
             if (loginModel.LoginNow(usrName.getText(), pwdField.getText())) {
                 ((Node) (event.getSource())).getScene().getWindow().hide();
+
                 FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Main.fxml"));
                 Scene scene = new Scene(fxmlLoader.load());
                 Stage myStage = new Stage();

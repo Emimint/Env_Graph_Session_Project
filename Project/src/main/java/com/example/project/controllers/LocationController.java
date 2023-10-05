@@ -23,7 +23,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -35,21 +37,32 @@ public class LocationController implements Initializable {
 
     private LoginModel loginModel;
 
+    private String prenomUser;
+
+    // Buttons de la bar de navigation :
+    @FXML
+    public MenuItem ajoutMenu;
+    @FXML
+    public MenuItem modifMenu;
+    @FXML
+    public MenuItem deleteMenu;
+    @FXML
+    public MenuItem rapportStd;
+    @FXML
+    public MenuItem searchMenu;
+    @FXML
+    public MenuItem aboutMenu;
+    @FXML
+    public MenuItem quitMenu;
+
+
     @FXML
     public BorderPane myPane;
 
     @FXML
-    public Button addBtn;
-    @FXML
-    public Button saveBtn;
-    @FXML
     public Button modifBtn;
     @FXML
     public Button delBtn;
-    @FXML
-    public Button clearBtn;
-    @FXML
-    public ImageView iconBtn;
 
     @FXML
     public GridPane gridPane;
@@ -67,6 +80,16 @@ public class LocationController implements Initializable {
     public TableColumn<Location, Integer> supColumn;
     @FXML
     public TableColumn<Location, Integer> anneeColumn;
+    @FXML
+    public TableColumn<Location, Boolean> statusColumn;
+    @FXML
+    public TableColumn<Location, Boolean> dispoColumn;
+    @FXML
+    public TableColumn<Location, Integer> debColumn;
+    @FXML
+    public TableColumn<Location, Integer> finColumn;
+    @FXML
+    public TableColumn<Location, Integer> prixColumn;
 
     @FXML
     public MenuButton userBtn; // bouton de personnalisation (inclus dans un bouton-menu avec bouton de deconnexion)
@@ -92,6 +115,7 @@ public class LocationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        
         //On commence par personnaliser l'affichage avec le prenom et l'image de l'utilisateur :
         Platform.runLater(() -> {
 
@@ -124,18 +148,8 @@ public class LocationController implements Initializable {
         myPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             if (!myTable.getBoundsInParent().contains(event.getSceneX(), event.getSceneY())) {
                 myTable.getSelectionModel().clearSelection();
-            } else {
-                switcherAffichage(true);
             }
         });
-
-        // Seuls les boutons "Ajouter", celui pour modifier l'affichage  et le bouton "Effacer selection" seront visibles au demarrage de la page :
-        saveBtn.setVisible(false);
-        delBtn.setVisible(false);
-
-        // Le champ pour l'ID est desactive car la base de donnees gere les identifiants (auto-incrementation) :
-        idField.getStyleClass().add("hidden");
-        idField.setEditable(false);
 
         // Ajout du systeme de mapping aux futures colonnes du tableau (les proprietes doivent correspondre aux noms exacts des attributs de Location) :
         idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
@@ -143,12 +157,16 @@ public class LocationController implements Initializable {
         adresseColumn.setCellValueFactory(new PropertyValueFactory<>("Adresse"));
         supColumn.setCellValueFactory(new PropertyValueFactory<>("Superficie"));
         anneeColumn.setCellValueFactory(new PropertyValueFactory<>("annee_construction"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        dispoColumn.setCellValueFactory(new PropertyValueFactory<>("disponible"));
+        debColumn.setCellValueFactory(new PropertyValueFactory<>("date_debut"));
+        finColumn.setCellValueFactory(new PropertyValueFactory<>("date_fin"));
+        prixColumn.setCellValueFactory(new PropertyValueFactory<>("prix_pied_carre"));
 
         // Envoyer une requete SQL pour recuperer tous les champs de la table "locations" :
         try {
             // Ajout des colonnes du tableau :
             myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -159,10 +177,27 @@ public class LocationController implements Initializable {
         });
     }
 
+    public void ouvrirAjouter() throws IOException {
+        // On s'assure que la nouvelle fenetre sera la seule active :
+        Stage myStage = new Stage();
+        myStage.initModality(Modality.APPLICATION_MODAL);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Add.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+
+        //On transmet les informations du LocationModel au nouveau controleur:
+        AddController ajouterController = fxmlLoader.getController();
+        ajouterController.setLocationModel(myLocationModel);
+
+        myStage.setTitle("Ajouter une nouvelle location");
+        myStage.setScene(scene);
+        myStage.show();
+    }
+
     //Appel de la methode pour le retour à l'écran de connexion :
     @FXML
     public void retourLogin() throws IOException {
-        addBtn.getScene().getWindow().hide(); // recuperation de la scene en cours via n'importe quel element (ici, le bouton Ajouter)
+        modifBtn.getScene().getWindow().hide(); // recuperation de la scene en cours via n'importe quel element (ici, le bouton de sauvegarde)
         Stage myStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 620, 440);
@@ -171,156 +206,23 @@ public class LocationController implements Initializable {
         myStage.show();
     }
 
-    //Appel de la methode pour ajouter une nouvelle adresse de location :
-    @FXML
-    public void ajouterLocation() {
-        try {
-            // On requere le prochain indice de la colonne ID via une requete SQL :
-            String nextIndice = String.valueOf(myLocationModel.getNextIndice());
+    public void ouvrirModifier() throws IOException {
+        // On s'assure que la nouvelle fenetre sera la seule active :
+        Stage myStage = new Stage();
+        myStage.initModality(Modality.APPLICATION_MODAL);
 
-            // On cree l'objet en utilisant l'indice et les valeurs entrees dans les differents champs :
-            Location nouvelleLocation = new Location();
-            nouvelleLocation.setID(nextIndice);
-            nouvelleLocation.setNoLocal(localField.getText());
-            nouvelleLocation.setAdresse(adresseField.getText());
-            nouvelleLocation.setSuperficie(supField.getText());
-            nouvelleLocation.setAnneeConstruction(anneeField.getText());
-            // On appelle une boite de dialogue pour demander confirmation de l'ajout a l'utilisateur :
-            Alert dialogC = new Alert(Alert.AlertType.CONFIRMATION);
-            dialogC.setTitle("Ajout nouvelle location");
-            dialogC.setHeaderText(null);
-            dialogC.setContentText("Voulez-vous ajouter cette adresse?");
-            Optional<ButtonType> answer = dialogC.showAndWait();
-            if (answer.get() == ButtonType.OK) {
-                // Avant de faire l'ajout, on verifie si cette adresse est deja dans la base de donnees:
-                Location locationTrouve = myLocationModel.getLocationbyAdresse(nouvelleLocation);
+        FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Modify.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
 
-                // On autorise l'ajout que si certaines conditions sont bien respectees :
-                if( locationTrouve != null && !ajoutValide(nouvelleLocation, locationTrouve)){
-                    Alert dialog = new Alert(Alert.AlertType.INFORMATION);
-                    dialog.setTitle("Annulation");
-                    dialog.setHeaderText("Votre requete ne peut etre acceptee. Veuillez verifier:\n" +
-                            "1) tentez vous de rentrer un numero de local identique pour une adresse deja existante?\n" +
-                            "2) l'annee de construction pour cette adresse devrait etre " +nouvelleLocation.getAnnee_construction() +".\n");
-                    dialog.showAndWait();
-                    return;
-                }
-                myLocationModel.addLocation(nouvelleLocation);
-                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
-                dialog.setTitle("Confirmation");
-                dialog.setHeaderText("Nouvelle location ajoutee.");
-                dialog.showAndWait();
+        //On transmet les informations du LocationModel au nouveau controleur:
+        ModifyController modifyController = fxmlLoader.getController();
+        modifyController.setLocationModel(myLocationModel);
 
-                // On reload la nouvelle table:
-                myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
-
-                // On vide les champs du Gridpane :
-                viderChamps();
-            }
-            else {
-                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
-                dialog.setTitle("Annulation");
-                dialog.setHeaderText("Annulation de l'ajout.");
-                dialog.showAndWait();
-            }
-        } catch (IllegalArgumentException e){
-            Alert dialogW = new Alert(Alert.AlertType.WARNING);
-            dialogW.setTitle("Erreur");
-            dialogW.setHeaderText(null);
-            dialogW.setContentText("Attention : "+ e.getMessage());
-            dialogW.showAndWait();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        myStage.setTitle("Modifier une nouvelle location existante");
+        myStage.setScene(scene);
+        myStage.show();
     }
 
-    public void switcherAffichage(){
-
-
-        String currentIcon = addBtn.isVisible() ?
-                "/img/ajouter_icon.png" :
-                "/img/modifier_icon.png";
-        InputStream stream = getClass().getResourceAsStream(currentIcon);
-
-        if (stream != null) {
-            Image image = new Image(stream);
-            iconBtn.setImage(image);
-        } else {
-            System.err.println("Image non trouvee : " + currentIcon);
-        }
-
-        if(addBtn.isVisible()){
-          addBtn.setVisible(false);
-            saveBtn.setVisible(true);
-            delBtn.setVisible(true);
-        } else{
-            addBtn.setVisible(true);
-            saveBtn.setVisible(false);
-            delBtn.setVisible(false);
-        }
-
-        viderChamps();
-    }
-
-    public void switcherAffichage(boolean on){
-        addBtn.setVisible(!on);
-        saveBtn.setVisible(on);
-        delBtn.setVisible(on);
-    }
-
-    public void modifierLocation(){
-        try {
-            // On recupere l'indice de la colonne ID:
-            String indice = idField.getText();
-
-            // On cree l'objet en utilisant l'indice et les valeurs entrees dans les differents champs :
-            Location locationSelectionnee = new Location();
-            locationSelectionnee.setID(indice);
-            locationSelectionnee.setNoLocal(localField.getText());
-            locationSelectionnee.setAdresse(adresseField.getText());
-            locationSelectionnee.setSuperficie(supField.getText());
-            locationSelectionnee.setAnneeConstruction(anneeField.getText());
-
-            // On appelle une boite de dialogue pour demander confirmation la demande de modification a l'utilisateur :
-            Alert dialogC = new Alert(Alert.AlertType.CONFIRMATION);
-            dialogC.setTitle("Modification de la location #" + indice);
-            dialogC.setHeaderText(null);
-            dialogC.setContentText("Voulez-vous modifier cette adresse?");
-            Optional<ButtonType> answer = dialogC.showAndWait();
-            if (answer.get() == ButtonType.OK) {
-                myLocationModel.updateLocation(locationSelectionnee);
-                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
-                dialog.setTitle("Confirmation");
-                dialog.setHeaderText("Modification effectuee.");
-                dialog.showAndWait();
-
-                // On reload la nouvelle table:
-                myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
-            }
-            else {
-                Alert dialog = new Alert(Alert.AlertType.INFORMATION);
-                dialog.setTitle("Annulation");
-                dialog.setHeaderText("Annulation de la modification.");
-                dialog.showAndWait();
-            }
-        } catch (IllegalArgumentException e){
-            Alert dialogW = new Alert(Alert.AlertType.WARNING);
-            dialogW.setTitle("Erreur");
-            dialogW.setHeaderText(null);
-            dialogW.setContentText("Attention : "+ e.getMessage());
-            dialogW.showAndWait();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public boolean ajoutValide(Location a, Location b){
-        // On retourne faux si l'adresse est identique et que...
-        // 1) ... l'annee de construction est differente :
-        return a.getAnnee_construction() == b.getAnnee_construction() &&
-// 2) ... l'annee de construction et le numero de local sont identiques :
-       !Objects.equals(a.getNo_local(), b.getNo_local());
-    }
 
     public void supprimerLocation(){
         try {
@@ -344,9 +246,6 @@ public class LocationController implements Initializable {
 
                 // On reload la nouvelle table:
                 myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
-
-                // On vide les champs du Gridpane :
-                viderChamps();
             }
             else {
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
@@ -354,33 +253,12 @@ public class LocationController implements Initializable {
                 dialog.setHeaderText("Annulation de l'ajout.");
                 dialog.showAndWait();
             }
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException | SQLException e){
             Alert dialogW = new Alert(Alert.AlertType.WARNING);
             dialogW.setTitle("Erreur");
             dialogW.setHeaderText(null);
             dialogW.setContentText("Attention : "+ e.getMessage());
             dialogW.showAndWait();
-        } catch (SQLException e) {
-            Alert dialogW = new Alert(Alert.AlertType.WARNING);
-            dialogW.setTitle("Erreur");
-            dialogW.setHeaderText(null);
-            dialogW.setContentText("Attention : "+ e.getMessage());
-            dialogW.showAndWait();
-        }
-    }
-
-      public void viderChamps() {
-        // On commence par selectionner tous les champs de type Textfield dans le Gridpane :
-        List<TextField> textFields = new ArrayList<>();
-        for (Node node : gridPane.lookupAll(".text-field")) {
-            if (node instanceof TextField) {
-                textFields.add((TextField) node);
-            }
-        }
-
-        // On boucle sur le resultat et on assigne une variable String vide :
-        for (TextField textField : textFields) {
-            textField.setText(""); // Set text to an empty string
         }
     }
 
@@ -401,6 +279,28 @@ public class LocationController implements Initializable {
             supField.setText(Integer.toString(superficie));
             anneeField.setText(Integer.toString(anneeConstruction));
         }
+    }
+
+    public void ouvrirReadMe() throws IOException {
+        try{
+        // On s'assure que la nouvelle fenetre sera la seule active :
+        Stage myStage = new Stage();
+        myStage.initModality(Modality.APPLICATION_MODAL);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/ReadMe.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+
+        myStage.setTitle("A propos de ce projet");
+        myStage.setScene(scene);
+        myStage.show();
+        } catch (IOException  e) {
+            System.out.println("Erreur: " +e);
+            e.printStackTrace();
+        }
+    }
+
+    public void quitter(){
+        System.exit(0);
     }
 
     public void setLoginModel(LoginModel loginModel) {
