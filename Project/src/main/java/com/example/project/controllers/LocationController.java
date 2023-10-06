@@ -133,10 +133,18 @@ public class LocationController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         
         //On commence par personnaliser l'affichage avec le prenom et l'image de l'utilisateur :
         Platform.runLater(() -> {
+
+            // Si l'utilisateur connecte n'est pas un administrateur, on lui retire les droits de deletion d'une location dans la base de donnees :
+            if(!Objects.equals(loginModel.getPrenom(), "Admin")) {
+                delBtn.setVisible(false);
+                deleteMenu.setDisable(true);
+            } else {
+                delBtn.setVisible(true);
+                deleteMenu.setDisable(false);
+            }
 
             // 1) On affiche le prenom dans le menu :
             userBtn.setText(loginModel.getPrenom());
@@ -161,7 +169,6 @@ public class LocationController implements Initializable {
             clip.setArcHeight(10);
             userImg.setClip(clip);
         });
-
 
         // Ajout d'une methode pour surveiller les clicks de souris en dehors du tableau :
         myPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
