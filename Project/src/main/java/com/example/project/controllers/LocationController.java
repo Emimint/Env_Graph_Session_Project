@@ -50,6 +50,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 
 public class LocationController implements Initializable {
 
@@ -317,79 +318,109 @@ public class LocationController implements Initializable {
         }
     }
 
-    public void genererRapport(){
-        Document document = new Document();
+    public void creerRapportStandard() throws SQLException {
+        genererRapport(myLocationModel.getListLocations());
+    }
+
+    public void genererRapport(List<Location> liste_de_locations){
         try
         {
-            // Creer un timestamp pour le nom du fichier :
+            // 1. Creer le nom du fichier :
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd_HHmmss");
             String timestamp = now.format(formatter);
-
-
             String output_dir = "/src/data/output"; // repertoire de destination
             String filename = output_dir + "/rapport_du_" +timestamp+".pdf";
 
+            // 2. Creer le chemin d'acces au fichier :
             String dir = System.getProperty("user.dir"); // repertoire du project
-            System.out.println(dir);
-
             File file = new File(dir,filename);
-            System.out.println(file.getPath());
 
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
-            document.open();
-            document.add(new Paragraph("A Hello World PDF document."));
-            document.close();
-            writer.close();
+            // 3. Creation du fichier :
+            Document my_pdf_report = new Document();
+            my_pdf_report.setPageSize(PageSize.A4.rotate());
+            PdfWriter.getInstance(my_pdf_report, new FileOutputStream(file));
+            my_pdf_report.open();
+            PdfPTable my_report_table = new PdfPTable(new float[] { 0.5f, 2.5f,0.5f,1,1,1,1,1,1,1}); // 10 colonnes de la table "locations" (avec dimensions customisees par contenu)
+            PdfPCell table_cell;
+
+            // On commence par mettre un titre :
+            formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+            timestamp = now.format(formatter);
+
+            Paragraph preface = new Paragraph("Rapport standard de locations du " + timestamp +":\n\n");
+            preface.setAlignment(Element.ALIGN_CENTER);
+            my_pdf_report.add(preface);
+
+            // 4. Creation du header :
+            table_cell=new PdfPCell(new Phrase("ID"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("Adresse"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("#loc"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("Sup.(p2)"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("Constr."));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("Status"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("Dispo."));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("Loue du"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("au"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("$/p2"));
+            my_report_table.addCell(table_cell);
+
+            // 5. Instanciation du tableau :
+            for (Location location: liste_de_locations
+                 ) {
+                String id_location = String.valueOf(location.getID());
+                table_cell=new PdfPCell(new Phrase(id_location));
+                my_report_table.addCell(table_cell);
+                String adresse=location.getAdresse();
+                table_cell=new PdfPCell(new Phrase(adresse));
+                my_report_table.addCell(table_cell);
+                String num_local=location.getNo_local();
+                table_cell=new PdfPCell(new Phrase(num_local));
+                my_report_table.addCell(table_cell);
+                String superficie= String.valueOf(location.getSuperficie());
+                table_cell=new PdfPCell(new Phrase(superficie));
+                my_report_table.addCell(table_cell);
+                String annee_construction= String.valueOf(location.getAnnee_construction());
+                table_cell=new PdfPCell(new Phrase(annee_construction));
+                my_report_table.addCell(table_cell);
+                String status_location=location.getStatus()? "loue": "non loue";
+                table_cell=new PdfPCell(new Phrase(status_location));
+                my_report_table.addCell(table_cell);
+                String disponibilite=location.getDisponible()? "disponible": "indisponible";
+                table_cell=new PdfPCell(new Phrase(disponibilite));
+                my_report_table.addCell(table_cell);
+                String date_debut= location.getDate_debut()> 0? String.valueOf(location.getDate_debut()): "N/A";
+                table_cell=new PdfPCell(new Phrase(date_debut));
+                my_report_table.addCell(table_cell);
+                String date_fin= location.getDate_fin()> 0? String.valueOf(location.getDate_fin()): "N/A";
+                table_cell=new PdfPCell(new Phrase(date_fin));
+                my_report_table.addCell(table_cell);
+                String prix_pied_carre= String.valueOf(location.getPrix_pied_carre());
+                table_cell=new PdfPCell(new Phrase(prix_pied_carre));
+                my_report_table.addCell(table_cell);
+            }
+
+            // 6. Ajout du tableau cree au fichier :
+            my_pdf_report.add(my_report_table);
+            my_pdf_report.close();
 
             Alert dialog = new Alert(Alert.AlertType.INFORMATION);
             dialog.setTitle("Confirmation");
             dialog.setHeaderText("Rapport cree avec succes.");
             dialog.showAndWait();
 
-            /* Source: https://stackoverflow.com/questions/33385442/how-to-write-data-from-a-tableview-to-the-pdf
-            /// Test :
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/login", "root", "");
-            Statement stmt = con.createStatement();
-            /* Define the SQL query */
-            ResultSet query_set = stmt.executeQuery("SELECT *From tablename");
-            /* Step-2: Initialize PDF documents - logical objects */
-            Document my_pdf_report = new Document();
-            PdfWriter.getInstance(my_pdf_report, new FileOutputStream("pdf_report_from_sql_using_java.pdf"));
-            my_pdf_report.open();
-            //we have four columns in our table
-            PdfPTable my_report_table = new PdfPTable(4);
-            //create a cell object
-            PdfPCell table_cell;
-
-            while (query_set.next()) {
-                String dept_id = query_set.getString("code");
-                table_cell=new PdfPCell(new Phrase(dept_id));
-                my_report_table.addCell(table_cell);
-                String dept_name=query_set.getString("category");
-                table_cell=new PdfPCell(new Phrase(dept_name));
-                my_report_table.addCell(table_cell);
-                String manager_id=query_set.getString("total");
-                table_cell=new PdfPCell(new Phrase(manager_id));
-                my_report_table.addCell(table_cell);
-                String location_id=query_set.getString("Sum");
-                table_cell=new PdfPCell(new Phrase(location_id));
-                my_report_table.addCell(table_cell);
-            }
-            /* Attach report table to PDF */
-            my_pdf_report.add(my_report_table);
-            my_pdf_report.close();
-
-            /* Close all DB related objects */
-            query_set.close();
-            stmt.close();
-            con.close();
-
-            */
-
         } catch (Exception e)
         {
+            System.out.println("Erreur a la creation du rapport standard: " +e.getMessage());
             e.printStackTrace();
         }
     }
