@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -18,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -119,14 +121,9 @@ public class AddController implements Initializable {
                 }
                 }
                 // On cree l'objet en utilisant l'indice et les valeurs entrees dans les differents champs :
-
-                // On requere le prochain indice de la colonne ID via une requete SQL :
-                String nextIndice = String.valueOf(myLocationModel.getNextIndice());
-
                 Location nouvelleLocation = new Location();
-                nouvelleLocation.setID(nextIndice);
-                nouvelleLocation.setStatus("True");
                 nouvelleLocation.setDisponible("True");
+                nouvelleLocation.setStatus("True");
                 nouvelleLocation.setNoLocal(localField.getText());
                 nouvelleLocation.setAdresse(adresseField.getText());
                 nouvelleLocation.setSuperficie(supField.getText());
@@ -140,6 +137,7 @@ public class AddController implements Initializable {
                 dialog.setTitle("Confirmation");
                 dialog.setHeaderText("Nouvelle location ajoutee.");
                 dialog.showAndWait();
+                viderChamps();
             }
             else {
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
@@ -148,10 +146,11 @@ public class AddController implements Initializable {
                 dialog.showAndWait();
             }
         } catch (IllegalArgumentException e){
-            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            String content = "Attention : "+ e.getMessage();
+            Alert dialogW = new Alert(Alert.AlertType.WARNING, content);
+            dialogW.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             dialogW.setTitle("Erreur");
             dialogW.setHeaderText(null);
-            dialogW.setContentText("Attention : "+ e.getMessage());
             dialogW.showAndWait();
         }
     }

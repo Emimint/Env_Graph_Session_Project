@@ -41,12 +41,17 @@ public List<Location>  getListLocations() throws SQLException {
         PreparedStatement std = null;
 
         try {
-            std = connection.prepareStatement("INSERT INTO locations(id_location, num_local, adresse, superficie, annee_construction) VALUES (?, ?, ?, ?, ?);");
-            std.setInt(1, location.getID());
-            std.setString(2, location.getNo_local());
-            std.setString(3, location.getAdresse());
-            std.setInt(4, location.getSuperficie());
-            std.setInt(5, location.getAnnee_construction());
+            // La base de donnees etant auto-incrementeE, on n'a pas besoin de manuellement ajouter l'ID :
+            std = connection.prepareStatement("INSERT INTO locations(num_local, adresse, superficie, annee_construction, status_location, disponibilite, date_debut, date_fin, prix_pied_carre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            std.setString(1, location.getNo_local());
+            std.setString(2, location.getAdresse());
+            std.setInt(3, location.getSuperficie());
+            std.setInt(4, location.getAnnee_construction());
+            std.setBoolean(5, location.getStatus());
+            std.setBoolean(6, location.getDisponible());
+            std.setInt(7, location.getDate_debut());
+            std.setInt(8, location.getDate_fin());
+            std.setInt(9, location.getPrix_pied_carre());
 
             int nbrRangsModifies = std.executeUpdate();
             if (nbrRangsModifies == 0) {
