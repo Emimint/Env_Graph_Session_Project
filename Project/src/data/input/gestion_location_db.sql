@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `gestion_location` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `gestion_location`;
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: gestion_location
@@ -23,7 +25,7 @@ DROP TABLE IF EXISTS `locations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `locations` (
-  `id_location` int DEFAULT NULL,
+  `id_location` int unsigned NOT NULL AUTO_INCREMENT,
   `num_local` text,
   `adresse` text,
   `superficie` int DEFAULT NULL,
@@ -32,8 +34,10 @@ CREATE TABLE `locations` (
   `disponibilite` int DEFAULT NULL,
   `date_debut` int DEFAULT NULL,
   `date_fin` int DEFAULT NULL,
-  `prix_pied_carre` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `prix_pied_carre` int DEFAULT NULL,
+  PRIMARY KEY (`id_location`),
+  UNIQUE KEY `id_location_UNIQUE` (`id_location`)
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -60,7 +64,7 @@ CREATE TABLE `utilisateurs` (
   `mot_de_passe` varchar(45) NOT NULL,
   PRIMARY KEY (`id_utilisateur`),
   UNIQUE KEY `id_utilisateurs_UNIQUE` (`id_utilisateur`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +73,7 @@ CREATE TABLE `utilisateurs` (
 
 LOCK TABLES `utilisateurs` WRITE;
 /*!40000 ALTER TABLE `utilisateurs` DISABLE KEYS */;
-INSERT INTO `utilisateurs` VALUES (1,'Smith','John','tulipe123'),(2,'Johnson','Mary','root1234'),(3,'Davis','Michael','tennis456'),(4,'Wilson','Sarah','football4'),(5,'Brown','David','peche753');
+INSERT INTO `utilisateurs` VALUES (1,'Smith','John','tulipe123'),(2,'Johnson','Mary','root1234'),(3,'Davis','Michael','tennis456'),(4,'Wilson','Sarah','football4'),(5,'Brown','David','peche753'),(6,'Admin','Admin','root');
 /*!40000 ALTER TABLE `utilisateurs` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -82,4 +86,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-03 19:28:49
+-- Dump completed on 2023-10-06 15:42:21
