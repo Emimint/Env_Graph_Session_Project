@@ -12,6 +12,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -82,6 +83,8 @@ public class LocationController implements Initializable {
     public Button modifBtn;
     @FXML
     public Button delBtn;
+    @FXML
+    public Button refreshBtn;
 
     @FXML
     public GridPane gridPane;
@@ -133,7 +136,7 @@ public class LocationController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        
+
         //On commence par personnaliser l'affichage avec le prenom et l'image de l'utilisateur :
         Platform.runLater(() -> {
 
@@ -261,13 +264,13 @@ public class LocationController implements Initializable {
             Alert dialogC = new Alert(Alert.AlertType.CONFIRMATION);
             dialogC.setTitle("Suppression de la location #" + indice);
             dialogC.setHeaderText(null);
-            dialogC.setContentText("Voulez-vous supprimer cette adresse?");
+            dialogC.setContentText("Voulez-vous supprimer definitivement cette adresse?");
             Optional<ButtonType> answer = dialogC.showAndWait();
             if (answer.get() == ButtonType.OK) {
                 myLocationModel.deleteLocation(Integer.parseInt(indice));
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
                 dialog.setTitle("Confirmation");
-                dialog.setHeaderText("Adresse supprimee.");
+                dialog.setHeaderText("Adresse supprimee de la base de donnees.");
                 dialog.showAndWait();
 
                 // On reload la nouvelle table:
@@ -276,7 +279,7 @@ public class LocationController implements Initializable {
             else {
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
                 dialog.setTitle("Annulation");
-                dialog.setHeaderText("Annulation de l'ajout.");
+                dialog.setHeaderText("Annulation de la suppression.");
                 dialog.showAndWait();
             }
         } catch (IllegalArgumentException | SQLException e){
@@ -432,6 +435,14 @@ public class LocationController implements Initializable {
         }
     }
 
+    @FXML
+    public void rafraichirTableau() {
+        try {
+            myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public void quitter(){
         System.exit(0);
     }
