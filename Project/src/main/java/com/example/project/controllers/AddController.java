@@ -83,6 +83,21 @@ public class AddController implements Initializable {
             dialogC.setContentText("Voulez-vous ajouter cette adresse?");
             Optional<ButtonType> answer = dialogC.showAndWait();
             if (answer.get() == ButtonType.OK) {
+
+                // On doit valider que tous les champs sont remplis (sauf le champs de l'ID) :
+                for (Node node : gridPane.getChildren()) {
+                    if (node instanceof TextField) {
+                        if(((TextField) node).getText().trim().isEmpty() && !"idField".equals(node.getId()))
+                        {
+                            Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+                            dialog.setTitle("Annulation");
+                            dialog.setHeaderText("Veuillez remplir tous les champs.\n");
+                            dialog.showAndWait();
+                            return;
+                        }
+                    }
+                }
+
                 // Avant de faire l'ajout, on verifie si cette adresse est deja dans la base de donnees:
                 Location locationTrouve = myLocationModel.getLocationbyAdresse(adresseField.getText());
 
