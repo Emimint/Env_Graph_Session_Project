@@ -159,6 +159,11 @@ public class LocationController implements Initializable {
             clip.setArcWidth(10);
             clip.setArcHeight(10);
             userImg.setClip(clip);
+
+            //Ajout d'une methode pour surveiller la selection des champs du tableau :
+            myTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
+            });
         });
 
         // Ajout du systeme de mapping aux futures colonnes du tableau (les proprietes doivent correspondre aux noms exacts des attributs de Location) :
@@ -181,11 +186,6 @@ public class LocationController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        //Ajout d'une methode pour surveiller la selection des champs du tableau :
-        myTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            selectionChamp();
-        });
     }
 
     public void ouvrirAjouter() throws IOException {
@@ -218,10 +218,15 @@ public class LocationController implements Initializable {
     }
 
     public void ouvrirModifier() throws IOException {
-
-        try{
-        // On commence par recuperer la location en cours :
-        locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
+        // On interrompt l'execution du programme si aucune location n'est selectionnee :
+        if (locationSelectionnee == null) {
+            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.setTitle("Erreur");
+            dialogW.setHeaderText(null);
+            dialogW.setContentText("Aucune location n'est sélectionnée.");
+            dialogW.showAndWait();
+            return;
+        }
 
         // On s'assure que la nouvelle fenetre sera la seule active :
         Stage myStage = new Stage();
@@ -237,13 +242,6 @@ public class LocationController implements Initializable {
         myStage.setTitle("Modifier une nouvelle location existante");
         myStage.setScene(scene);
         myStage.show();
-        } catch (NullPointerException ex){
-            Alert dialogW = new Alert(Alert.AlertType.WARNING);
-            dialogW.setTitle("Erreur");
-            dialogW.setHeaderText(null);
-            dialogW.setContentText("Aucune location n'est selectionnee.");
-            dialogW.showAndWait();
-        }
     }
 
 
@@ -286,18 +284,6 @@ public class LocationController implements Initializable {
             dialogW.setHeaderText(null);
             dialogW.setContentText("Aucune location n'est selectionnee.");
             dialogW.showAndWait();
-        }
-    }
-
-    @FXML
-    public void selectionChamp() {
-        Location locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
-        if (locationSelectionnee != null) {
-            int id = locationSelectionnee.getID();
-            String noLocal = locationSelectionnee.getNo_local();
-            String adresse = locationSelectionnee.getAdresse();
-            int superficie = locationSelectionnee.getSuperficie();
-            int anneeConstruction = locationSelectionnee.getAnnee_construction();
         }
     }
 

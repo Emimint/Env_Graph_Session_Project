@@ -12,12 +12,11 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -38,21 +37,41 @@ public class ModifyController implements Initializable {
     public TextField supField;
     @FXML
     public TextField anneeField;
+    @FXML
+    public TextField debField;
+    @FXML
+    public TextField finField;
+    @FXML
+    public TextField prixField;
+    @FXML
+    public CheckBox dispoBox;
+
+    @FXML
+    public Button saveBtn;
+
+    @FXML
+    public Button quitBtn;
 
     public Location myLocation;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL url, ResourceBundle resources) {
+
+        Platform.runLater(() -> {
         // Le champ pour l'ID est desactive pour empecher une modification par l'utilisateur courant :
+        idField.setText(String.valueOf(myLocation.getID()));
         idField.getStyleClass().add("hidden");
         idField.setEditable(false);
 
-        //On assigne les informations de la location aux differents champs :
-        idField.setText(String.valueOf(myLocation.getID()));
+        //On assigne les autres informations de la location aux differents champs :
         localField.setText(myLocation.getNo_local());
         adresseField.setText(myLocation.getAdresse());
         supField.setText(String.valueOf(myLocation.getSuperficie()));
-
+        anneeField.setText(String.valueOf(myLocation.getAnnee_construction()));
+        debField.setText(String.valueOf(myLocation.getDate_debut()));
+        finField.setText(String.valueOf(myLocation.getDate_fin()));
+        prixField.setText(String.valueOf(myLocation.getPrix_pied_carre()));
+        });
     }
 
 //    public void modifierLocation(){
@@ -96,6 +115,12 @@ public class ModifyController implements Initializable {
 //            dialogW.showAndWait();
 //        }
 //    }
+
+    @FXML
+    public void closeButtonAction(){
+        Stage stage = (Stage) quitBtn.getScene().getWindow();
+        stage.close();
+    }
 
     public void setLocation(Location location) {
         myLocation = location;
