@@ -70,6 +70,7 @@ public class Location {
     }
 
     public void setStatus(String inputStatus){
+        if(date_debut == 0 || date_fin == 0) throw new IllegalArgumentException("Vous devez preciser la periode de location.");
         boolean status = Boolean.parseBoolean(inputStatus);
         if (!disponible) throw new IllegalArgumentException("Cette location n'est pas disponible pour le moment.");
         this.status = status;
