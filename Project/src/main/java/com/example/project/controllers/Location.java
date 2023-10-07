@@ -70,6 +70,7 @@ public class Location {
     }
 
     public void setStatus(String inputStatus){
+        if(date_debut == 0 || date_fin == 0) throw new IllegalArgumentException("Vous devez preciser la periode de location.");
         boolean status = Boolean.parseBoolean(inputStatus);
         if (!disponible) throw new IllegalArgumentException("Cette location n'est pas disponible pour le moment.");
         this.status = status;
@@ -100,6 +101,7 @@ public class Location {
                         "\n- L'annee de fin de location doit varier de 1900 a 2023." +
                         "\n- l'annee de fin de location ne peut pas etre plus recente que l'annee de debut de location.");
             this.date_fin = date_fin;
+            if(this.date_fin >= 2023) setStatus("True");
         } catch (NumberFormatException e) {
             throw new NumberFormatException("L'annee de fin de location doit être un entier positif.");
         }

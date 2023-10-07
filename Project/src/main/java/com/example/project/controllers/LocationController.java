@@ -159,13 +159,11 @@ public class LocationController implements Initializable {
             clip.setArcWidth(10);
             clip.setArcHeight(10);
             userImg.setClip(clip);
-        });
 
-        // Ajout d'une methode pour surveiller les clicks de souris en dehors du tableau :
-        myPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            if (!myTable.getBoundsInParent().contains(event.getSceneX(), event.getSceneY())) {
-                myTable.getSelectionModel().clearSelection();
-            }
+            //Ajout d'une methode pour surveiller la selection des champs du tableau :
+            myTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
+            });
         });
 
         // Ajout du systeme de mapping aux futures colonnes du tableau (les proprietes doivent correspondre aux noms exacts des attributs de Location) :
@@ -184,14 +182,10 @@ public class LocationController implements Initializable {
         try {
             // Ajout des colonnes du tableau :
             myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
+            customiserTableau(dispoColumn);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        //Ajout d'une methode pour surveiller la selection des champs du tableau :
-        myTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            selectionChamp();
-        });
     }
 
     public void ouvrirAjouter() throws IOException {
@@ -224,6 +218,16 @@ public class LocationController implements Initializable {
     }
 
     public void ouvrirModifier() throws IOException {
+        // On interrompt l'execution du programme si aucune location n'est selectionnee :
+        if (locationSelectionnee == null) {
+            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.setTitle("Erreur");
+            dialogW.setHeaderText(null);
+            dialogW.setContentText("Aucune location n'est sélectionnée.");
+            dialogW.showAndWait();
+            return;
+        }
+
         // On s'assure que la nouvelle fenetre sera la seule active :
         Stage myStage = new Stage();
         myStage.initModality(Modality.APPLICATION_MODAL);
@@ -233,7 +237,7 @@ public class LocationController implements Initializable {
 
         //On transmet les informations du LocationModel au nouveau controleur:
         ModifyController modifyController = fxmlLoader.getController();
-        modifyController.setLocationModel(myLocationModel);
+        modifyController.setLocation(locationSelectionnee);
 
         myStage.setTitle("Modifier une nouvelle location existante");
         myStage.setScene(scene);
@@ -283,18 +287,6 @@ public class LocationController implements Initializable {
         }
     }
 
-    @FXML
-    public void selectionChamp() {
-        Location locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
-        if (locationSelectionnee != null) {
-            int id = locationSelectionnee.getID();
-            String noLocal = locationSelectionnee.getNo_local();
-            String adresse = locationSelectionnee.getAdresse();
-            int superficie = locationSelectionnee.getSuperficie();
-            int anneeConstruction = locationSelectionnee.getAnnee_construction();
-        }
-    }
-
     public void ouvrirReadMe() throws IOException {
         try{
         // On s'assure que la nouvelle fenetre sera la seule active :
@@ -316,6 +308,30 @@ public class LocationController implements Initializable {
     public void creerRapportStandard() throws SQLException {
         genererRapport(myLocationModel.getListLocations());
     }
+
+    // Methode pour griser les locations indisponibles :
+    private void customiserTableau(TableColumn<Location, Boolean> tableColumn) {
+        tableColumn.setCellFactory(column -> {
+            return new TableCell<Location, Boolean>() {
+                @Override
+                protected void updateItem(Boolean item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    setText(empty ? "" : getItem().toString());
+                    setGraphic(null);
+
+                    TableRow<Location> currentRow = getTableRow();
+
+                    if (!isEmpty()) {
+
+                        if(!item)
+                            currentRow.setStyle("-fx-background-color:rgba(0,0,0,0.2)");
+                    }
+                }
+            };
+        });
+    }
+
 
     public void genererRapport(List<Location> liste_de_locations){
         try
