@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -19,11 +20,16 @@
    <center>
       <TableView fx:id="myTable" opacity="0.8" prefWidth="450.0" BorderPane.alignment="CENTER">
           <columns>
-              <TableColumn fx:id="idColumn" text="ID" />
-              <TableColumn fx:id="localColumn" text="No de local" />
-              <TableColumn fx:id="adresseColumn" text="Adresse" />
-              <TableColumn fx:id="supColumn" text="Superficie" />
-              <TableColumn fx:id="anneeColumn" text="Année de construction" />
+              <TableColumn fx:id="idColumn" prefWidth="41.333312034606934" text="ID" />
+              <TableColumn fx:id="localColumn" prefWidth="70.00006484985352" text="No de local" />
+              <TableColumn fx:id="adresseColumn" prefWidth="129.33330535888672" text="Adresse" />
+              <TableColumn fx:id="supColumn" prefWidth="68.00007629394531" text="Superficie" />
+              <TableColumn fx:id="anneeColumn" prefWidth="142.0" text="Année de construction" />
+            <TableColumn fx:id="statusColumn" prefWidth="46.666748046875" text="Status" />
+            <TableColumn fx:id="dispoColumn" prefWidth="72.66659545898438" text="Disponible" />
+            <TableColumn fx:id="debColumn" prefWidth="92.0" text="Date de début" />
+            <TableColumn fx:id="finColumn" prefWidth="75.0" text="Date de fin" />
+            <TableColumn fx:id="prixColumn" prefWidth="115.33331298828125" text="Prix au pied carré" />
           </columns>
          <opaqueInsets>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -33,10 +39,15 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-             <Button fx:id="modifBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#switcherAffichage" styleClass="btn" />
-             <Button fx:id="saveBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#modifierLocation" prefHeight="42.0" prefWidth="136.0" styleClass="btn" text="Sauvegarder" />
+             <Button fx:id="refreshBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#rafraichirTableau" prefHeight="35.0" prefWidth="38.0" styleClass="btn">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../img/refresh.png" />
+                     </image></ImageView>
+               </graphic></Button>
             <Button fx:id="delBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#supprimerLocation" prefHeight="36.0" prefWidth="109.0" styleClass="btn" text="Supprimer" />
-             <Button fx:id="clearBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#viderChamps" prefHeight="36.0" prefWidth="156.0" styleClass="btn" text="Effacer selection" />
+            <Button fx:id="modifBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ouvrirModifier" styleClass="btn" text="Modifier" />
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -54,31 +65,23 @@
          <children>
             <MenuBar>
               <menus>
-                  <Menu mnemonicParsing="false" text="Unspecified Menu">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                    </items>
-                  </Menu>
-                <Menu mnemonicParsing="false" text="File">
+                  <Menu mnemonicParsing="false" text="Navigation">
+                     <items>
+                        <MenuItem fx:id="ajoutMenu" mnemonicParsing="false" onAction="#ouvrirAjouter" text="Ajouter" />
+                        <MenuItem fx:id="modifMenu" mnemonicParsing="false" onAction="#ouvrirModifier" text="Modifier" />
+                        <MenuItem fx:id="deleteMenu" mnemonicParsing="false" text="Supprimer" onAction="#supprimerLocation" />
+                        <MenuItem fx:id="quitMenu" mnemonicParsing="false" onAction="#quitter" text="Quitter" />
+                     </items></Menu>
+                <Menu mnemonicParsing="false" text="Generer rapports">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
+                    <MenuItem fx:id="rapportStd" mnemonicParsing="false" onAction="#creerRapportStandard" text="Rapport standard" />
+                        <MenuItem fx:id="searchMenu" mnemonicParsing="false" text="Recherche..." />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
-                  <Menu mnemonicParsing="false" text="A propos">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                    </items>
-                  </Menu>
+                <Menu mnemonicParsing="false" onAction="#ouvrirReadMe" text="Aide">
+                     <items>
+                        <MenuItem fx:id="aboutMenu" mnemonicParsing="false" text="A propos..." />
+                     </items></Menu>
               </menus>
             </MenuBar>
             <HBox>

@@ -26,8 +26,7 @@ public List<Location>  getListLocations() throws SQLException {
         resultat = std.executeQuery();
 
         while (resultat.next()){
-
-            Location location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"));
+            Location location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
             locations.add(location);
         }
         std.close();
@@ -42,12 +41,17 @@ public List<Location>  getListLocations() throws SQLException {
         PreparedStatement std = null;
 
         try {
-            std = connection.prepareStatement("INSERT INTO locations(id_location, num_local, adresse, superficie, annee_construction) VALUES (?, ?, ?, ?, ?);");
-            std.setInt(1, location.getID());
-            std.setString(2, location.getNo_local());
-            std.setString(3, location.getAdresse());
-            std.setInt(4, location.getSuperficie());
-            std.setInt(5, location.getAnnee_construction());
+            // La base de donnees etant auto-incrementeE, on n'a pas besoin de manuellement ajouter l'ID :
+            std = connection.prepareStatement("INSERT INTO locations(num_local, adresse, superficie, annee_construction, status_location, disponibilite, date_debut, date_fin, prix_pied_carre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            std.setString(1, location.getNo_local());
+            std.setString(2, location.getAdresse());
+            std.setInt(3, location.getSuperficie());
+            std.setInt(4, location.getAnnee_construction());
+            std.setBoolean(5, location.getStatus());
+            std.setBoolean(6, location.getDisponible());
+            std.setInt(7, location.getDate_debut());
+            std.setInt(8, location.getDate_fin());
+            std.setInt(9, location.getPrix_pied_carre());
 
             int nbrRangsModifies = std.executeUpdate();
             if (nbrRangsModifies == 0) {
@@ -95,7 +99,7 @@ public List<Location>  getListLocations() throws SQLException {
 
             resultat = std.executeQuery();
             while (resultat.next()){
-                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"));
+                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
             }
             std.close();
         } catch (SQLException e) {
@@ -104,7 +108,7 @@ public List<Location>  getListLocations() throws SQLException {
         return location;
     }
 
-    public Location getLocationbyAdresse(Location nouvelleLocation){
+    public Location getLocationbyAdresse(String adresse){
         PreparedStatement std = null;
         ResultSet resultat = null;
         Location location = null;
@@ -112,11 +116,11 @@ public List<Location>  getListLocations() throws SQLException {
         try {
             // 1. Si l'adresse existe deja et que le numero de batiment est le meme :
             std = connection.prepareStatement("SELECT * FROM locations WHERE adresse LIKE ?;");
-            std.setString(1, "%" + nouvelleLocation.getAdresse() + "%");
+            std.setString(1, "%" + adresse + "%");
 
             resultat = std.executeQuery();
             if (resultat.next()) {
-                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"));
+                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
             }
             std.close();
         } catch (SQLException e) {

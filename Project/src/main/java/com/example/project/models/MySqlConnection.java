@@ -24,7 +24,7 @@ public class MySqlConnection {
                 cnx = DriverManager.getConnection(URL, USER, PASSWORD);
             }
         } catch (SQLException | ClassNotFoundException ex) {
-            System.out.println("Erreur d'acces a la base de donnees: " +ex.getMessage());
+            System.out.println("Erreur d'acces a la base de donnees: " +ex.getMessage() +"\n(Avez-vous saisi le bon mot de passe?)");
         }
         return cnx;
     }
