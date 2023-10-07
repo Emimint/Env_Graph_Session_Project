@@ -8,15 +8,20 @@ package com.example.project.controllers;
 
 import com.example.project.models.LocationModel;
 import com.example.project.models.LoginModel;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,16 +33,31 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import java.io.*;
 import java.net.URL;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 
 public class LocationController implements Initializable {
 
     private LoginModel loginModel;
 
-    private String prenomUser;
+    private Location locationSelectionnee;
 
     // Buttons de la bar de navigation :
     @FXML
@@ -63,6 +83,8 @@ public class LocationController implements Initializable {
     public Button modifBtn;
     @FXML
     public Button delBtn;
+    @FXML
+    public Button refreshBtn;
 
     @FXML
     public GridPane gridPane;
@@ -97,27 +119,23 @@ public class LocationController implements Initializable {
     @FXML
     public ImageView userImg;
 
-    // On ajoute les champs pour la creation ou la sauvegarde d'un nouvel objet Location :
-    @FXML
-    public TextField idField;
-    @FXML
-    public TextField localField;
-    @FXML
-    public TextField adresseField;
-    @FXML
-    public TextField supField;
-    @FXML
-    public TextField anneeField;
-
     public LocationModel myLocationModel = new LocationModel();
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        
         //On commence par personnaliser l'affichage avec le prenom et l'image de l'utilisateur :
         Platform.runLater(() -> {
+
+            // Si l'utilisateur connecte n'est pas un administrateur, on lui retire les droits de deletion d'une location dans la base de donnees :
+            if(!Objects.equals(loginModel.getPrenom(), "Admin")) {
+                delBtn.setVisible(false);
+                deleteMenu.setDisable(true);
+            } else {
+                delBtn.setVisible(true);
+                deleteMenu.setDisable(false);
+            }
 
             // 1) On affiche le prenom dans le menu :
             userBtn.setText(loginModel.getPrenom());
@@ -142,7 +160,6 @@ public class LocationController implements Initializable {
             clip.setArcHeight(10);
             userImg.setClip(clip);
         });
-
 
         // Ajout d'une methode pour surveiller les clicks de souris en dehors du tableau :
         myPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
@@ -226,31 +243,29 @@ public class LocationController implements Initializable {
 
     public void supprimerLocation(){
         try {
-            // On recupere l'indice de la colonne ID:
-            String indice = idField.getText();
+            // On recupere la location courante:
+            locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
 
-            Location locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
+            String indice = String.valueOf(locationSelectionnee.getID());
 
             // On appelle une boite de dialogue pour demander confirmation la demande de suppression a l'utilisateur :
             Alert dialogC = new Alert(Alert.AlertType.CONFIRMATION);
             dialogC.setTitle("Suppression de la location #" + indice);
             dialogC.setHeaderText(null);
-            dialogC.setContentText("Voulez-vous supprimer cette adresse?");
+            dialogC.setContentText("Voulez-vous supprimer definitivement cette adresse?");
             Optional<ButtonType> answer = dialogC.showAndWait();
             if (answer.get() == ButtonType.OK) {
                 myLocationModel.deleteLocation(Integer.parseInt(indice));
+                locationSelectionnee = null;
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
                 dialog.setTitle("Confirmation");
-                dialog.setHeaderText("Adresse supprimee.");
+                dialog.setHeaderText("Adresse supprimee de la base de donnees.");
                 dialog.showAndWait();
-
-                // On reload la nouvelle table:
-                myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
             }
             else {
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
                 dialog.setTitle("Annulation");
-                dialog.setHeaderText("Annulation de l'ajout.");
+                dialog.setHeaderText("Annulation de la suppression.");
                 dialog.showAndWait();
             }
         } catch (IllegalArgumentException | SQLException e){
@@ -258,6 +273,12 @@ public class LocationController implements Initializable {
             dialogW.setTitle("Erreur");
             dialogW.setHeaderText(null);
             dialogW.setContentText("Attention : "+ e.getMessage());
+            dialogW.showAndWait();
+        } catch (NullPointerException ex){
+            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.setTitle("Erreur");
+            dialogW.setHeaderText(null);
+            dialogW.setContentText("Aucune location n'est selectionnee.");
             dialogW.showAndWait();
         }
     }
@@ -271,13 +292,6 @@ public class LocationController implements Initializable {
             String adresse = locationSelectionnee.getAdresse();
             int superficie = locationSelectionnee.getSuperficie();
             int anneeConstruction = locationSelectionnee.getAnnee_construction();
-
-            // On affiche les informations recuperees :
-            idField.setText(Integer.toString(id));
-            localField.setText(noLocal);
-            adresseField.setText(adresse);
-            supField.setText(Integer.toString(superficie));
-            anneeField.setText(Integer.toString(anneeConstruction));
         }
     }
 
@@ -299,6 +313,121 @@ public class LocationController implements Initializable {
         }
     }
 
+    public void creerRapportStandard() throws SQLException {
+        genererRapport(myLocationModel.getListLocations());
+    }
+
+    public void genererRapport(List<Location> liste_de_locations){
+        try
+        {
+            // 1. Creer le nom du fichier :
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd_HHmmss");
+            String timestamp = now.format(formatter);
+            String output_dir = "/src/data/output"; // repertoire de destination
+            String filename = output_dir + "/rapport_du_" +timestamp+".pdf";
+
+            // 2. Creer le chemin d'acces au fichier :
+            String dir = System.getProperty("user.dir"); // repertoire du project
+            File file = new File(dir,filename);
+
+            // 3. Creation du fichier :
+            Document my_pdf_report = new Document();
+            my_pdf_report.setPageSize(PageSize.A4.rotate());
+            PdfWriter.getInstance(my_pdf_report, new FileOutputStream(file));
+            my_pdf_report.open();
+            PdfPTable my_report_table = new PdfPTable(new float[] { 0.5f, 2.5f,0.5f,1,1,1,1,1,1,1}); // 10 colonnes de la table "locations" (avec dimensions customisees par contenu)
+            PdfPCell table_cell;
+
+            // On commence par mettre un titre :
+            formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+            timestamp = now.format(formatter);
+
+            Paragraph preface = new Paragraph("Rapport standard de locations du " + timestamp +":\n\n");
+            preface.setAlignment(Element.ALIGN_CENTER);
+            my_pdf_report.add(preface);
+
+            // 4. Creation du header :
+            table_cell=new PdfPCell(new Phrase("ID"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("Adresse"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("#loc"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("Sup.(p2)"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("Constr."));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("Status"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("Dispo."));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("Loue du"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("au"));
+            my_report_table.addCell(table_cell);
+            table_cell=new PdfPCell(new Phrase("$/p2"));
+            my_report_table.addCell(table_cell);
+
+            // 5. Instanciation du tableau :
+            for (Location location: liste_de_locations
+                 ) {
+                String id_location = String.valueOf(location.getID());
+                table_cell=new PdfPCell(new Phrase(id_location));
+                my_report_table.addCell(table_cell);
+                String adresse=location.getAdresse();
+                table_cell=new PdfPCell(new Phrase(adresse));
+                my_report_table.addCell(table_cell);
+                String num_local=location.getNo_local();
+                table_cell=new PdfPCell(new Phrase(num_local));
+                my_report_table.addCell(table_cell);
+                String superficie= String.valueOf(location.getSuperficie());
+                table_cell=new PdfPCell(new Phrase(superficie));
+                my_report_table.addCell(table_cell);
+                String annee_construction= String.valueOf(location.getAnnee_construction());
+                table_cell=new PdfPCell(new Phrase(annee_construction));
+                my_report_table.addCell(table_cell);
+                String status_location=location.getStatus()? "loue": "non loue";
+                table_cell=new PdfPCell(new Phrase(status_location));
+                my_report_table.addCell(table_cell);
+                String disponibilite=location.getDisponible()? "disponible": "indisponible";
+                table_cell=new PdfPCell(new Phrase(disponibilite));
+                my_report_table.addCell(table_cell);
+                String date_debut= location.getDate_debut()> 0? String.valueOf(location.getDate_debut()): "N/A";
+                table_cell=new PdfPCell(new Phrase(date_debut));
+                my_report_table.addCell(table_cell);
+                String date_fin= location.getDate_fin()> 0? String.valueOf(location.getDate_fin()): "N/A";
+                table_cell=new PdfPCell(new Phrase(date_fin));
+                my_report_table.addCell(table_cell);
+                String prix_pied_carre= String.valueOf(location.getPrix_pied_carre());
+                table_cell=new PdfPCell(new Phrase(prix_pied_carre));
+                my_report_table.addCell(table_cell);
+            }
+
+            // 6. Ajout du tableau cree au fichier :
+            my_pdf_report.add(my_report_table);
+            my_pdf_report.close();
+
+            Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+            dialog.setTitle("Confirmation");
+            dialog.setHeaderText("Rapport cree avec succes.");
+            dialog.showAndWait();
+
+        } catch (Exception e)
+        {
+            System.out.println("Erreur a la creation du rapport standard: " +e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void rafraichirTableau() {
+        try {
+            myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public void quitter(){
         System.exit(0);
     }

@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -38,8 +39,15 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-             <Button fx:id="modifBtn" contentDisplay="CENTER" mnemonicParsing="false" styleClass="btn" text="Modifier" onAction="#ouvrirModifier"/>
+             <Button fx:id="refreshBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#rafraichirTableau" prefHeight="35.0" prefWidth="38.0" styleClass="btn">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../img/refresh.png" />
+                     </image></ImageView>
+               </graphic></Button>
             <Button fx:id="delBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#supprimerLocation" prefHeight="36.0" prefWidth="109.0" styleClass="btn" text="Supprimer" />
+            <Button fx:id="modifBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ouvrirModifier" styleClass="btn" text="Modifier" />
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -59,14 +67,14 @@
               <menus>
                   <Menu mnemonicParsing="false" text="Navigation">
                      <items>
-                        <MenuItem fx:id="ajoutMenu" onAction="#ouvrirAjouter" mnemonicParsing="false" text="Ajouter" />
-                        <MenuItem fx:id="modifMenu" mnemonicParsing="false" text="Modifier" onAction="#ouvrirModifier" />
-                        <MenuItem fx:id="deleteMenu" mnemonicParsing="false" text="Supprimer" />
-                        <MenuItem fx:id="quitMenu" mnemonicParsing="false" text="Quitter" onAction="#quitter"/>
+                        <MenuItem fx:id="ajoutMenu" mnemonicParsing="false" onAction="#ouvrirAjouter" text="Ajouter" />
+                        <MenuItem fx:id="modifMenu" mnemonicParsing="false" onAction="#ouvrirModifier" text="Modifier" />
+                        <MenuItem fx:id="deleteMenu" mnemonicParsing="false" text="Supprimer" onAction="#supprimerLocation" />
+                        <MenuItem fx:id="quitMenu" mnemonicParsing="false" onAction="#quitter" text="Quitter" />
                      </items></Menu>
                 <Menu mnemonicParsing="false" text="Generer rapports">
                   <items>
-                    <MenuItem fx:id="rapportStd" mnemonicParsing="false" text="Rapport standard" />
+                    <MenuItem fx:id="rapportStd" mnemonicParsing="false" onAction="#creerRapportStandard" text="Rapport standard" />
                         <MenuItem fx:id="searchMenu" mnemonicParsing="false" text="Recherche..." />
                   </items>
                 </Menu>
