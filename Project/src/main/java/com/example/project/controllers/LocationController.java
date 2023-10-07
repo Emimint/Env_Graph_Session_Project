@@ -57,7 +57,7 @@ public class LocationController implements Initializable {
 
     private LoginModel loginModel;
 
-    private String prenomUser;
+    private Location locationSelectionnee;
 
     // Buttons de la bar de navigation :
     @FXML
@@ -118,18 +118,6 @@ public class LocationController implements Initializable {
 
     @FXML
     public ImageView userImg;
-
-    // On ajoute les champs pour la creation ou la sauvegarde d'un nouvel objet Location :
-    @FXML
-    public TextField idField;
-    @FXML
-    public TextField localField;
-    @FXML
-    public TextField adresseField;
-    @FXML
-    public TextField supField;
-    @FXML
-    public TextField anneeField;
 
     public LocationModel myLocationModel = new LocationModel();
 
@@ -255,10 +243,10 @@ public class LocationController implements Initializable {
 
     public void supprimerLocation(){
         try {
-            // On recupere l'indice de la colonne ID:
-            String indice = idField.getText();
+            // On recupere la location courante:
+            locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
 
-            Location locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
+            String indice = String.valueOf(locationSelectionnee.getID());
 
             // On appelle une boite de dialogue pour demander confirmation la demande de suppression a l'utilisateur :
             Alert dialogC = new Alert(Alert.AlertType.CONFIRMATION);
@@ -268,13 +256,11 @@ public class LocationController implements Initializable {
             Optional<ButtonType> answer = dialogC.showAndWait();
             if (answer.get() == ButtonType.OK) {
                 myLocationModel.deleteLocation(Integer.parseInt(indice));
+                locationSelectionnee = null;
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
                 dialog.setTitle("Confirmation");
                 dialog.setHeaderText("Adresse supprimee de la base de donnees.");
                 dialog.showAndWait();
-
-                // On reload la nouvelle table:
-                myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
             }
             else {
                 Alert dialog = new Alert(Alert.AlertType.INFORMATION);
@@ -288,6 +274,12 @@ public class LocationController implements Initializable {
             dialogW.setHeaderText(null);
             dialogW.setContentText("Attention : "+ e.getMessage());
             dialogW.showAndWait();
+        } catch (NullPointerException ex){
+            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.setTitle("Erreur");
+            dialogW.setHeaderText(null);
+            dialogW.setContentText("Aucune location n'est selectionnee.");
+            dialogW.showAndWait();
         }
     }
 
@@ -300,13 +292,6 @@ public class LocationController implements Initializable {
             String adresse = locationSelectionnee.getAdresse();
             int superficie = locationSelectionnee.getSuperficie();
             int anneeConstruction = locationSelectionnee.getAnnee_construction();
-
-            // On affiche les informations recuperees :
-            idField.setText(Integer.toString(id));
-            localField.setText(noLocal);
-            adresseField.setText(adresse);
-            supField.setText(Integer.toString(superficie));
-            anneeField.setText(Integer.toString(anneeConstruction));
         }
     }
 

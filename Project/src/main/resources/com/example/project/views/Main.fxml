@@ -69,7 +69,7 @@
                      <items>
                         <MenuItem fx:id="ajoutMenu" mnemonicParsing="false" onAction="#ouvrirAjouter" text="Ajouter" />
                         <MenuItem fx:id="modifMenu" mnemonicParsing="false" onAction="#ouvrirModifier" text="Modifier" />
-                        <MenuItem fx:id="deleteMenu" mnemonicParsing="false" text="Supprimer" />
+                        <MenuItem fx:id="deleteMenu" mnemonicParsing="false" text="Supprimer" onAction="#supprimerLocation" />
                         <MenuItem fx:id="quitMenu" mnemonicParsing="false" onAction="#quitter" text="Quitter" />
                      </items></Menu>
                 <Menu mnemonicParsing="false" text="Generer rapports">
