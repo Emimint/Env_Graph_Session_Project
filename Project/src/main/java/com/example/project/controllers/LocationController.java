@@ -161,13 +161,6 @@ public class LocationController implements Initializable {
             userImg.setClip(clip);
         });
 
-        // Ajout d'une methode pour surveiller les clicks de souris en dehors du tableau :
-        myPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            if (!myTable.getBoundsInParent().contains(event.getSceneX(), event.getSceneY())) {
-                myTable.getSelectionModel().clearSelection();
-            }
-        });
-
         // Ajout du systeme de mapping aux futures colonnes du tableau (les proprietes doivent correspondre aux noms exacts des attributs de Location) :
         idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
         localColumn.setCellValueFactory(new PropertyValueFactory<>("no_local"));
@@ -224,6 +217,11 @@ public class LocationController implements Initializable {
     }
 
     public void ouvrirModifier() throws IOException {
+
+        try{
+        // On commence par recuperer la location en cours :
+        locationSelectionnee = myTable.getSelectionModel().getSelectedItem();
+
         // On s'assure que la nouvelle fenetre sera la seule active :
         Stage myStage = new Stage();
         myStage.initModality(Modality.APPLICATION_MODAL);
@@ -233,11 +231,18 @@ public class LocationController implements Initializable {
 
         //On transmet les informations du LocationModel au nouveau controleur:
         ModifyController modifyController = fxmlLoader.getController();
-        modifyController.setLocationModel(myLocationModel);
+        modifyController.setLocation(locationSelectionnee);
 
         myStage.setTitle("Modifier une nouvelle location existante");
         myStage.setScene(scene);
         myStage.show();
+        } catch (NullPointerException ex){
+            Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.setTitle("Erreur");
+            dialogW.setHeaderText(null);
+            dialogW.setContentText("Aucune location n'est selectionnee.");
+            dialogW.showAndWait();
+        }
     }
 
 
