@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Mooli&family=Roboto&display=swap');
 
-#myPane, #myLoginPanel{
+#myPane, #myLoginPanel, #myPaneReadMe{
     -fx-font-family: 'Mooli', sans-serif;
     -fx-font-weight: bold;
 }
@@ -102,6 +102,7 @@
     -fx-top: 1px;
 }
 
-.paragraphe {
--fx-text-fill: black;
+.img {
+ -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 15, 0, 0, 0);
+ -fx-padding: 10;
 }

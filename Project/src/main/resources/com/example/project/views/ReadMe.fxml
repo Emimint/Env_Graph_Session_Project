@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../../style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="myPaneReadMe" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(rgba(68, 147, 187,1) , rgba(68, 147, 187,0));" stylesheets="@../../../../style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fitHeight="320.0" fitWidth="555.0" layoutX="22.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView styleClass="img" fitHeight="320.0" fitWidth="555.0" layoutX="19.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../img/A Propos.jpg" />
+            <Image url="@../../../../img/a_propos.jpg" />
          </image>
       </ImageView>
-      <TextArea styleClass="paragraphe" layoutY="190.0" prefHeight="215.0" prefWidth="600.0" promptText="Le système de gestion des locations est un outil qui accompagne les propriétaires et les gestionnaires dans la gestion de leurs bien locatifs. Il permet de centraliser les informations sur les propriétés disponibles à la location, de suivre les disponibilités, de gérer les rapports, d’ajouter, de modifier et de supprimer les propriétés. Dans ce système on a accès a la base de données qui est composer de location et des utilisateurs qui gèrent le système. L’objectif de ce système est de simplifier et d’améliorer le processus de location pour les entreprises et les particuliers, réduire les erreurs et augmenter la satisfaction de la clientèles.">
+      <Text fill="#1a5a8fd6" layoutX="22.0" layoutY="262.0" styleClass="paragraphe" text="Le système de gestion des locations est un outil qui accompagne les propriétaires et les gestionnaires dans la gestion de leurs bien locatifs. Il permet de centraliser les informations sur les propriétés disponibles à la location, de suivre les disponibilités, de gérer les rapports, d’ajouter, de modifier et de supprimer les propriétés. Dans ce système on a accès a la base de données qui est composer de location et des utilisateurs qui gèrent le système. L’objectif de ce système est de simplifier et d’améliorer le processus de location pour les entreprises et les particuliers, réduire les erreurs et augmenter la satisfaction de la clientèles." wrappingWidth="548.3045043945312">
          <font>
-            <Font name="Times New Roman" size="18.0" />
-         </font>
-      </TextArea>
+            <Font size="15.0" />
+         </font></Text>
    </children>
 </Pane>
