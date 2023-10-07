@@ -101,3 +101,7 @@
     -fx-position: relative;
     -fx-top: 1px;
 }
+
+.paragraphe {
+-fx-text-fill: black;
+}
