@@ -123,13 +123,12 @@ public class AddController implements Initializable {
                 // On cree l'objet en utilisant l'indice et les valeurs entrees dans les differents champs :
                 Location nouvelleLocation = new Location();
                 nouvelleLocation.setDisponible("True");
-                nouvelleLocation.setDate_debut(debField.getText());
-                nouvelleLocation.setDate_fin(finField.getText());
-                nouvelleLocation.setStatus("True");
                 nouvelleLocation.setNoLocal(localField.getText());
                 nouvelleLocation.setAdresse(adresseField.getText());
                 nouvelleLocation.setSuperficie(supField.getText());
                 nouvelleLocation.setAnneeConstruction(anneeField.getText());
+                nouvelleLocation.setDate_debut(debField.getText());
+                nouvelleLocation.setDate_fin(finField.getText());// va appeler le setteur pour le status de la location.
                 nouvelleLocation.setPrix_pied_carre(prixField.getText());
 
                 myLocationModel.addLocation(nouvelleLocation);
