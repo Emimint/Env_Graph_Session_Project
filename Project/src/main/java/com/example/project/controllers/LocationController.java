@@ -177,6 +177,7 @@ public class LocationController implements Initializable {
         try {
             // Ajout des colonnes du tableau :
             myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
+            customiserTableau(dispoColumn);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -321,6 +322,30 @@ public class LocationController implements Initializable {
     public void creerRapportStandard() throws SQLException {
         genererRapport(myLocationModel.getListLocations());
     }
+
+    // Methode pour griser les locations indisponibles :
+    private void customiserTableau(TableColumn<Location, Boolean> tableColumn) {
+        tableColumn.setCellFactory(column -> {
+            return new TableCell<Location, Boolean>() {
+                @Override
+                protected void updateItem(Boolean item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    setText(empty ? "" : getItem().toString());
+                    setGraphic(null);
+
+                    TableRow<Location> currentRow = getTableRow();
+
+                    if (!isEmpty()) {
+
+                        if(!item)
+                            currentRow.setStyle("-fx-background-color:rgba(0,0,0,0.2)");
+                    }
+                }
+            };
+        });
+    }
+
 
     public void genererRapport(List<Location> liste_de_locations){
         try
