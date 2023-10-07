@@ -26,7 +26,7 @@ public List<Location>  getListLocations() throws SQLException {
         resultat = std.executeQuery();
 
         while (resultat.next()){
-            Location location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
+            Location location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location") ? "loue": "non loue", resultat.getBoolean("disponibilite")? "": "indisponible", resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
             locations.add(location);
         }
         std.close();
@@ -47,8 +47,8 @@ public List<Location>  getListLocations() throws SQLException {
             std.setString(2, location.getAdresse());
             std.setInt(3, location.getSuperficie());
             std.setInt(4, location.getAnnee_construction());
-            std.setBoolean(5, location.getStatus());
-            std.setBoolean(6, location.getDisponible());
+            std.setBoolean(5, location.getStatus() == "loue");
+            std.setBoolean(6, location.getDisponible()== "");
             std.setInt(7, location.getDate_debut());
             std.setInt(8, location.getDate_fin());
             std.setInt(9, location.getPrix_pied_carre());
@@ -99,7 +99,7 @@ public List<Location>  getListLocations() throws SQLException {
 
             resultat = std.executeQuery();
             while (resultat.next()){
-                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
+                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location")? "loue": "non loue", resultat.getBoolean("disponibilite")? "": "indisponible", resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
             }
             std.close();
         } catch (SQLException e) {
@@ -120,7 +120,7 @@ public List<Location>  getListLocations() throws SQLException {
 
             resultat = std.executeQuery();
             if (resultat.next()) {
-                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
+                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location")? "loue": "non loue", resultat.getBoolean("disponibilite")? "": "indisponible", resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
             }
             std.close();
         } catch (SQLException e) {

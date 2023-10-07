@@ -7,15 +7,15 @@ public class Location {
     private String  adresse;
     private int  superficie;
     private int  annee_construction; // doit varier de 1900 a l'annee courante (2023)
-    private boolean status;
-    private boolean disponible;
+    private String status;
+    private String disponible;
     private int date_debut;
     private int date_fin;
     private int prix_pied_carre;
 
     public Location(){}
 
-    public Location(int ID, String no_local, String adresse, int superficie, int annee_construction, boolean status, boolean disponible, int date_debut, int date_fin, int prix_pied_carre){
+    public Location(int ID, String no_local, String adresse, int superficie, int annee_construction, String status, String disponible, int date_debut, int date_fin, int prix_pied_carre){
         this.ID = ID;
         this.no_local = no_local;
         this.adresse = adresse;
@@ -69,15 +69,14 @@ public class Location {
         }
     }
 
-    public void setStatus(String inputStatus){
+    public void setStatus(String status){
         if(date_debut == 0 || date_fin == 0) throw new IllegalArgumentException("Vous devez preciser la periode de location.");
-        boolean status = Boolean.parseBoolean(inputStatus);
-        if (!disponible) throw new IllegalArgumentException("Cette location n'est pas disponible pour le moment.");
+        if (disponible == "indisponible") throw new IllegalArgumentException("Cette location n'est pas disponible pour le moment.");
         this.status = status;
     }
 
-    public void setDisponible(String inputDisponible){
-        this.disponible = Boolean.parseBoolean(inputDisponible);
+    public void setDisponible(String disponible){
+        this.disponible = disponible;
     }
 
     public void setDate_debut(String inputDate_debut){
@@ -101,6 +100,7 @@ public class Location {
                         "\n- L'annee de fin de location doit varier de 1900 a 2023." +
                         "\n- l'annee de fin de location ne peut pas etre plus recente que l'annee de debut de location.");
             this.date_fin = date_fin;
+           if(this.date_fin < 2023) setStatus("non loue");
         } catch (NumberFormatException e) {
             throw new NumberFormatException("L'annee de fin de location doit être un entier positif.");
         }
@@ -137,11 +137,11 @@ public class Location {
         return annee_construction;
     }
 
-    public boolean getStatus(){
+    public String getStatus(){
         return status;
     }
 
-    public boolean getDisponible(){
+    public String getDisponible(){
     return disponible;
     }
 

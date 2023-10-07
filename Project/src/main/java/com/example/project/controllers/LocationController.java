@@ -392,10 +392,10 @@ public class LocationController implements Initializable {
                 String annee_construction= String.valueOf(location.getAnnee_construction());
                 table_cell=new PdfPCell(new Phrase(annee_construction));
                 my_report_table.addCell(table_cell);
-                String status_location=location.getStatus()? "loue": "non loue";
+                String status_location=location.getStatus();
                 table_cell=new PdfPCell(new Phrase(status_location));
                 my_report_table.addCell(table_cell);
-                String disponibilite=location.getDisponible()? "disponible": "indisponible";
+                String disponibilite=location.getDisponible();
                 table_cell=new PdfPCell(new Phrase(disponibilite));
                 my_report_table.addCell(table_cell);
                 String date_debut= location.getDate_debut()> 0? String.valueOf(location.getDate_debut()): "N/A";
