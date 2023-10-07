@@ -101,7 +101,7 @@ public class Location {
                         "\n- L'annee de fin de location doit varier de 1900 a 2023." +
                         "\n- l'annee de fin de location ne peut pas etre plus recente que l'annee de debut de location.");
             this.date_fin = date_fin;
-            if(this.date_fin < 2023) setStatus("False");
+            if(this.date_fin >= 2023) setStatus("True");
         } catch (NumberFormatException e) {
             throw new NumberFormatException("L'annee de fin de location doit être un entier positif.");
         }
