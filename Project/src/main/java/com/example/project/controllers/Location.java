@@ -54,8 +54,8 @@ public class Location {
     public void setSuperficie(String inputSuperficie) {
         try {
             int superficie = Integer.parseInt(inputSuperficie);
-            if (superficie < 10) {
-                throw new IllegalArgumentException("La superficie doit être d'au moins 10 mètres carrés.");
+            if (superficie < 40) {
+                throw new IllegalArgumentException("La superficie doit être d'au moins 40 pieds carrés.");
             }
             this.superficie = superficie;
         } catch (NumberFormatException e) {

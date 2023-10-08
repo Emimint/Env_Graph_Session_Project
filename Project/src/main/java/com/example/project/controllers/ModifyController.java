@@ -1,31 +1,14 @@
-/*
- * @created 03/10/2023 - 6:16 p.m.
- * @project Env_Graph_Session_Project
- * @author Emilie Echevin
- */
-
 package com.example.project.controllers;
 
 import com.example.project.models.LocationModel;
-import com.example.project.models.LoginModel;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
-import java.io.InputStream;
 import java.net.URL;
-import java.sql.SQLException;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -123,6 +106,7 @@ public class ModifyController implements Initializable {
             }
         } catch (IllegalArgumentException e){
             Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             dialogW.setTitle("Erreur");
             dialogW.setHeaderText(null);
             dialogW.setContentText("Attention : "+ e.getMessage());
@@ -192,7 +176,6 @@ public class ModifyController implements Initializable {
             dialog.showAndWait();
         }
     }
-
 
     @FXML
     public void closeButtonAction(){
