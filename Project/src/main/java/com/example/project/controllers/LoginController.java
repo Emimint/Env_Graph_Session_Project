@@ -86,6 +86,7 @@ public class LoginController implements Initializable {
 
                 scene.getStylesheets().add("style.css");
                 myStage.setTitle("Gestion des locations");
+                myStage.setResizable(false);
                 myStage.setScene(scene);
                 myStage.show();
             } else infoLabel.setText("Nom d'utilisateur ou mot de passe valide(s).");

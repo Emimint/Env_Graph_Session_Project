@@ -166,6 +166,7 @@ public class LocationController implements Initializable {
         // On s'assure que la nouvelle fenetre sera la seule active :
         Stage myStage = new Stage();
         myStage.initModality(Modality.APPLICATION_MODAL);
+        myStage.setResizable(false);
 
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Add.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -205,6 +206,7 @@ public class LocationController implements Initializable {
         // On s'assure que la nouvelle fenetre sera la seule active :
         Stage myStage = new Stage();
         myStage.initModality(Modality.APPLICATION_MODAL);
+        myStage.setResizable(false);
 
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Modify.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -267,6 +269,7 @@ public class LocationController implements Initializable {
         // On s'assure que la nouvelle fenetre sera la seule active :
         Stage myStage = new Stage();
         myStage.initModality(Modality.APPLICATION_MODAL);
+        myStage.setResizable(false);
 
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/ReadMe.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
