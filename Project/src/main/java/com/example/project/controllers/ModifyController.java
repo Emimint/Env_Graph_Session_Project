@@ -96,6 +96,7 @@ public class ModifyController implements Initializable {
             locationSelectionnee.setAnneeConstruction(anneeField.getText());
             locationSelectionnee.setDate_debut(debField.getText());
             locationSelectionnee.setDate_fin(finField.getText());
+            locationSelectionnee.setPrix_pied_carre(prixField.getText());
 
 
             // On appelle une boite de dialogue pour demander confirmation la demande de modification a l'utilisateur :
