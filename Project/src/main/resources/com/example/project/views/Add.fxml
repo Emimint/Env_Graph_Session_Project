@@ -10,18 +10,22 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../../style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.AddController">
+<VBox fx:id="myAddPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../../style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.AddController">
    <children>
       <Pane prefHeight="52.0" prefWidth="600.0">
          <children>
-            <Text layoutX="20.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="559.4700107574463" />
+            <Text fill="#284545" layoutX="-3.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Saississez une nouvelle adresse de location. Si il s'agit de la meme adressse, assurez-vous de choissir un numero de local different." wrappingWidth="588.8032627105713">
+               <font>
+                  <Font size="15.0" />
+               </font></Text>
          </children>
       </Pane>
-      <GridPane fx:id="gridPane" alignment="CENTER" prefHeight="261.0" prefWidth="308.0">
+      <GridPane fx:id="gridPane" alignment="CENTER" prefHeight="251.0" prefWidth="489.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.0" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0000483194987" minWidth="10.0" />
          </columnConstraints>
          <rowConstraints>
@@ -58,13 +62,16 @@
       </GridPane>
       <HBox alignment="CENTER" prefHeight="86.0" prefWidth="600.0" spacing="10.0">
          <children>
-            <Button fx:id="saveBtn" mnemonicParsing="false" text="Sauvegarder" onAction="#ajouterLocation"/>
-            <Button fx:id="clrBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Effacer" onAction="#viderChamps"/>
-            <Button fx:id="quitBtn" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Quitter" onAction="#closeButtonAction"/>
+            <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#ajouterLocation" styleClass="addBtn" text="Sauvegarder" textFill="#f8f6f6"/>
+            <Button fx:id="clrBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viderChamps" styleClass="addBtn" text="Effacer" textFill="#f8f6f6"/>
+            <Button fx:id="quitBtn" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeButtonAction" styleClass="addBtn" text="Quitter" textFill="#f8f6f6" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </HBox>
    </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </VBox>

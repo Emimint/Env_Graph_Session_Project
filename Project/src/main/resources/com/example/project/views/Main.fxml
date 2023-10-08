@@ -11,6 +11,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -37,7 +38,7 @@
       </TableView>
    </center>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="51.0" prefWidth="845.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
              <Button fx:id="refreshBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#rafraichirTableau" prefHeight="35.0" prefWidth="38.0" styleClass="btn">
                <graphic>
@@ -61,21 +62,29 @@
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
    <top>
-      <VBox prefHeight="101.0" prefWidth="856.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="125.0" prefWidth="856.0" BorderPane.alignment="CENTER">
          <children>
-            <MenuBar>
+            <MenuBar styleClass="menu-bar">
               <menus>
                   <Menu mnemonicParsing="false" text="Navigation">
                      <items>
-                        <MenuItem fx:id="ajoutMenu" mnemonicParsing="false" onAction="#ouvrirAjouter" text="Ajouter" />
-                        <MenuItem fx:id="modifMenu" mnemonicParsing="false" onAction="#ouvrirModifier" text="Modifier" />
-                        <MenuItem fx:id="deleteMenu" mnemonicParsing="false" text="Supprimer" onAction="#supprimerLocation" />
-                        <MenuItem fx:id="quitMenu" mnemonicParsing="false" onAction="#quitter" text="Quitter" />
+                        <MenuItem fx:id="ajoutMenu" mnemonicParsing="false" onAction="#ouvrirAjouter" styleClass="sub-menus" text="Ajouter">
+                           <accelerator>
+                              <KeyCodeCombination alt="ANY" code="A" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
+                        <MenuItem fx:id="modifMenu" mnemonicParsing="false" onAction="#ouvrirModifier" styleClass="sub-menus" text="Modifier">
+                           <accelerator>
+                              <KeyCodeCombination alt="ANY" code="M" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
+                        <MenuItem fx:id="deleteMenu" mnemonicParsing="false" onAction="#supprimerLocation" styleClass="sub-menus" text="Supprimer" />
+                        <MenuItem fx:id="quitMenu" mnemonicParsing="false" onAction="#quitter" styleClass="sub-menus" text="Quitter">
+                           <accelerator>
+                              <KeyCodeCombination alt="ANY" code="Q" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
                      </items></Menu>
                 <Menu mnemonicParsing="false" text="Generer rapports">
                   <items>
                     <MenuItem fx:id="rapportStd" mnemonicParsing="false" onAction="#creerRapportStandard" text="Rapport standard" />
-                        <MenuItem fx:id="searchMenu" mnemonicParsing="false" text="Recherche..." />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" onAction="#ouvrirReadMe" text="Aide">
@@ -86,15 +95,15 @@
             </MenuBar>
             <HBox>
                <children>
-                  <Pane prefHeight="73.0" prefWidth="339.0">
+                  <Pane prefHeight="73.0" prefWidth="335.0">
                      <children>
                         <Label fx:id="myMainLabel" alignment="BOTTOM_CENTER" layoutX="47.0" layoutY="19.0" styleClass="text-glow_title" text="Système de Gestion des locations" />
                      </children>
                   </Pane>
-                  <Pane prefHeight="73.0" prefWidth="523.0">
+                  <Pane prefHeight="73.0" prefWidth="515.0">
                      <children>
                         <ImageView fx:id="userImg" fitHeight="75.0" fitWidth="65.0" layoutX="364.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true" />
-                        <MenuButton fx:id="userBtn" contentDisplay="RIGHT" layoutX="437.0" layoutY="17.0" mnemonicParsing="false" text="Prenom">
+                        <MenuButton fx:id="userBtn" contentDisplay="RIGHT" layoutX="427.0" layoutY="2.0" mnemonicParsing="false" styleClass="menu-bar" text="Prenom" textFill="white" underline="true">
                           <items>
                             <MenuItem mnemonicParsing="false" onAction="#retourLogin" text="Deconnexion" />
                           </items>

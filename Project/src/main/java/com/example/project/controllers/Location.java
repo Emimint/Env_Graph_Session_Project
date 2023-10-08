@@ -1,5 +1,7 @@
 package com.example.project.controllers;
 
+import java.util.Calendar;
+
 public class Location {
     // Aucun champ ne doit etre vide lors de l'ajout a la base de donnees
     private int  ID; // fournit via une requete par la BD
@@ -12,6 +14,8 @@ public class Location {
     private int date_debut;
     private int date_fin;
     private int prix_pied_carre;
+
+    int anneeCourante = Calendar.getInstance().get(Calendar.YEAR);
 
     public Location(){}
 
@@ -50,8 +54,8 @@ public class Location {
     public void setSuperficie(String inputSuperficie) {
         try {
             int superficie = Integer.parseInt(inputSuperficie);
-            if (superficie < 10) {
-                throw new IllegalArgumentException("La superficie doit être d'au moins 10 mètres carrés.");
+            if (superficie < 40) {
+                throw new IllegalArgumentException("La superficie doit être d'au moins 40 pieds carrés.");
             }
             this.superficie = superficie;
         } catch (NumberFormatException e) {
@@ -62,7 +66,7 @@ public class Location {
     public void setAnneeConstruction(String inputAnneeConstruction) {
         try {
             int annee_construction = Integer.parseInt(inputAnneeConstruction);
-            if(annee_construction < 1900 || annee_construction > 2023) throw new IllegalArgumentException("L'annee de construction doit varier de 1900 a 2023.");
+            if(annee_construction < 1900 || annee_construction > anneeCourante) throw new IllegalArgumentException("L'annee de construction doit varier de 1900 a 2023.");
             this.annee_construction = annee_construction;
         } catch (NumberFormatException e) {
             throw new NumberFormatException("L'annee de construction doit être un entier positif.");
@@ -78,12 +82,13 @@ public class Location {
 
     public void setDisponible(String inputDisponible){
         this.disponible = Boolean.parseBoolean(inputDisponible);
+        if(!disponible) date_fin = Math.min(date_fin, anneeCourante);
     }
 
     public void setDate_debut(String inputDate_debut){
         try {
             int date_debut = Integer.parseInt(inputDate_debut);
-            if(!((date_debut >= 1900 && date_debut <= 2023) && (date_debut >= annee_construction)))
+            if(!((date_debut >= 1900 && date_debut <= anneeCourante) && (date_debut >= annee_construction)))
                 throw new IllegalArgumentException("" +
                     "\n- L'annee de location doit varier de 1900 a 2023." +
                     "\n- l'annee de location ne peut pas etre plus ancienne que l'annee de construction.");
@@ -96,12 +101,12 @@ public class Location {
     public void setDate_fin (String inputDate_fin){
         try {
             int date_fin = Integer.parseInt(inputDate_fin);
-            if(!((date_debut >= 1900 && date_debut <= 2023) && (date_fin > date_debut)))
+            if(!((date_debut >= 1900 && date_debut <= anneeCourante) && (date_fin > date_debut)))
                 throw new IllegalArgumentException("" +
                         "\n- L'annee de fin de location doit varier de 1900 a 2023." +
                         "\n- l'annee de fin de location ne peut pas etre plus recente que l'annee de debut de location.");
             this.date_fin = date_fin;
-            if(this.date_fin >= 2023) setStatus("True");
+            if(this.date_fin >= anneeCourante) setStatus("True");
         } catch (NumberFormatException e) {
             throw new NumberFormatException("L'annee de fin de location doit être un entier positif.");
         }
@@ -110,7 +115,7 @@ public class Location {
     public void setPrix_pied_carre(String inputPrix_pied_carre){
         try {
             int prix_pied_carre = Integer.parseInt(inputPrix_pied_carre);
-            if((!(prix_pied_carre < 400 && prix_pied_carre > 20))) throw new IllegalArgumentException("Le prix au pied carre doit etre compris entre 20 et 400$.");
+            if((!(prix_pied_carre <= 400 && prix_pied_carre >= 20))) throw new IllegalArgumentException("Le prix au pied carre doit etre compris entre 20 et 400$.");
             this.prix_pied_carre = prix_pied_carre;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Le prix doit etre un entier positif.");

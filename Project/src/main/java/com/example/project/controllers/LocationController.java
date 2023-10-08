@@ -1,9 +1,3 @@
-/*
- * @created 24/09/2023 - 5:11 p.m.
- * @project Env_Graph_Session_Project
- * @author Emilie Echevin
- */
-
 package com.example.project.controllers;
 
 import com.example.project.models.LocationModel;
@@ -12,39 +6,23 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-
 import com.itextpdf.text.pdf.PdfWriter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-
 import java.io.*;
 import java.net.URL;
 import java.sql.*;
@@ -59,7 +37,7 @@ public class LocationController implements Initializable {
 
     private Location locationSelectionnee;
 
-    // Buttons de la bar de navigation :
+    // Buttons de la barre de navigation :
     @FXML
     public MenuItem ajoutMenu;
     @FXML
@@ -85,9 +63,6 @@ public class LocationController implements Initializable {
     public Button delBtn;
     @FXML
     public Button refreshBtn;
-
-    @FXML
-    public GridPane gridPane;
 
     // On cree les colonnes du tableau dynamiquement :
     @FXML
@@ -182,7 +157,6 @@ public class LocationController implements Initializable {
         try {
             // Ajout des colonnes du tableau :
             myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
-            customiserTableau(dispoColumn);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -192,6 +166,7 @@ public class LocationController implements Initializable {
         // On s'assure que la nouvelle fenetre sera la seule active :
         Stage myStage = new Stage();
         myStage.initModality(Modality.APPLICATION_MODAL);
+        myStage.setResizable(false);
 
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Add.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -231,6 +206,7 @@ public class LocationController implements Initializable {
         // On s'assure que la nouvelle fenetre sera la seule active :
         Stage myStage = new Stage();
         myStage.initModality(Modality.APPLICATION_MODAL);
+        myStage.setResizable(false);
 
         FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Modify.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -238,6 +214,7 @@ public class LocationController implements Initializable {
         //On transmet les informations du LocationModel au nouveau controleur:
         ModifyController modifyController = fxmlLoader.getController();
         modifyController.setLocation(locationSelectionnee);
+        modifyController.setLocationModel(myLocationModel);
 
         myStage.setTitle("Modifier une nouvelle location existante");
         myStage.setScene(scene);
@@ -293,12 +270,13 @@ public class LocationController implements Initializable {
         Stage myStage = new Stage();
         myStage.initModality(Modality.APPLICATION_MODAL);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/ReadMe.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+            FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/ReadMe.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
 
-        myStage.setTitle("A propos de ce projet");
-        myStage.setScene(scene);
-        myStage.show();
+            myStage.setTitle("A propos de ce projet");
+            myStage.setScene(scene);
+            myStage.setResizable(false);
+            myStage.show();
         } catch (IOException  e) {
             System.out.println("Erreur: " +e);
             e.printStackTrace();
@@ -308,30 +286,6 @@ public class LocationController implements Initializable {
     public void creerRapportStandard() throws SQLException {
         genererRapport(myLocationModel.getListLocations());
     }
-
-    // Methode pour griser les locations indisponibles :
-    private void customiserTableau(TableColumn<Location, Boolean> tableColumn) {
-        tableColumn.setCellFactory(column -> {
-            return new TableCell<Location, Boolean>() {
-                @Override
-                protected void updateItem(Boolean item, boolean empty) {
-                    super.updateItem(item, empty);
-
-                    setText(empty ? "" : getItem().toString());
-                    setGraphic(null);
-
-                    TableRow<Location> currentRow = getTableRow();
-
-                    if (!isEmpty()) {
-
-                        if(!item)
-                            currentRow.setStyle("-fx-background-color:rgba(0,0,0,0.2)");
-                    }
-                }
-            };
-        });
-    }
-
 
     public void genererRapport(List<Location> liste_de_locations){
         try
@@ -352,7 +306,7 @@ public class LocationController implements Initializable {
             my_pdf_report.setPageSize(PageSize.A4.rotate());
             PdfWriter.getInstance(my_pdf_report, new FileOutputStream(file));
             my_pdf_report.open();
-            PdfPTable my_report_table = new PdfPTable(new float[] { 0.5f, 2.5f,0.5f,1,1,1,1,1,1,1}); // 10 colonnes de la table "locations" (avec dimensions customisees par contenu)
+            PdfPTable my_report_table = new PdfPTable(new float[] { 0.5f, 2.5f,0.5f,1,1,1,1.3f,1,1,1}); // 10 colonnes de la table "locations" (avec dimensions customisees par contenu)
             PdfPCell table_cell;
 
             // On commence par mettre un titre :
@@ -451,5 +405,4 @@ public class LocationController implements Initializable {
     public void setLoginModel(LoginModel loginModel) {
         this.loginModel = loginModel;
     }
-
 }

@@ -3,8 +3,6 @@ package com.example.project.models;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MySqlConnection {
     // Creation de la variable de connexion à la base de données MySql:
@@ -28,5 +26,4 @@ public class MySqlConnection {
         }
         return cnx;
     }
-
 }

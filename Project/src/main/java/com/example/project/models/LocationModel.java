@@ -1,14 +1,12 @@
 package com.example.project.models;
 
 import com.example.project.controllers.Location;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class LocationModel {
     Connection connection;
@@ -69,13 +67,18 @@ public List<Location>  getListLocations() throws SQLException {
 
         try {
             std = connection.prepareStatement("UPDATE locations \n" +
-                    "SET  num_local =? , adresse=?, superficie=?, annee_construction=? " +
+                    "SET  num_local =? , adresse=?, superficie=?, annee_construction=?, status_location=?, disponibilite=?, date_debut=?, date_fin=?, prix_pied_carre=? " +
                     "WHERE id_location = ?;");
             std.setString(1, location.getNo_local());
             std.setString(2, location.getAdresse());
             std.setInt(3, location.getSuperficie());
             std.setInt(4, location.getAnnee_construction());
-            std.setInt(5, location.getID());
+            std.setInt(5, location.getStatus()? 1 : 0);
+            std.setInt(6, location.getDisponible()? 1 : 0);
+            std.setInt(7, location.getDate_debut());
+            std.setInt(8, location.getDate_fin());
+            std.setInt(9, location.getPrix_pied_carre());
+            std.setInt(10, location.getID());
 
             int nbrRangsModifies = std.executeUpdate();
             if (nbrRangsModifies == 0) {
@@ -88,24 +91,26 @@ public List<Location>  getListLocations() throws SQLException {
         }
     }
 
-    public Location getLocationbyID(int indice){
+    public void updateLocation(int indice, int status, int debut, int fin){
         PreparedStatement std = null;
-        ResultSet resultat = null;
-        Location location = null;
 
         try {
-            std = connection.prepareStatement("SELECT * FROM locations WHERE id_location = ?;");
-            std.setInt(1, indice);
+            std = connection.prepareStatement("UPDATE locations SET  disponibilite =?" +
+                    ", date_debut=?, date_fin=? WHERE id_location = ?;");
+            std.setInt(1, status);
+            std.setInt(2, debut);
+            std.setInt(3, fin);
+            std.setInt(4, indice);
 
-            resultat = std.executeQuery();
-            while (resultat.next()){
-                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
+            int nbrRangsModifies = std.executeUpdate();
+            if (nbrRangsModifies == 0) {
+                throw new SQLException("Echec du changement de disponibilite.");
             }
+
             std.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return location;
     }
 
     public Location getLocationbyAdresse(String adresse){
@@ -141,28 +146,4 @@ public List<Location>  getListLocations() throws SQLException {
             throw new SQLException("Echec de la suppression.");
         }
     }
-
-
-    public int getNextIndice() {
-        PreparedStatement std = null;
-        ResultSet resultat = null;
-        int indice=-1;
-
-        try {
-            std = connection.prepareStatement("SELECT LAST_INSERT_ID();");
-
-            resultat = std.executeQuery();
-            if (resultat.next()) {
-                indice = resultat.getInt(1);
-            }
-
-            std.close();
-            resultat.close();
-        } catch (SQLException e) {
-            System.out.println("Erreur: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-        return indice;
-    }
-
 }
