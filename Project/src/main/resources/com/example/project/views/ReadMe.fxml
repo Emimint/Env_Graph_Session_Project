@@ -8,12 +8,12 @@
 
 <Pane fx:id="myPaneReadMe" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(rgba(68, 147, 187,0),rgba(68, 147, 187,1));" stylesheets="@../../../../style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView styleClass="img" fitHeight="320.0" fitWidth="555.0" layoutX="19.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="320.0" fitWidth="555.0" layoutX="19.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" styleClass="img">
          <image>
             <Image url="@../../../../img/a_propos.jpg" />
          </image>
       </ImageView>
-      <Text fill="white" layoutX="22.0" layoutY="262.0" styleClass="paragraphe" text="Le système de gestion des locations est un outil qui accompagne les propriétaires et les gestionnaires dans la gestion de leurs bien locatifs. Il permet de centraliser les informations sur les propriétés disponibles à la location, de suivre les disponibilités, de gérer les rapports, d’ajouter, de modifier et de supprimer les propriétés. Dans ce système on a accès a la base de données qui est composer de location et des utilisateurs qui gèrent le système. L’objectif de ce système est de simplifier et d’améliorer le processus de location pour les entreprises et les particuliers, réduire les erreurs et augmenter la satisfaction de la clientèles." wrappingWidth="548.3045043945312">
+      <Text fill="white" layoutX="22.0" layoutY="262.0" styleClass="paragraphe" text="Le système de gestion des locations est un outil qui accompagne les agents immobiliers dans la gestion des biens locatifs. Il permet de centraliser les informations sur les propriétés disponibles à la location, de suivre les disponibilités, de gérer les rapports, d’ajouter, de modifier et de supprimer les propriétés. Dans ce système, on a accès à la base de données qui est composée des locations et des utilisateurs qui gèrent le système. L’objectif de ce système est de simplifier et d’améliorer l’efficacité opérationnelle et offrir meilleure expérience au locataire en simplifiant les démarches de location, réduisant les erreurs et augmentant la satisfaction de la clientèle." wrappingWidth="548.3045043945312">
          <font>
             <Font size="15.0" />
          </font></Text>
