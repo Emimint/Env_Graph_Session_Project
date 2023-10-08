@@ -69,17 +69,45 @@ public List<Location>  getListLocations() throws SQLException {
 
         try {
             std = connection.prepareStatement("UPDATE locations \n" +
-                    "SET  num_local =? , adresse=?, superficie=?, annee_construction=? " +
+                    "SET  num_local =? , adresse=?, superficie=?, annee_construction=?, status_location=?, disponibilite=?, date_debut=?, date_fin=?, prix_pied_carre=? " +
                     "WHERE id_location = ?;");
             std.setString(1, location.getNo_local());
             std.setString(2, location.getAdresse());
             std.setInt(3, location.getSuperficie());
             std.setInt(4, location.getAnnee_construction());
-            std.setInt(5, location.getID());
+            std.setInt(5, location.getStatus()? 1 : 0);
+            std.setInt(6, location.getDisponible()? 1 : 0);
+            std.setInt(7, location.getDate_debut());
+            std.setInt(8, location.getDate_fin());
+            std.setInt(9, location.getPrix_pied_carre());
+            std.setInt(10, location.getID());
 
             int nbrRangsModifies = std.executeUpdate();
             if (nbrRangsModifies == 0) {
                 throw new SQLException("Echec de la modification.");
+            }
+
+            std.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateLocation(int indice, int status, int debut, int fin){
+        PreparedStatement std = null;
+
+        try {
+            System.out.println("indice :" + indice + "\nsattus: " + status);
+            std = connection.prepareStatement("UPDATE locations SET  disponibilite =?" +
+                    ", date_debut=?, date_fin=? WHERE id_location = ?;");
+            std.setInt(1, status);
+            std.setInt(2, debut);
+            std.setInt(3, fin);
+            std.setInt(4, indice);
+
+            int nbrRangsModifies = std.executeUpdate();
+            if (nbrRangsModifies == 0) {
+                throw new SQLException("Echec du changement de disponibilite.");
             }
 
             std.close();

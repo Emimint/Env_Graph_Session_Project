@@ -238,6 +238,7 @@ public class LocationController implements Initializable {
         //On transmet les informations du LocationModel au nouveau controleur:
         ModifyController modifyController = fxmlLoader.getController();
         modifyController.setLocation(locationSelectionnee);
+        modifyController.setLocationModel(myLocationModel);
 
         myStage.setTitle("Modifier une nouvelle location existante");
         myStage.setScene(scene);

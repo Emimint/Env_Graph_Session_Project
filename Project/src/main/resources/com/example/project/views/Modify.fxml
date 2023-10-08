@@ -59,12 +59,12 @@
         </GridPane>
       <HBox alignment="CENTER" prefHeight="38.0" prefWidth="600.0">
          <children>
-            <CheckBox fx:id="dispoBox" mnemonicParsing="false" text="Disponible" textAlignment="CENTER" />
+            <CheckBox fx:id="dispoBox" mnemonicParsing="false" text="Disponible" textAlignment="CENTER" onAction="#changerDisponibilite"/>
          </children>
       </HBox>
         <HBox alignment="CENTER" prefHeight="86.0" prefWidth="600.0" spacing="10.0">
             <children>
-                <Button fx:id="saveBtn" mnemonicParsing="false" text="Sauvegarder" />
+                <Button fx:id="saveBtn" mnemonicParsing="false" text="Sauvegarder" onAction="#modifierLocation"/>
                 <Button fx:id="quitBtn" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Annuler" onAction="#closeButtonAction" />
             </children>
             <padding>
