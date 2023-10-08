@@ -182,13 +182,13 @@ public class ModifyController implements Initializable {
                     confirmationDialog.setTitle("Confirmation");
                     confirmationDialog.setHeaderText("Changement de disponibilité effectué.");
                     confirmationDialog.showAndWait();
-
                     // On ferme la fenetre (a utilise n'importe quel noeud pour trouver la scene) :
                     dispoBox.getScene().getWindow().hide();
                 }
                 return null;
             });
-
+            // On ferme la fenetre (a utilise n'importe quel noeud pour trouver la scene) :
+            dispoBox.getScene().getWindow().hide();
             dialog.showAndWait();
         }
     }
