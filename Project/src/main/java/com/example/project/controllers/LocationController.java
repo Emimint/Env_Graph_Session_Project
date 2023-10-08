@@ -18,6 +18,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert;
@@ -29,6 +32,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -205,6 +209,25 @@ public class LocationController implements Initializable {
         myStage.show();
     }
 
+
+
+    public void ouvrirRechercher() throws IOException {
+
+        // On s'assure que la nouvelle fenetre sera la seule active :
+        Stage myStage = new Stage();
+        myStage.initModality(Modality.APPLICATION_MODAL);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Search.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+
+        //On transmet les informations du LocationModel au nouveau controleur:
+        SearchController searchController = fxmlLoader.getController();
+        searchController.setLocationModel(myLocationModel);
+
+        myStage.setTitle("Recherche un ensemble de locations");
+        myStage.setScene(scene);
+        myStage.show();
+    }
     //Appel de la methode pour le retour à l'écran de connexion :
     @FXML
     public void retourLogin() throws IOException {
@@ -238,6 +261,7 @@ public class LocationController implements Initializable {
         //On transmet les informations du LocationModel au nouveau controleur:
         ModifyController modifyController = fxmlLoader.getController();
         modifyController.setLocation(locationSelectionnee);
+        modifyController.setLocationModel(myLocationModel);
 
         myStage.setTitle("Modifier une nouvelle location existante");
         myStage.setScene(scene);

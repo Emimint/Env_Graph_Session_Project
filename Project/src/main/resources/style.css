@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Mooli&family=Roboto&display=swap');
 
-#myPane, #myLoginPanel{
+#myPane, #myLoginPanel, #myPaneReadMe{
     -fx-font-family: 'Mooli', sans-serif;
     -fx-font-weight: bold;
 }
@@ -10,6 +10,23 @@
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-text-fill: #f0e6c5;
+}
+#mySearchPanel{
+    -fx-background-image: url("img/vue_ciel.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-text-fill: #f0e6c5;
+}
+
+#myAddPanel{
+    -fx-background-image: url("img/gestion.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+#myModifPanel{
+    -fx-background-image: url("img/modification.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
 }
 
 #myPane{
@@ -97,11 +114,113 @@
     -fx-background-color: #3d84a8;
 }
 
-.btn:pressed {
+.img {
+ -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 15, 0, 0, 0);
+ -fx-padding: 10;
+}
+
+.addBtn {
+    -fx-box-shadow: inset 0px 10px 14px -7px #276873;
+    -fx-background: linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
+    -fx-background-color: #599bb3;
+    -fx-border-radius: 9px;
+    -fx-border-color: #5899a6;
+    -fx-display: inline-block;
+    -fx-cursor: pointer;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+    -fx-text-decoration: none;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0.0, 0, 1);
+}
+
+.addBtn:hover {
+    -fx-background: linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
+    -fx-background-color: #408c99;
+}
+
+.addBtn:active {
     -fx-position: relative;
     -fx-top: 1px;
 }
 
-.paragraphe {
--fx-text-fill: black;
+/*Source : https://stackoverflow.com/questions/12299162/how-to-style-menu-button-and-menu-items */
+/* VARIABLE DEFINITIONS: Only these 4 variables have to be adjusted, the rest is copy-paste */
+* {
+    -fx-my-menu-color: linear-gradient(to bottom, #4493bb 5%, #4493bb 100%);            /* Change according to your needs */
+    -fx-my-menu-color-highlighted: #69a8c8;      /* Change according to your needs */
+    -fx-my-menu-font-color: #FFFFFF;             /* Change according to your needs */
+    -fx-my-menu-font-color-highlighted: #FFFFFF; /* Change according to your needs */
 }
+
+/* MENU BAR + Top-level MENU BUTTONS */
+/*** The menu bar itself ***/
+.menu-bar {
+    -fx-background-color: -fx-my-menu-color;
+}
+
+/*** Top-level menu itself (not selected / hovered) ***/
+.menu-bar > .container > .menu-button {
+    -fx-background-color: -fx-my-menu-color;
+    /*-fx-underline: true;*/
+}
+
+/*** Top-level menu's label (not selected / hovered) ***/
+.menu-bar > .container > .menu-button > .label {
+    -fx-text-fill: -fx-my-menu-font-color;
+    -fx-font-weight: bold;
+}
+
+/*** Top-level menu's label (disabled) ***/
+.menu-bar > .container > .menu-button > .label:disabled {
+    -fx-opacity: 1.0;
+}
+
+/*** Top-level menu itself (selected / hovered) ***/
+.menu-bar > .container > .menu-button:hover,
+.menu-bar > .container > .menu-button:focused,
+.menu-bar > .container > .menu-button:showing {
+    -fx-background-color: -fx-my-menu-color-highlighted;
+}
+
+/*** Top-level menu's label (selected / hovered) ***/
+.menu-bar > .container > .menu-button:hover > .label,
+.menu-bar > .container > .menu-button:focused > .label,
+.menu-bar > .container > .menu-button:showing > .label {
+    -fx-text-fill: -fx-my-menu-font-color-highlighted;
+}
+
+/* MENU ITEM (children of a MENU BUTTON) */
+/*** The item itself (not hovered / focused) ***/
+.menu-item {
+    -fx-background-color: -fx-my-menu-color;
+}
+
+/*** The item's label (not hovered / focused) ***/
+.menu-item .label {
+    -fx-text-fill: -fx-my-menu-font-color;
+}
+
+/*** The item's label (disabled) ***/
+.menu-item .label:disabled {
+    -fx-opacity: 1.0;
+}
+
+/*** The item itself (hovered / focused) ***/
+.menu-item:focused, .menu-item:hovered {
+    -fx-background-color: -fx-my-menu-color-highlighted;
+}
+
+/*** The item's label (hovered / focused) ***/
+.menu-item:focused .label, .menu-item:hovered .label {
+    -fx-text-fill: -fx-my-menu-font-color-highlighted;
+}
+
+/* CONTEXT MENU */
+/*** The context menu that contains a menu's menu items ***/
+.context-menu {
+    -fx-background-color: -fx-my-menu-color;
+}
+
+
+

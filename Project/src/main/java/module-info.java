@@ -3,6 +3,7 @@ module com.example.project {
     requires javafx.fxml;
     requires java.sql;
     requires itextpdf;
+    requires controlsfx;
 
     opens com.example.project to javafx.fxml;
     opens com.example.project.controllers to javafx.fxml;

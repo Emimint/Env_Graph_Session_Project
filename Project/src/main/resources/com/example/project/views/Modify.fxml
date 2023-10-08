@@ -11,19 +11,23 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../../style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.ModifyController">
+<VBox fx:id="myModifPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../../style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project.controllers.ModifyController">
     <children>
         <Pane prefHeight="52.0" prefWidth="600.0">
             <children>
-                <Text layoutX="20.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="559.4700107574463" />
+                <Text fill="#599bb3" layoutX="20.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modifiez tous les champs pertinents. Pour desactiver une location, selectionnez simplement &quot;Disponible&quot;." wrappingWidth="559.4700107574463">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font></Text>
             </children>
         </Pane>
-        <GridPane fx:id="gridPane" alignment="CENTER" prefHeight="261.0" prefWidth="308.0">
+        <GridPane fx:id="gridPane" alignment="CENTER" prefHeight="243.0" prefWidth="600.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.0" minWidth="10.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0000483194987" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.00000000000003" minWidth="10.0" prefWidth="187.33337402343753" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0000559488932" minWidth="10.0" prefWidth="91.33329264322913" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -59,13 +63,16 @@
         </GridPane>
       <HBox alignment="CENTER" prefHeight="38.0" prefWidth="600.0">
          <children>
-            <CheckBox fx:id="dispoBox" mnemonicParsing="false" text="Disponible" textAlignment="CENTER" />
+            <CheckBox fx:id="dispoBox" contentDisplay="CENTER" mnemonicParsing="false" onAction="#changerDisponibilite" prefHeight="31.0" prefWidth="132.0" text="Disponible" textAlignment="CENTER" textFill="#599bb3">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font></CheckBox>
          </children>
       </HBox>
-        <HBox alignment="CENTER" prefHeight="86.0" prefWidth="600.0" spacing="10.0">
+        <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" spacing="10.0">
             <children>
-                <Button fx:id="saveBtn" mnemonicParsing="false" text="Sauvegarder" />
-                <Button fx:id="quitBtn" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Annuler" onAction="#closeButtonAction" />
+                <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#modifierLocation" styleClass="addBtn" text="Sauvegarder" textFill="#f8f6f6" />
+                <Button fx:id="quitBtn" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeButtonAction" styleClass="addBtn" text="Annuler" textFill="#f8f6f6" />
             </children>
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

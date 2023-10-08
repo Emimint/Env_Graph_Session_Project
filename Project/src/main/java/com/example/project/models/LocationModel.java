@@ -69,13 +69,18 @@ public List<Location>  getListLocations() throws SQLException {
 
         try {
             std = connection.prepareStatement("UPDATE locations \n" +
-                    "SET  num_local =? , adresse=?, superficie=?, annee_construction=? " +
+                    "SET  num_local =? , adresse=?, superficie=?, annee_construction=?, status_location=?, disponibilite=?, date_debut=?, date_fin=?, prix_pied_carre=? " +
                     "WHERE id_location = ?;");
             std.setString(1, location.getNo_local());
             std.setString(2, location.getAdresse());
             std.setInt(3, location.getSuperficie());
             std.setInt(4, location.getAnnee_construction());
-            std.setInt(5, location.getID());
+            std.setInt(5, location.getStatus()? 1 : 0);
+            std.setInt(6, location.getDisponible()? 1 : 0);
+            std.setInt(7, location.getDate_debut());
+            std.setInt(8, location.getDate_fin());
+            std.setInt(9, location.getPrix_pied_carre());
+            std.setInt(10, location.getID());
 
             int nbrRangsModifies = std.executeUpdate();
             if (nbrRangsModifies == 0) {
@@ -86,6 +91,50 @@ public List<Location>  getListLocations() throws SQLException {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void updateLocation(int indice, int status, int debut, int fin){
+        PreparedStatement std = null;
+
+        try {
+            std = connection.prepareStatement("UPDATE locations SET  disponibilite =?" +
+                    ", date_debut=?, date_fin=? WHERE id_location = ?;");
+            std.setInt(1, status);
+            std.setInt(2, debut);
+            std.setInt(3, fin);
+            std.setInt(4, indice);
+
+            int nbrRangsModifies = std.executeUpdate();
+            if (nbrRangsModifies == 0) {
+                throw new SQLException("Echec du changement de disponibilite.");
+            }
+
+            std.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Location> searchLocation(String requete){
+        PreparedStatement std = null;
+            List<Location> locations = new ArrayList<>();
+            ResultSet resultat = null;
+
+        try {
+            std = connection.prepareStatement("SELECT * from locations WHERE ?;");
+            std.setString(1, requete);
+            resultat = std.executeQuery();
+
+            while (resultat.next()){
+                Location location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
+                locations.add(location);
+            }
+            resultat.close();
+            std.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return locations;
     }
 
     public Location getLocationbyID(int indice){
