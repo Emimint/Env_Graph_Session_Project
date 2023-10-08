@@ -269,14 +269,14 @@ public class LocationController implements Initializable {
         // On s'assure que la nouvelle fenetre sera la seule active :
         Stage myStage = new Stage();
         myStage.initModality(Modality.APPLICATION_MODAL);
-        myStage.setResizable(false);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/ReadMe.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+            FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/ReadMe.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
 
-        myStage.setTitle("A propos de ce projet");
-        myStage.setScene(scene);
-        myStage.show();
+            myStage.setTitle("A propos de ce projet");
+            myStage.setScene(scene);
+            myStage.setResizable(false);
+            myStage.show();
         } catch (IOException  e) {
             System.out.println("Erreur: " +e);
             e.printStackTrace();
