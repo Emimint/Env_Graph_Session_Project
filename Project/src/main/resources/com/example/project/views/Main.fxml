@@ -68,8 +68,14 @@
               <menus>
                   <Menu mnemonicParsing="false" text="Navigation">
                      <items>
-                        <MenuItem fx:id="ajoutMenu" mnemonicParsing="false" onAction="#ouvrirAjouter" styleClass="sub-menus" text="Ajouter" />
-                        <MenuItem fx:id="modifMenu" mnemonicParsing="false" onAction="#ouvrirModifier" styleClass="sub-menus" text="Modifier" />
+                        <MenuItem fx:id="ajoutMenu" mnemonicParsing="false" onAction="#ouvrirAjouter" styleClass="sub-menus" text="Ajouter">
+                           <accelerator>
+                              <KeyCodeCombination alt="ANY" code="A" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
+                        <MenuItem fx:id="modifMenu" mnemonicParsing="false" onAction="#ouvrirModifier" styleClass="sub-menus" text="Modifier">
+                           <accelerator>
+                              <KeyCodeCombination alt="ANY" code="M" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
                         <MenuItem fx:id="deleteMenu" mnemonicParsing="false" onAction="#supprimerLocation" styleClass="sub-menus" text="Supprimer" />
                         <MenuItem fx:id="quitMenu" mnemonicParsing="false" onAction="#quitter" styleClass="sub-menus" text="Quitter">
                            <accelerator>
