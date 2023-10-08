@@ -306,7 +306,7 @@ public class LocationController implements Initializable {
             my_pdf_report.setPageSize(PageSize.A4.rotate());
             PdfWriter.getInstance(my_pdf_report, new FileOutputStream(file));
             my_pdf_report.open();
-            PdfPTable my_report_table = new PdfPTable(new float[] { 0.5f, 2.5f,0.5f,1,1,1,1,1,1,1}); // 10 colonnes de la table "locations" (avec dimensions customisees par contenu)
+            PdfPTable my_report_table = new PdfPTable(new float[] { 0.5f, 2.5f,0.5f,1,1,1,1.3f,1,1,1}); // 10 colonnes de la table "locations" (avec dimensions customisees par contenu)
             PdfPCell table_cell;
 
             // On commence par mettre un titre :
