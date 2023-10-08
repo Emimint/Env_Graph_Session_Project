@@ -147,7 +147,7 @@ public class ModifyController implements Initializable {
             RadioButton motif1 = new RadioButton("Passage au feu");
             motif1.setToggleGroup(motifGroup);
 
-            RadioButton motif2 = new RadioButton("Défaut d'eau");
+            RadioButton motif2 = new RadioButton("Dégât d'eau");
             motif2.setToggleGroup(motifGroup);
 
             RadioButton motif3 = new RadioButton("Insalubre (Enquête ville)");
