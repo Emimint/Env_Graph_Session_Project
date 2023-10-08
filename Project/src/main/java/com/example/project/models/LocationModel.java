@@ -1,14 +1,12 @@
 package com.example.project.models;
 
 import com.example.project.controllers.Location;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class LocationModel {
     Connection connection;
@@ -115,48 +113,6 @@ public List<Location>  getListLocations() throws SQLException {
         }
     }
 
-    public List<Location> searchLocation(String requete){
-        PreparedStatement std = null;
-            List<Location> locations = new ArrayList<>();
-            ResultSet resultat = null;
-
-        try {
-            std = connection.prepareStatement("SELECT * from locations WHERE ?;");
-            std.setString(1, requete);
-            resultat = std.executeQuery();
-
-            while (resultat.next()){
-                Location location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
-                locations.add(location);
-            }
-            resultat.close();
-            std.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return locations;
-    }
-
-    public Location getLocationbyID(int indice){
-        PreparedStatement std = null;
-        ResultSet resultat = null;
-        Location location = null;
-
-        try {
-            std = connection.prepareStatement("SELECT * FROM locations WHERE id_location = ?;");
-            std.setInt(1, indice);
-
-            resultat = std.executeQuery();
-            while (resultat.next()){
-                location = new Location(resultat.getInt("id_location"), resultat.getString("num_local"), resultat.getString("adresse"), resultat.getInt("superficie"), resultat.getInt("annee_construction"), resultat.getBoolean("status_location"), resultat.getBoolean("disponibilite"), resultat.getInt("date_debut"), resultat.getInt("date_fin"), resultat.getInt("prix_pied_carre"));
-            }
-            std.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return location;
-    }
-
     public Location getLocationbyAdresse(String adresse){
         PreparedStatement std = null;
         ResultSet resultat = null;
@@ -190,28 +146,4 @@ public List<Location>  getListLocations() throws SQLException {
             throw new SQLException("Echec de la suppression.");
         }
     }
-
-
-    public int getNextIndice() {
-        PreparedStatement std = null;
-        ResultSet resultat = null;
-        int indice=-1;
-
-        try {
-            std = connection.prepareStatement("SELECT LAST_INSERT_ID();");
-
-            resultat = std.executeQuery();
-            if (resultat.next()) {
-                indice = resultat.getInt(1);
-            }
-
-            std.close();
-            resultat.close();
-        } catch (SQLException e) {
-            System.out.println("Erreur: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-        return indice;
-    }
-
 }

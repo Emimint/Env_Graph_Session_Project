@@ -1,9 +1,3 @@
-/*
- * @created 24/09/2023 - 5:11 p.m.
- * @project Env_Graph_Session_Project
- * @author Emilie Echevin
- */
-
 package com.example.project.controllers;
 
 import com.example.project.models.LocationModel;
@@ -12,43 +6,23 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-
 import com.itextpdf.text.pdf.PdfWriter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-
 import java.io.*;
 import java.net.URL;
 import java.sql.*;
@@ -63,7 +37,7 @@ public class LocationController implements Initializable {
 
     private Location locationSelectionnee;
 
-    // Buttons de la bar de navigation :
+    // Buttons de la barre de navigation :
     @FXML
     public MenuItem ajoutMenu;
     @FXML
@@ -89,9 +63,6 @@ public class LocationController implements Initializable {
     public Button delBtn;
     @FXML
     public Button refreshBtn;
-
-    @FXML
-    public GridPane gridPane;
 
     // On cree les colonnes du tableau dynamiquement :
     @FXML
@@ -186,7 +157,6 @@ public class LocationController implements Initializable {
         try {
             // Ajout des colonnes du tableau :
             myTable.setItems(FXCollections.observableArrayList(myLocationModel.getListLocations()));
-            customiserTableau(dispoColumn);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -209,25 +179,6 @@ public class LocationController implements Initializable {
         myStage.show();
     }
 
-
-
-    public void ouvrirRechercher() throws IOException {
-
-        // On s'assure que la nouvelle fenetre sera la seule active :
-        Stage myStage = new Stage();
-        myStage.initModality(Modality.APPLICATION_MODAL);
-
-        FXMLLoader fxmlLoader = new FXMLLoader(com.example.project.MainApplication.class.getResource("views/Search.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-
-        //On transmet les informations du LocationModel au nouveau controleur:
-        SearchController searchController = fxmlLoader.getController();
-        searchController.setLocationModel(myLocationModel);
-
-        myStage.setTitle("Recherche un ensemble de locations");
-        myStage.setScene(scene);
-        myStage.show();
-    }
     //Appel de la methode pour le retour à l'écran de connexion :
     @FXML
     public void retourLogin() throws IOException {
@@ -332,30 +283,6 @@ public class LocationController implements Initializable {
     public void creerRapportStandard() throws SQLException {
         genererRapport(myLocationModel.getListLocations());
     }
-
-    // Methode pour griser les locations indisponibles :
-    private void customiserTableau(TableColumn<Location, Boolean> tableColumn) {
-        tableColumn.setCellFactory(column -> {
-            return new TableCell<Location, Boolean>() {
-                @Override
-                protected void updateItem(Boolean item, boolean empty) {
-                    super.updateItem(item, empty);
-
-                    setText(empty ? "" : getItem().toString());
-                    setGraphic(null);
-
-                    TableRow<Location> currentRow = getTableRow();
-
-                    if (!isEmpty()) {
-
-                        if(!item)
-                            currentRow.setStyle("-fx-background-color:rgba(0,0,0,0.2)");
-                    }
-                }
-            };
-        });
-    }
-
 
     public void genererRapport(List<Location> liste_de_locations){
         try
@@ -475,5 +402,4 @@ public class LocationController implements Initializable {
     public void setLoginModel(LoginModel loginModel) {
         this.loginModel = loginModel;
     }
-
 }

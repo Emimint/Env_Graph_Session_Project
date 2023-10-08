@@ -11,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -81,7 +80,7 @@ public class LoginController implements Initializable {
                 Scene scene = new Scene(fxmlLoader.load());
                 Stage myStage = new Stage();
 
-                //On transmet les informations du LoginModel au nouveau controleur:
+                //On transmet les informations du LoginModel au nouveau controleur :
                 LocationController locationController = fxmlLoader.getController();
                 locationController.setLoginModel(loginModel);
 

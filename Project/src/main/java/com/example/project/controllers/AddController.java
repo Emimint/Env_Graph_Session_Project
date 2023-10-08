@@ -1,31 +1,16 @@
-package com.example.project.controllers;/*
- * @created 03/10/2023 - 5:26 p.m.
- * @project Env_Graph_Session_Project
- * @author Emilie Echevin
- */
-
+package com.example.project.controllers;
 import com.example.project.models.LocationModel;
-import com.example.project.models.LoginModel;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
-import java.io.InputStream;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.*;
 
 public class AddController implements Initializable {
