@@ -11,6 +11,12 @@
     -fx-background-repeat: no-repeat;
     -fx-text-fill: #f0e6c5;
 }
+#mySearchPanel{
+    -fx-background-image: url("img/vue_ciel.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-text-fill: #f0e6c5;
+}
 
 #myAddPanel{
     -fx-background-image: url("img/gestion.jpg");

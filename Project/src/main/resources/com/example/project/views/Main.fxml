@@ -85,7 +85,7 @@
                 <Menu mnemonicParsing="false" text="Generer rapports">
                   <items>
                     <MenuItem fx:id="rapportStd" mnemonicParsing="false" onAction="#creerRapportStandard" text="Rapport standard" />
-                        <MenuItem fx:id="searchMenu" mnemonicParsing="false" text="Recherche..." />
+                        <MenuItem fx:id="searchMenu" mnemonicParsing="false" text="Recherche..." onAction="#ouvrirRechercher"/>
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" onAction="#ouvrirReadMe" text="Aide">
