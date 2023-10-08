@@ -16,7 +16,11 @@
     -fx-background-image: url("img/gestion.jpg");
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
-    -fx-text-fill: #f0e6c5;
+}
+#myModifPanel{
+    -fx-background-image: url("img/modification.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
 }
 
 #myPane{
