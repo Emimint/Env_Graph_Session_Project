@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.net.URL;
@@ -105,6 +106,7 @@ public class ModifyController implements Initializable {
             }
         } catch (IllegalArgumentException e){
             Alert dialogW = new Alert(Alert.AlertType.WARNING);
+            dialogW.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             dialogW.setTitle("Erreur");
             dialogW.setHeaderText(null);
             dialogW.setContentText("Attention : "+ e.getMessage());
