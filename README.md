@@ -15,7 +15,9 @@ et la table 'utilisateurs' :
 ![image](https://github.com/Emimint/Env_Graph_Session_Project/assets/90863470/ae792dcb-4570-4694-8426-88f97b1591f7)
 **ATTENTION!!** : Il faut s'assurer que dans le fichier `Project/src/main/java/com/example/project/models/MySqlConnection.java`, le mot de passe et le nom d'utilisateur correspondent au paramètre de votre machine :
 ![image](https://github.com/Emimint/Env_Graph_Session_Project/assets/90863470/21dd31d2-7574-4dfe-a48e-401c8107fe67)
+
 (__Autrement, vous aurez un message d'erreur en console.__)
+
 3. Une fois connecté, vous pouvez sélectionner n'importe quel utilisateur parmis les six disponibles pour accéder au système.
 
 
