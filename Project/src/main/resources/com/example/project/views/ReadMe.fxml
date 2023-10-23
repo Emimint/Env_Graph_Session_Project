@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
@@ -13,9 +12,6 @@
          <image>
             <Image url="@../../../../img/a_propos.jpg" />
          </image>
-         <cursor>
-            <Cursor fx:constant="SW_RESIZE" />
-         </cursor>
       </ImageView>
       <Text fill="white" layoutX="22.0" layoutY="262.0" styleClass="paragraphe" text="Le système de gestion des locations est un outil qui accompagne les agents immobiliers dans la gestion des biens locatifs. Il permet de centraliser les informations sur les propriétés disponibles à la location, de suivre les disponibilités, de gérer les rapports, d’ajouter, de modifier et de supprimer les propriétés. Dans ce système, on a accès à la base de données qui est composée des locations et des utilisateurs qui gèrent le système. L’objectif de ce système est de simplifier et d’améliorer l’efficacité opérationnelle et offrir meilleure expérience au locataire en simplifiant les démarches de location, réduisant les erreurs et augmentant la satisfaction de la clientèle." wrappingWidth="548.3045043945312">
          <font>
