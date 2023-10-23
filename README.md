@@ -4,7 +4,7 @@
 Ce systeme de gestion de locations a été réalisé comme projet de session [AEC Développement Web Collège Rosemont ](https://www.crosemont.qc.ca/programme/programmation-orientee-objet-et-technologies-web/) par les étudiantes suivantes :
 -  [Cylia Oudiai](https://www.linkedin.com/in/cylia-oudiai-81b7891a0/)
 - Tity Doupamby
-- [Emilie Echevin ](https://www.linkedin.com/in/emilie-echevin-92119a5a/)
+- [Emilie Echevin ](https://www.linkedin.com/in/emilie-echevin/)
 
 Pour pouvoir utiliser le projet localement, voici les étapes à suivre :
 
