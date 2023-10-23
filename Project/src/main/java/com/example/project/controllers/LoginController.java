@@ -89,7 +89,7 @@ public class LoginController implements Initializable {
                 myStage.setResizable(false);
                 myStage.setScene(scene);
                 myStage.show();
-            } else infoLabel.setText("Nom d'utilisateur ou mot de passe valide(s).");
+            } else infoLabel.setText("Nom d'utilisateur ou mot de passe invalide(s).");
         } catch (SQLException e) {
             System.out.println("Erreur: " +e.getMessage());
             infoLabel.setText("Erreur de connexion à la base de données.");
